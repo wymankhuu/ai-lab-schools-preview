@@ -1,0 +1,43 @@
+{
+  "name": "ai-lab-schools-preview",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "react-router dev",
+    "build": "react-router build",
+    "start": "react-router-serve ./build/client",
+    "preview": "vite preview",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@react-router/node": "^7.13.0",
+    "@react-router/serve": "^7.13.0",
+    "d3-geo": "^3.1.1",
+    "isbot": "^5.1.0",
+    "lucide-react": "^0.544.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-intl": "^7.1.14",
+    "react-router": "^7.13.0",
+    "topojson-client": "^3.1.0"
+  },
+  "devDependencies": {
+    "@babel/preset-typescript": "^7.28.5",
+    "@react-router/dev": "^7.13.0",
+    "@tailwindcss/container-queries": "^0.1.1",
+    "@types/d3-geo": "^3.1.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/topojson-client": "^3.1.5",
+    "@types/topojson-specification": "^1.0.5",
+    "autoprefixer": "^10.4.20",
+    "babel-plugin-formatjs": "^11.3.4",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.19",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.0",
+    "vite-plugin-babel": "^1.6.0",
+    "vite-tsconfig-paths": "^5.1.4"
+  }
+}

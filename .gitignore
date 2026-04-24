@@ -1,0 +1,9 @@
+node_modules
+.react-router
+build
+.vercel
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
