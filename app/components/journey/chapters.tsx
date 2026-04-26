@@ -1426,9 +1426,9 @@ function BendingRoad() {
         animate={{ pathLength: inView ? 1 : 0 }}
         transition={{ duration: 0.5 }}
       />
-      {/* the new heading */}
+      {/* the new heading — sweeps through the pivot toward the right edge */}
       <motion.path
-        d="M 10 180 Q 130 180 150 130 T 230 30"
+        d="M 10 180 Q 100 180 150 130 Q 210 80 262 56"
         stroke="#0c0f14"
         strokeWidth="3"
         strokeLinecap="round"
@@ -1446,16 +1446,20 @@ function BendingRoad() {
         animate={{ scale: inView ? 1 : 0 }}
         transition={{ duration: 0.3, delay: 0.85 }}
       />
-      {/* arrowhead */}
+      {/* arrowhead — sits at the right edge, opens rightward */}
       <motion.path
-        d="M 220 38 L 232 28 L 234 44"
+        d="M 246 40 L 268 54 L 252 70"
         stroke="#0c0f14"
-        strokeWidth="3"
+        strokeWidth="3.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: inView ? 1 : 0 }}
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{
+          opacity: inView ? 1 : 0,
+          scale: inView ? 1 : 0.7,
+        }}
         transition={{ duration: 0.3, delay: 1.4 }}
+        style={{ transformOrigin: "260px 55px" }}
       />
     </svg>
   );
