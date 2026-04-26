@@ -69,7 +69,7 @@ function TopBar() {
           className="flex items-center gap-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-ink focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
           aria-label="Playlab home"
         >
-          <img src={playlabLogo} alt="Playlab" className="h-7 w-auto" />
+          <img src={playlabLogo} alt="Playlab" className="h-9 w-auto sm:h-10" />
         </a>
         <a
           href="https://playlab.ai"
