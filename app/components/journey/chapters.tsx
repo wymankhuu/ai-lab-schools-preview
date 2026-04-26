@@ -159,53 +159,60 @@ export function ChapterConviction() {
 
 /* ---------------- 02 — The bet ---------------- */
 export function ChapterTheBet() {
-  const lines = ["Not big tech.", "Not edtech.", "Not even us."];
-  const colors = ["#356fe5", "#ed6e2d", "#398239"];
+  const lines = [
+    { text: "Not big tech.", color: "#356fe5" },
+    { text: "Not edtech.", color: "#ed6e2d" },
+    { text: "Not even us.", color: "#398239" },
+  ];
 
   return (
     <ChapterFrame
       number="02"
       eyebrow="The bet"
       accent="#356fe5"
-      minHeight="100vh"
+      minHeight="140vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12">
+      <div className="flex min-h-screen items-center px-6 py-20 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
         <div className="relative mx-auto w-full max-w-5xl">
           <CutOut
-            className="absolute right-0 top-0 -z-0 h-24 w-24 rounded-full sm:h-32 sm:w-32"
+            className="absolute -right-2 top-0 -z-0 h-24 w-24 rounded-full sm:h-32 sm:w-32"
             color="#a4beeb"
             rotate={0}
           />
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }}
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: false, amount: 0.5 }}
             transition={{ duration: 0.7 }}
-            className="relative font-display text-[clamp(2rem,5vw,4rem)] leading-tight text-brand-ink"
+            className="relative max-w-3xl font-display text-[clamp(1.75rem,3.5vw,2.5rem)] leading-snug text-brand-ink/85"
           >
             Educators would figure out what AI is for in education.
-          </motion.h2>
+          </motion.p>
 
-          <ul className="mt-10 space-y-3 font-display text-3xl text-brand-ink/70 sm:text-4xl">
+          <ul className="mt-16 space-y-10 sm:mt-20 sm:space-y-14 font-display leading-[0.95] text-brand-ink/80">
             {lines.map((line, i) => (
               <motion.li
-                key={line}
-                initial={{ opacity: 0, x: -24 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false, amount: 0.6 }}
-                transition={{ delay: 0.15 + i * 0.18, duration: 0.5 }}
+                key={line.text}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.5 }}
+                transition={{ delay: 0.15 + i * 0.35, duration: 0.55 }}
                 className="relative"
               >
-                <span className="relative inline-block">
-                  {line}
+                <span className="relative inline-block text-[clamp(2.75rem,7.5vw,6rem)]">
+                  {line.text}
                   <motion.span
                     aria-hidden="true"
                     initial={{ scaleX: 0 }}
                     whileInView={{ scaleX: 1 }}
-                    viewport={{ once: false, amount: 0.6 }}
-                    transition={{ delay: 0.4 + i * 0.18, duration: 0.5 }}
-                    className="absolute left-0 top-1/2 h-[2.5px] w-full origin-left rounded-full"
-                    style={{ backgroundColor: colors[i] }}
+                    viewport={{ once: false, amount: 0.5 }}
+                    transition={{
+                      delay: 0.55 + i * 0.35,
+                      duration: 0.6,
+                      ease: "easeOut",
+                    }}
+                    className="absolute left-[-2%] top-[55%] h-[5px] w-[104%] origin-left rounded-full sm:h-[6px]"
+                    style={{ backgroundColor: line.color }}
                   />
                 </span>
               </motion.li>
@@ -213,16 +220,47 @@ export function ChapterTheBet() {
             <motion.li
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false, amount: 0.6 }}
-              transition={{ delay: 1.0, duration: 0.5 }}
-              className="font-display text-4xl text-brand-ink sm:text-5xl"
+              viewport={{ once: false, amount: 0.5 }}
+              transition={{ delay: 1.55, duration: 0.6 }}
+              className="!mt-16 sm:!mt-20"
             >
-              Educators.
+              <CircledWord text="Educators." delay={2.0} />
             </motion.li>
           </ul>
         </div>
       </div>
     </ChapterFrame>
+  );
+}
+
+function CircledWord({ text, delay }: { text: string; delay: number }) {
+  return (
+    <span className="relative inline-block">
+      <span className="relative z-10 font-display text-[clamp(3.25rem,8.5vw,6.75rem)] leading-none text-brand-ink">
+        {text}
+      </span>
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 320 140"
+        preserveAspectRatio="none"
+        className="absolute inset-x-[-6%] inset-y-[-22%] z-0 h-auto w-[112%] overflow-visible"
+        fill="none"
+      >
+        <motion.path
+          d="M 40 75 C 0 30, 80 8, 170 12 C 270 16, 320 50, 305 90 C 290 125, 200 132, 110 128 C 30 124, 5 100, 18 75"
+          stroke="#ed6e2d"
+          strokeWidth="3"
+          strokeLinecap="round"
+          initial={{ pathLength: 0, opacity: 0 }}
+          whileInView={{ pathLength: 1, opacity: 1 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{
+            pathLength: { duration: 1.1, delay, ease: "easeInOut" },
+            opacity: { duration: 0.2, delay },
+          }}
+        />
+      </svg>
+    </span>
   );
 }
 
@@ -1170,22 +1208,9 @@ const milestones = [
 ];
 
 export function ChapterRhythm() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
-  const x = useTransform(
-    scrollYProgress,
-    [0, 1],
-    ["0%", `-${(milestones.length - 1) * 100}%`],
-  );
-
   return (
     <section
-      ref={ref}
       className="relative w-full"
-      style={{ minHeight: `${milestones.length * 28}vh` }}
       aria-label="The 24-month rhythm"
     >
       <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
@@ -1196,40 +1221,52 @@ export function ChapterRhythm() {
           The rhythm
         </span>
       </div>
-      <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
-        <div className="mx-auto w-full max-w-6xl px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+
+      <div className="px-6 pt-24 pb-16 sm:px-12 sm:pt-28 md:pl-20 md:pr-12 lg:pl-24">
+        <div className="mx-auto w-full max-w-3xl">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             24 months of work
           </p>
           <h2 className="mt-3 font-display text-[clamp(2rem,4.5vw,3.5rem)] leading-tight text-brand-ink">
             The cadence of the cohort.
           </h2>
-        </div>
-        <motion.div style={{ x }} className="mt-10 flex w-full">
-          {milestones.map((m, i) => (
-            <div
-              key={m.date}
-              className="flex w-screen shrink-0 items-center px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24"
-            >
-              <div className="mx-auto flex w-full max-w-6xl items-end gap-8">
+
+          <ol className="relative mt-12 ml-3 border-l-2 border-brand-ink/15">
+            {milestones.map((m, i) => (
+              <motion.li
+                key={m.date}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, amount: 0.4 }}
+                transition={{ delay: 0.05 * i, duration: 0.45 }}
+                className="relative pb-10 pl-8 last:pb-0"
+              >
                 <span
-                  className="font-display text-[clamp(4rem,11vw,9rem)] font-medium leading-none"
-                  style={{ color: m.accent }}
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                <div className="border-l border-brand-ink/30 pl-6">
-                  <div className="font-mono text-xs uppercase tracking-[0.25em] text-brand-ink/60">
-                    {m.date}
-                  </div>
-                  <div className="mt-2 font-display text-3xl leading-tight text-brand-ink sm:text-5xl">
-                    {m.body}
-                  </div>
+                  aria-hidden="true"
+                  className="absolute -left-[11px] top-1 h-5 w-5 rounded-full border-[3px] border-brand-bg"
+                  style={{ backgroundColor: m.accent }}
+                />
+                <span
+                  aria-hidden="true"
+                  className="absolute -left-[14px] top-[-2px] h-7 w-7 rounded-full border border-brand-ink/15"
+                />
+                <div className="flex items-baseline gap-3">
+                  <span
+                    className="font-mono text-[10px] uppercase tracking-[0.2em] text-brand-ink/60"
+                    style={{ color: "#0c0f14" }}
+                  >
+                    {String(i + 1).padStart(2, "0")} · {m.date}
+                  </span>
                 </div>
-              </div>
-            </div>
-          ))}
-        </motion.div>
+                <div
+                  className="mt-2 font-display text-2xl leading-snug text-brand-ink sm:text-3xl"
+                >
+                  {m.body}
+                </div>
+              </motion.li>
+            ))}
+          </ol>
+        </div>
       </div>
     </section>
   );
@@ -1241,21 +1278,147 @@ const pillars = [
     title: "AI-integrated pedagogy",
     body: "Where AI amplifies human connection and creativity. Where it doesn't, it stays out.",
     accent: "#feffa0",
-    shape: "scribble",
   },
   {
     title: "Agency-driven learning",
     body: "Students as creators and critics of the technology. Adults as coaches.",
     accent: "#a4beeb",
-    shape: "grid",
   },
   {
     title: "Boundary-less classrooms",
     body: "Learning that moves between school, community, and the tools students bring.",
     accent: "#d4fd63",
-    shape: "cutout",
   },
 ] as const;
+
+function HandDrawnPillar({
+  accent,
+  delay = 0,
+}: {
+  accent: string;
+  delay?: number;
+}) {
+  // Hand-drawn architectural pillar: capital, fluted shaft, base.
+  // Each stroke uses slightly imperfect curves and offsets so it
+  // reads as drawn rather than constructed.
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 110 320"
+      className="h-56 w-auto sm:h-72"
+      fill="none"
+    >
+      {/* baseline shadow */}
+      <motion.path
+        d="M 6 314 Q 55 312 104 316"
+        stroke="#0c0f14"
+        strokeOpacity="0.25"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.5, delay }}
+      />
+
+      {/* base, two stacked plinths */}
+      <motion.path
+        d="M 6 308 Q 55 304 104 308 L 102 286 Q 55 282 8 286 Z"
+        stroke="#0c0f14"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill={accent}
+        fillOpacity="0.55"
+        initial={{ pathLength: 0, fillOpacity: 0 }}
+        whileInView={{ pathLength: 1, fillOpacity: 0.55 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.7, delay: delay + 0.05 }}
+      />
+      <motion.path
+        d="M 14 286 Q 55 282 96 286 L 94 268 Q 55 264 16 268 Z"
+        stroke="#0c0f14"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.6, delay: delay + 0.18 }}
+      />
+
+      {/* shaft outline (slight taper, slight wobble) */}
+      <motion.path
+        d="M 22 268 C 21 220, 19 130, 24 70 C 24 65, 30 60, 34 60 L 76 60 C 80 60, 86 65, 86 70 C 91 130, 89 220, 88 268"
+        stroke="#0c0f14"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 1.1, delay: delay + 0.28 }}
+      />
+
+      {/* fluting (3 vertical lines inside the shaft) */}
+      {[36, 55, 74].map((cx, i) => (
+        <motion.path
+          key={cx}
+          d={`M ${cx} 70 C ${cx + 0.5} 130, ${cx - 0.5} 220, ${cx} 264`}
+          stroke="#0c0f14"
+          strokeOpacity="0.45"
+          strokeWidth="1"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.8, delay: delay + 0.55 + i * 0.08 }}
+        />
+      ))}
+
+      {/* capital — wide top piece with collar */}
+      <motion.path
+        d="M 26 60 Q 55 56 84 60 L 86 48 Q 55 44 24 48 Z"
+        stroke="#0c0f14"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill={accent}
+        fillOpacity="0.4"
+        initial={{ pathLength: 0, fillOpacity: 0 }}
+        whileInView={{ pathLength: 1, fillOpacity: 0.4 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.7, delay: delay + 0.4 }}
+      />
+      <motion.path
+        d="M 4 48 Q 55 42 106 48 L 104 28 Q 55 22 6 28 Z"
+        stroke="#0c0f14"
+        strokeWidth="2.25"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill={accent}
+        fillOpacity="0.7"
+        initial={{ pathLength: 0, fillOpacity: 0 }}
+        whileInView={{ pathLength: 1, fillOpacity: 0.7 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.7, delay: delay + 0.5 }}
+      />
+
+      {/* small scribble arc above to suggest hand-drawn character */}
+      <motion.path
+        d="M 18 18 Q 55 6 96 14"
+        stroke="#0c0f14"
+        strokeOpacity="0.4"
+        strokeWidth="1.25"
+        strokeLinecap="round"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: false, amount: 0.3 }}
+        transition={{ duration: 0.5, delay: delay + 0.7 }}
+      />
+    </svg>
+  );
+}
 
 export function ChapterPillars() {
   return (
@@ -1265,53 +1428,29 @@ export function ChapterPillars() {
       accent="#0c0f14"
       minHeight="110vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12">
+      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
         <div className="mx-auto w-full max-w-6xl">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             Three pillars
           </p>
-          <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <h2 className="mt-3 font-display text-[clamp(2rem,4.2vw,3.25rem)] leading-tight text-brand-ink">
+            Drawn from the same workshop floor.
+          </h2>
+          <div className="mt-12 grid grid-cols-1 gap-12 md:grid-cols-3 md:gap-8">
             {pillars.map((p, i) => (
               <motion.div
                 key={p.title}
-                initial={{ opacity: 0, y: 24 }}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.4 }}
-                transition={{ delay: 0.1 * i, duration: 0.55 }}
-                className="relative overflow-hidden rounded-3xl border border-brand-ink/10 bg-brand-cream p-7"
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ delay: 0.08 * i, duration: 0.5 }}
+                className="flex flex-col items-center text-center"
               >
-                {p.shape === "scribble" && (
-                  <ScribbleArc
-                    className="absolute -right-3 -top-2 h-10 w-32"
-                    color={p.accent}
-                    d="M 0 60 Q 60 5 140 30 T 280 25"
-                  />
-                )}
-                {p.shape === "grid" && (
-                  <DotGrid
-                    className="absolute -right-3 -top-3 h-16 w-16 opacity-90"
-                    color={p.accent}
-                    cols={6}
-                    rows={6}
-                    gap={10}
-                    dot={2.4}
-                  />
-                )}
-                {p.shape === "cutout" && (
-                  <CutOut
-                    className="absolute -right-3 -top-3 h-12 w-16 rounded-md"
-                    color={p.accent}
-                    rotate={8}
-                  />
-                )}
-                <span
-                  className="inline-block h-2 w-12 rounded-full"
-                  style={{ backgroundColor: p.accent }}
-                />
-                <h3 className="mt-4 font-display text-2xl leading-snug text-brand-ink sm:text-3xl">
+                <HandDrawnPillar accent={p.accent} delay={0.15 + i * 0.12} />
+                <h3 className="mt-6 max-w-[12rem] font-display text-xl leading-snug text-brand-ink sm:text-2xl">
                   {p.title}
                 </h3>
-                <p className="mt-3 text-base leading-relaxed text-brand-ink/80">
+                <p className="mt-2 max-w-[15rem] text-sm leading-relaxed text-brand-ink/75 sm:text-base">
                   {p.body}
                 </p>
               </motion.div>
@@ -1324,68 +1463,342 @@ export function ChapterPillars() {
 }
 
 /* ---------------- 11 — The playbook ---------------- */
-export function ChapterPlaybook() {
-  const draftLines = [
-    "What 13 teams learned in two years.",
-    "13 working models. 13 sets of seams to look at.",
-    { strike: true, text: "Best practices, finalized." },
-    "An invitation to copy, fork, and remix.",
-    "A playbook with edits visible.",
-    "Rough edges stay rough.",
-  ] as Array<string | { strike: boolean; text: string }>;
 
+type PlayMarker = { type: "X" | "O"; x: number; y: number };
+type PlayArrow = {
+  d: string; // SVG path
+  arrow: { x: number; y: number; rotate: number }; // arrowhead transform
+};
+
+type Play = {
+  caption: string;
+  struck?: boolean;
+  markers: PlayMarker[];
+  arrows: PlayArrow[];
+};
+
+const plays: Play[] = [
+  {
+    caption: "What 13 teams learned in two years.",
+    markers: [
+      { type: "X", x: 30, y: 70 },
+      { type: "X", x: 60, y: 70 },
+      { type: "X", x: 90, y: 70 },
+      { type: "X", x: 120, y: 70 },
+      { type: "O", x: 75, y: 25 },
+    ],
+    arrows: [
+      { d: "M 30 65 C 30 50, 25 35, 35 25", arrow: { x: 35, y: 25, rotate: -10 } },
+      { d: "M 60 65 C 60 45, 60 30, 60 22", arrow: { x: 60, y: 22, rotate: 0 } },
+      { d: "M 90 65 C 90 50, 95 35, 95 25", arrow: { x: 95, y: 25, rotate: 5 } },
+      { d: "M 120 65 C 120 50, 125 35, 125 25", arrow: { x: 125, y: 25, rotate: 10 } },
+    ],
+  },
+  {
+    caption: "13 working models. 13 sets of seams.",
+    markers: [
+      { type: "X", x: 75, y: 70 },
+      { type: "X", x: 50, y: 65 },
+      { type: "X", x: 100, y: 65 },
+      { type: "X", x: 30, y: 55 },
+      { type: "X", x: 120, y: 55 },
+    ],
+    arrows: [
+      { d: "M 75 65 L 75 22", arrow: { x: 75, y: 22, rotate: 0 } },
+      { d: "M 50 60 C 45 45, 35 35, 22 25", arrow: { x: 22, y: 25, rotate: -55 } },
+      { d: "M 100 60 C 105 45, 115 35, 128 25", arrow: { x: 128, y: 25, rotate: 55 } },
+      { d: "M 30 50 C 22 35, 12 30, 8 18", arrow: { x: 8, y: 18, rotate: -75 } },
+      { d: "M 120 50 C 128 35, 138 30, 142 18", arrow: { x: 142, y: 18, rotate: 75 } },
+    ],
+  },
+  {
+    caption: "Best practices, finalized.",
+    struck: true,
+    markers: [
+      { type: "X", x: 30, y: 60 },
+      { type: "X", x: 60, y: 60 },
+      { type: "X", x: 90, y: 60 },
+      { type: "X", x: 120, y: 60 },
+    ],
+    arrows: [],
+  },
+  {
+    caption: "An invitation to copy, fork, and remix.",
+    markers: [
+      { type: "X", x: 75, y: 70 },
+      { type: "O", x: 30, y: 25 },
+      { type: "O", x: 75, y: 18 },
+      { type: "O", x: 120, y: 25 },
+    ],
+    arrows: [
+      { d: "M 70 65 C 50 50, 35 38, 26 30", arrow: { x: 26, y: 30, rotate: -55 } },
+      { d: "M 75 60 L 75 25", arrow: { x: 75, y: 25, rotate: 0 } },
+      { d: "M 80 65 C 100 50, 115 38, 124 30", arrow: { x: 124, y: 30, rotate: 55 } },
+    ],
+  },
+  {
+    caption: "A playbook with edits visible.",
+    markers: [
+      { type: "X", x: 50, y: 65 },
+      { type: "X", x: 100, y: 65 },
+      { type: "O", x: 75, y: 30 },
+    ],
+    arrows: [
+      {
+        d: "M 50 60 C 60 40, 90 40, 100 60",
+        arrow: { x: 100, y: 60, rotate: 90 },
+      },
+      {
+        d: "M 100 65 C 90 80, 60 80, 50 70",
+        arrow: { x: 50, y: 70, rotate: 270 },
+      },
+    ],
+  },
+  {
+    caption: "Rough edges stay rough.",
+    markers: [
+      { type: "X", x: 32, y: 62 },
+      { type: "X", x: 62, y: 70 },
+      { type: "X", x: 95, y: 60 },
+      { type: "X", x: 125, y: 68 },
+    ],
+    arrows: [
+      { d: "M 32 58 C 28 42, 22 28, 16 16", arrow: { x: 16, y: 16, rotate: -55 } },
+      { d: "M 62 65 C 65 50, 70 30, 76 16", arrow: { x: 76, y: 16, rotate: -10 } },
+      { d: "M 95 56 C 100 42, 108 30, 116 18", arrow: { x: 116, y: 18, rotate: 35 } },
+      { d: "M 125 64 C 130 50, 138 36, 144 22", arrow: { x: 144, y: 22, rotate: 50 } },
+    ],
+  },
+];
+
+function PlayDiagram({ play, index }: { play: Play; index: number }) {
+  const struck = play.struck;
+  return (
+    <motion.figure
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.4 }}
+      transition={{ delay: 0.06 * index, duration: 0.45 }}
+      className="relative flex flex-col"
+    >
+      <div className="relative aspect-[3/2] overflow-hidden rounded-2xl border border-brand-ink/15 bg-brand-cream/60 p-3">
+        <span className="absolute right-3 top-2 font-mono text-[10px] tracking-[0.2em] text-brand-ink/45">
+          {`PLAY ${String(index + 1).padStart(2, "0")}`}
+        </span>
+        <svg
+          viewBox="0 0 150 90"
+          className="h-full w-full"
+          aria-hidden="true"
+          fill="none"
+        >
+          {/* hash marks (top + bottom) */}
+          {[8, 142].map((x) =>
+            [10, 22, 34, 56, 68, 80].map((y) => (
+              <line
+                key={`hash-${x}-${y}`}
+                x1={x - 2}
+                y1={y}
+                x2={x + 2}
+                y2={y}
+                stroke="#0c0f14"
+                strokeOpacity="0.18"
+                strokeWidth="0.6"
+              />
+            )),
+          )}
+          {/* sideline */}
+          <line
+            x1="3"
+            y1="3"
+            x2="147"
+            y2="3"
+            stroke="#0c0f14"
+            strokeOpacity="0.25"
+            strokeWidth="0.7"
+            strokeDasharray="2 3"
+          />
+          <line
+            x1="3"
+            y1="87"
+            x2="147"
+            y2="87"
+            stroke="#0c0f14"
+            strokeOpacity="0.25"
+            strokeWidth="0.7"
+            strokeDasharray="2 3"
+          />
+          {/* line of scrimmage */}
+          <line
+            x1="6"
+            y1="50"
+            x2="144"
+            y2="50"
+            stroke="#0c0f14"
+            strokeOpacity="0.45"
+            strokeWidth="0.8"
+            strokeDasharray="3 3"
+          />
+
+          {/* arrows */}
+          {!struck &&
+            play.arrows.map((a, ai) => (
+              <g key={`arrow-${ai}`}>
+                <motion.path
+                  d={a.d}
+                  stroke="#0c0f14"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  fill="none"
+                  initial={{ pathLength: 0 }}
+                  whileInView={{ pathLength: 1 }}
+                  viewport={{ once: false, amount: 0.4 }}
+                  transition={{
+                    duration: 0.7,
+                    delay: 0.4 + ai * 0.08,
+                    ease: "easeOut",
+                  }}
+                />
+                <motion.polyline
+                  points="-3,4 0,-2 3,4"
+                  fill="none"
+                  stroke="#0c0f14"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: false, amount: 0.4 }}
+                  transition={{
+                    duration: 0.25,
+                    delay: 0.4 + ai * 0.08 + 0.55,
+                  }}
+                  style={{
+                    transformOrigin: `${a.arrow.x}px ${a.arrow.y}px`,
+                  }}
+                  transform={`translate(${a.arrow.x} ${a.arrow.y}) rotate(${a.arrow.rotate})`}
+                />
+              </g>
+            ))}
+
+          {/* markers */}
+          {play.markers.map((m, mi) => {
+            if (m.type === "O") {
+              return (
+                <circle
+                  key={`m-${mi}`}
+                  cx={m.x}
+                  cy={m.y}
+                  r="3.5"
+                  fill="none"
+                  stroke="#0c0f14"
+                  strokeWidth="1.5"
+                />
+              );
+            }
+            return (
+              <g key={`m-${mi}`}>
+                <line
+                  x1={m.x - 3.5}
+                  y1={m.y - 3.5}
+                  x2={m.x + 3.5}
+                  y2={m.y + 3.5}
+                  stroke="#0c0f14"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+                <line
+                  x1={m.x + 3.5}
+                  y1={m.y - 3.5}
+                  x2={m.x - 3.5}
+                  y2={m.y + 3.5}
+                  stroke="#0c0f14"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                />
+              </g>
+            );
+          })}
+
+          {/* scratch-out for struck plays */}
+          {struck && (
+            <>
+              <motion.line
+                x1="10"
+                y1="12"
+                x2="142"
+                y2="80"
+                stroke="#ce463f"
+                strokeWidth="2"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: false, amount: 0.4 }}
+                transition={{ duration: 0.5, delay: 0.3 }}
+              />
+              <motion.line
+                x1="142"
+                y1="12"
+                x2="10"
+                y2="80"
+                stroke="#ce463f"
+                strokeWidth="2"
+                strokeLinecap="round"
+                initial={{ pathLength: 0 }}
+                whileInView={{ pathLength: 1 }}
+                viewport={{ once: false, amount: 0.4 }}
+                transition={{ duration: 0.5, delay: 0.55 }}
+              />
+            </>
+          )}
+        </svg>
+      </div>
+      <figcaption
+        className={`mt-3 font-display text-base leading-snug ${
+          struck
+            ? "text-brand-ink/35 line-through decoration-brand-ink/40 decoration-1"
+            : "text-brand-ink/85"
+        }`}
+      >
+        {play.caption}
+      </figcaption>
+    </motion.figure>
+  );
+}
+
+export function ChapterPlaybook() {
   return (
     <ChapterFrame
       number="11"
       eyebrow="The artifact"
       accent="#398239"
-      minHeight="100vh"
+      minHeight="120vh"
     >
       <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
-        <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
-            <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
-              The artifact
-            </p>
-            <h2 className="mt-3 font-display text-[clamp(2.25rem,5vw,3.75rem)] leading-tight text-brand-ink">
-              Open-source playbook, 2028.
-            </h2>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-brand-ink/70">
-              We&rsquo;re not in the answers business. We&rsquo;re in the
-              show-your-work business. The playbook ships with edits visible
-              so the next school can start further down the road.
-            </p>
-          </div>
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
+                The artifact
+              </p>
+              <h2 className="mt-3 font-display text-[clamp(2.25rem,5vw,3.75rem)] leading-tight text-brand-ink">
+                Open-source playbook, 2028.
+              </h2>
+              <p className="mt-5 max-w-md text-base leading-relaxed text-brand-ink/70">
+                We&rsquo;re not in the answers business. We&rsquo;re in the
+                show-your-work business. The playbook ships as a series of
+                plays, edits visible, so the next school can run them, change
+                them, or run something better.
+              </p>
+            </div>
 
-          <ul className="space-y-3 lg:col-span-7 lg:pt-2">
-            {draftLines.map((line, i) => {
-              const text = typeof line === "string" ? line : line.text;
-              const strike = typeof line === "string" ? false : line.strike;
-              return (
-                <motion.li
-                  key={i}
-                  initial={{ opacity: 0, y: 8 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false, amount: 0.5 }}
-                  transition={{ delay: 0.06 * i, duration: 0.5 }}
-                  className="flex items-baseline gap-3 font-display text-lg leading-snug sm:text-xl"
-                >
-                  <span className="font-mono text-[10px] tracking-[0.2em] text-brand-ink/35">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span
-                    className={
-                      strike
-                        ? "text-brand-ink/35 line-through decoration-brand-ink/40 decoration-1"
-                        : "text-brand-ink/85"
-                    }
-                  >
-                    {text}
-                  </span>
-                </motion.li>
-              );
-            })}
-          </ul>
+            <div className="lg:col-span-7">
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
+                {plays.map((p, i) => (
+                  <PlayDiagram key={p.caption} play={p} index={i} />
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </ChapterFrame>
