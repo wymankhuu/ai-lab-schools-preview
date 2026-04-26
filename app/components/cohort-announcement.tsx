@@ -1,5 +1,6 @@
 import { geoAlbersUsa, geoPath } from "d3-geo";
-import { useState } from "react";
+import { X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { feature } from "topojson-client";
 import { partners } from "../data/partners";
@@ -85,11 +86,27 @@ function scrollToPartner(id: string) {
 
 export function CohortAnnouncement() {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const launchCount = partners.filter((p) => p.pathway === "Launch").length;
   const pivotCount = partners.filter((p) => p.pathway === "Pivot").length;
 
   const hovered = projectedPartners.find((p) => p.id === hoveredId) ?? null;
+  const selected = partners.find((p) => p.id === selectedId) ?? null;
+
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedId(null);
+    };
+    document.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [selected]);
 
   return (
     <div className="bg-[#e1e7d9] py-6 sm:py-10 lg:py-12">
@@ -214,11 +231,21 @@ export function CohortAnnouncement() {
 
           <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8">
             {partners.map((partner) => (
-              <PartnerCard key={partner.id} partner={partner} />
+              <PartnerCard
+                key={partner.id}
+                partner={partner}
+                onSelect={() => setSelectedId(partner.id)}
+              />
             ))}
           </div>
         </div>
       </div>
+      {selected && (
+        <PartnerModal
+          partner={selected}
+          onClose={() => setSelectedId(null)}
+        />
+      )}
     </div>
   );
 }
@@ -438,13 +465,29 @@ function MarkerTooltip({ partner }: { partner: ProjectedPartner }) {
   );
 }
 
-function PartnerCard({ partner }: { partner: Partner }) {
+function PartnerCard({
+  partner,
+  onSelect,
+}: {
+  partner: Partner;
+  onSelect: () => void;
+}) {
   const isLaunch = partner.pathway === "Launch";
   const ringColor = isLaunch ? "#ffd956" : "#61dcff";
+  const hasLongDescription = Boolean(partner.description);
+  const interactiveClasses = hasLongDescription
+    ? "cursor-pointer hover:-translate-y-0.5 hover:border-[#1a311d]/20 hover:shadow-[0_8px_24px_rgba(26,49,29,0.08)] focus-visible:ring-2 focus-visible:ring-[#00cc72] focus-visible:ring-offset-2"
+    : "cursor-default";
   return (
-    <div
+    <button
+      type="button"
       id={partnerCardId(partner.id)}
-      className="flex h-full scroll-mt-24 flex-col rounded-2xl border border-[#1a311d]/10 bg-white p-6 shadow-[0_1px_3px_rgba(26,49,29,0.04)] transition-shadow duration-300"
+      onClick={hasLongDescription ? onSelect : undefined}
+      disabled={!hasLongDescription}
+      aria-label={
+        hasLongDescription ? `Read more about ${partner.school}` : undefined
+      }
+      className={`group flex h-full scroll-mt-24 flex-col rounded-2xl border border-[#1a311d]/10 bg-white p-6 text-left shadow-[0_1px_3px_rgba(26,49,29,0.04)] transition-all duration-200 focus:outline-none ${interactiveClasses}`}
     >
       <div className="flex items-start justify-between gap-4">
         <div
@@ -465,16 +508,91 @@ function PartnerCard({ partner }: { partner: Partner }) {
         {partner.school}
       </h3>
 
-      <div className="mt-2 flex flex-col gap-0.5 text-sm text-[#122134]">
-        <span className="font-semibold">{partner.leader}</span>
-        <span className="text-[#122134]/85">
-          {partner.city}, {partner.state}
-        </span>
+      <div className="mt-2 text-sm text-[#122134]/85">
+        {partner.city}, {partner.state}
       </div>
 
       <p className="mt-4 flex-1 text-base leading-relaxed text-[#122134]/90">
         {partner.descriptor}
       </p>
+    </button>
+  );
+}
+
+function PartnerModal({
+  partner,
+  onClose,
+}: {
+  partner: Partner;
+  onClose: () => void;
+}) {
+  const isLaunch = partner.pathway === "Launch";
+  const ringColor = isLaunch ? "#ffd956" : "#61dcff";
+  const body = partner.description ?? partner.descriptor;
+  const paragraphs = body.split("\n\n");
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={`partner-modal-title-${partner.id}`}
+      className="fixed inset-0 z-50 flex items-center justify-center px-4 py-8 sm:px-6"
+    >
+      <button
+        type="button"
+        aria-label="Close partner details"
+        onClick={onClose}
+        className="absolute inset-0 h-full w-full cursor-default bg-[#1a311d]/60 backdrop-blur-sm"
+      />
+      <div className="relative z-10 max-h-[85vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-[#fdfffc] p-6 shadow-2xl sm:p-10">
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full text-[#1a311d] transition-colors hover:bg-[#1a311d]/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00cc72]"
+        >
+          <X className="h-5 w-5" strokeWidth={2.5} />
+        </button>
+
+        <div className="flex items-start gap-4">
+          <div
+            className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 bg-[#fdfffc]"
+            style={{ borderColor: ringColor }}
+          >
+            <img
+              src={partner.logo}
+              alt=""
+              className="h-12 w-12 object-contain"
+            />
+          </div>
+          <div className="min-w-0 flex-1 pr-8">
+            <h3
+              id={`partner-modal-title-${partner.id}`}
+              className="font-heading text-2xl font-bold leading-tight text-[#1a311d] sm:text-3xl"
+            >
+              {partner.school}
+            </h3>
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-[#122134]/85">
+              <span>
+                {partner.city}, {partner.state}
+              </span>
+              <span aria-hidden="true">·</span>
+              <span
+                className="rounded-full border border-[#1a311d] px-2.5 py-0.5 text-[10px] font-black uppercase tracking-[0.08em] text-[#1a311d]"
+                style={{ backgroundColor: ringColor }}
+              >
+                {partner.pathway}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-col gap-4 text-base leading-relaxed text-[#122134]/90">
+          {paragraphs.map((para, i) => (
+            <p key={i}>{para}</p>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
