@@ -1818,9 +1818,10 @@ export function ChapterMeetCohort() {
                   >
                     {/* tinted grid wash across the whole card */}
                     <CollageGrid
-                      className="pointer-events-none absolute inset-0 h-full w-full opacity-50"
+                      className="pointer-events-none absolute inset-0 h-full w-full"
                       color={tint}
                       cellSize={14}
+                      opacity={0.95}
                     />
                     {/* one rotating brand-collage accent in a corner */}
                     {accentKind === 0 && (
