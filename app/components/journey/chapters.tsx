@@ -1832,13 +1832,14 @@ function BendingRoad() {
   const ref = useRef<SVGSVGElement>(null);
   const inView = useInView(ref, { amount: 0.4, once: false });
 
-  // Pivot illustration v3 — a hand-drawn protractor with a sweeping
-  // needle. Tells "rotation around a fixed center" without relying on a
-  // road/arrow metaphor.
-  const CX = 150;
-  const CY = 150;
-  const R = 110;
-  const tickAngles = [180, 150, 120, 90, 60, 30, 0];
+  // Pivot illustration v4 — a building block tilting on its corner.
+  // Reads as "the existing thing didn't disappear, it shifted around
+  // a fixed point." Reference outline shows where it started; the bold
+  // block rotates to its new orientation.
+  const PIVOT_X = 70;
+  const PIVOT_Y = 175;
+  const RECT_W = 170;
+  const RECT_H = 110;
 
   return (
     <svg
@@ -1848,123 +1849,140 @@ function BendingRoad() {
       className="h-44 w-full sm:h-56"
       fill="none"
     >
-      {/* protractor arc — slightly imperfect for a hand-drawn feel */}
-      <motion.path
-        d={`M ${CX - R} ${CY} A ${R} ${R} 0 0 1 ${CX + R} ${CY}`}
+      {/* original position — dashed outline, where the block started */}
+      <motion.rect
+        x={PIVOT_X}
+        y={PIVOT_Y - RECT_H}
+        width={RECT_W}
+        height={RECT_H}
+        rx="6"
         stroke="#0c0f14"
-        strokeOpacity="0.35"
+        strokeOpacity="0.3"
         strokeWidth="1.5"
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 0.9, ease: "easeOut" }}
-      />
-
-      {/* baseline */}
-      <motion.line
-        x1={CX - R}
-        y1={CY}
-        x2={CX + R}
-        y2={CY}
-        stroke="#0c0f14"
-        strokeOpacity="0.35"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 0.6, delay: 0.1 }}
-      />
-
-      {/* tick marks around the protractor */}
-      {tickAngles.map((deg, i) => {
-        const rad = ((deg - 180) * Math.PI) / 180;
-        const x1 = CX + Math.cos(rad) * R;
-        const y1 = CY + Math.sin(rad) * R;
-        const x2 = CX + Math.cos(rad) * (R - 10);
-        const y2 = CY + Math.sin(rad) * (R - 10);
-        return (
-          <motion.line
-            key={i}
-            x1={x1}
-            y1={y1}
-            x2={x2}
-            y2={y2}
-            stroke="#0c0f14"
-            strokeOpacity="0.5"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: inView ? 1 : 0 }}
-            transition={{ duration: 0.25, delay: 0.5 + i * 0.05 }}
-          />
-        );
-      })}
-
-      {/* faded reference position (where the school started) */}
-      <motion.line
-        x1={CX}
-        y1={CY}
-        x2={CX + R - 8}
-        y2={CY}
-        stroke="#0c0f14"
-        strokeOpacity="0.25"
-        strokeWidth="2"
-        strokeLinecap="round"
         strokeDasharray="4 5"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 0.5, delay: 0.85 }}
+        fill="none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: inView ? 1 : 0 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
       />
 
-      {/* the sweeping needle — rotates from 0° (horizontal right) to -55° (up-right) */}
-      <motion.g
-        initial={{ rotate: 0 }}
-        animate={{ rotate: inView ? -55 : 0 }}
-        transition={{
-          duration: 1.1,
-          delay: 1.2,
-          type: "spring",
-          stiffness: 60,
-          damping: 14,
-        }}
-        style={{ transformOrigin: `${CX}px ${CY}px` }}
-      >
-        <line
-          x1={CX}
-          y1={CY}
-          x2={CX + R - 8}
-          y2={CY}
-          stroke="#0c0f14"
-          strokeWidth="3.5"
-          strokeLinecap="round"
-        />
-        <polygon
-          points={`${CX + R - 8} ${CY - 8} ${CX + R + 6} ${CY} ${CX + R - 8} ${CY + 8}`}
-          fill="#0c0f14"
-        />
-      </motion.g>
+      {/* small dotted arc tracing the rotation path of the top-right corner */}
+      <motion.path
+        d={`M ${PIVOT_X + RECT_W} ${PIVOT_Y - RECT_H}
+            A ${Math.hypot(RECT_W, RECT_H)} ${Math.hypot(RECT_W, RECT_H)} 0 0 0
+            ${PIVOT_X + RECT_W * Math.cos((-32 * Math.PI) / 180) - (-RECT_H) * Math.sin((-32 * Math.PI) / 180)}
+            ${PIVOT_Y + RECT_W * Math.sin((-32 * Math.PI) / 180) + (-RECT_H) * Math.cos((-32 * Math.PI) / 180)}`}
+        stroke="#0c0f14"
+        strokeOpacity="0.35"
+        strokeWidth="1"
+        strokeLinecap="round"
+        strokeDasharray="2 4"
+        fill="none"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: inView ? 1 : 0 }}
+        transition={{ duration: 0.7, delay: 0.5 }}
+      />
 
-      {/* pivot point — solid dot with halo ring */}
+      {/* the block — rotates around the pivot corner into its new orientation */}
       <motion.g
-        initial={{ scale: 0, opacity: 0 }}
+        initial={{ rotate: 0, opacity: 0 }}
         animate={{
-          scale: inView ? 1 : 0,
+          rotate: inView ? -32 : 0,
           opacity: inView ? 1 : 0,
         }}
-        transition={{ duration: 0.3, delay: 1.0 }}
-        style={{ transformOrigin: `${CX}px ${CY}px` }}
+        transition={{
+          rotate: {
+            duration: 1.1,
+            delay: 0.6,
+            type: "spring",
+            stiffness: 50,
+            damping: 13,
+          },
+          opacity: { duration: 0.3, delay: 0.6 },
+        }}
+        style={{ transformOrigin: `${PIVOT_X}px ${PIVOT_Y}px` }}
+      >
+        <rect
+          x={PIVOT_X}
+          y={PIVOT_Y - RECT_H}
+          width={RECT_W}
+          height={RECT_H}
+          rx="6"
+          fill="#a4beeb"
+          fillOpacity="0.55"
+          stroke="#0c0f14"
+          strokeWidth="2.5"
+        />
+        {/* a couple of small interior marks so the block has texture */}
+        <line
+          x1={PIVOT_X + 16}
+          y1={PIVOT_Y - RECT_H + 22}
+          x2={PIVOT_X + RECT_W - 16}
+          y2={PIVOT_Y - RECT_H + 22}
+          stroke="#0c0f14"
+          strokeOpacity="0.45"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <line
+          x1={PIVOT_X + 16}
+          y1={PIVOT_Y - RECT_H + 38}
+          x2={PIVOT_X + RECT_W - 60}
+          y2={PIVOT_Y - RECT_H + 38}
+          stroke="#0c0f14"
+          strokeOpacity="0.45"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </motion.g>
+
+      {/* pivot point at the corner — solid dot, sits over everything */}
+      <motion.g
+        initial={{ scale: 0 }}
+        animate={{ scale: inView ? 1 : 0 }}
+        transition={{ duration: 0.3, delay: 0.4 }}
+        style={{ transformOrigin: `${PIVOT_X}px ${PIVOT_Y}px` }}
       >
         <circle
-          cx={CX}
-          cy={CY}
-          r="14"
+          cx={PIVOT_X}
+          cy={PIVOT_Y}
+          r="10"
           fill="#fbf9f6"
           stroke="#0c0f14"
+          strokeOpacity="0.5"
           strokeWidth="1"
-          strokeOpacity="0.4"
         />
-        <circle cx={CX} cy={CY} r="7" fill="#0c0f14" />
+        <circle cx={PIVOT_X} cy={PIVOT_Y} r="5" fill="#0c0f14" />
       </motion.g>
+
+      {/* small rotation arrow above the pivot, hinting "this swung" */}
+      <motion.path
+        d={`M ${PIVOT_X + 24} ${PIVOT_Y - 6}
+            A 22 22 0 0 0 ${PIVOT_X + 6} ${PIVOT_Y - 24}`}
+        stroke="#0c0f14"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{
+          pathLength: inView ? 1 : 0,
+          opacity: inView ? 1 : 0,
+        }}
+        transition={{ duration: 0.5, delay: 1.4 }}
+      />
+      <motion.polygon
+        points={`${PIVOT_X + 1} ${PIVOT_Y - 22} ${PIVOT_X + 6} ${PIVOT_Y - 30} ${PIVOT_X + 12} ${PIVOT_Y - 22}`}
+        fill="#0c0f14"
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={{
+          opacity: inView ? 1 : 0,
+          scale: inView ? 1 : 0.6,
+        }}
+        transition={{ duration: 0.2, delay: 1.85 }}
+        style={{
+          transformOrigin: `${PIVOT_X + 6}px ${PIVOT_Y - 26}px`,
+        }}
+      />
     </svg>
   );
 }
