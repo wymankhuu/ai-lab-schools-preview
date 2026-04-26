@@ -169,7 +169,7 @@ export function ChapterTheBet() {
       accent="#356fe5"
       minHeight="100vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-24 sm:px-12">
+      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12">
         <div className="relative mx-auto w-full max-w-5xl">
           <CutOut
             className="absolute right-0 top-0 -z-0 h-24 w-24 rounded-full sm:h-32 sm:w-32"
@@ -227,10 +227,19 @@ export function ChapterTheBet() {
 }
 
 /* ---------------- 03 — Chatbot era ---------------- */
-function CountUp({ to, duration = 1.4 }: { to: number; duration?: number }) {
+function CountUp({
+  to,
+  duration = 1.4,
+  format,
+}: {
+  to: number;
+  duration?: number;
+  format?: (v: number) => string;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { amount: 0.5 });
   const [value, setValue] = useState(0);
+  const isInt = Number.isInteger(to);
 
   useEffect(() => {
     if (!inView) return;
@@ -239,14 +248,21 @@ function CountUp({ to, duration = 1.4 }: { to: number; duration?: number }) {
     const tick = (now: number) => {
       const t = Math.min(1, (now - start) / (duration * 1000));
       const eased = 1 - Math.pow(1 - t, 3);
-      setValue(Math.round(to * eased));
+      const next = to * eased;
+      setValue(isInt ? Math.round(next) : Math.round(next * 10) / 10);
       if (t < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [inView, to, duration]);
+  }, [inView, to, duration, isInt]);
 
-  return <span ref={ref}>{value.toLocaleString()}</span>;
+  const display = format
+    ? format(value)
+    : isInt
+      ? value.toLocaleString()
+      : value.toFixed(1);
+
+  return <span ref={ref}>{display}</span>;
 }
 
 function StatTile({
@@ -303,7 +319,7 @@ export function ChapterChatbotEra() {
       accent="#ed6e2d"
       minHeight="115vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-24 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
         <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
@@ -326,7 +342,8 @@ export function ChapterChatbotEra() {
               <StatTile
                 number={
                   <>
-                    7.3<span className="text-accent-orange">M</span>
+                    <CountUp to={7.3} />
+                    <span className="text-accent-orange">M</span>
                   </>
                 }
                 label="Students reached"
@@ -334,7 +351,7 @@ export function ChapterChatbotEra() {
                 delay={0.05}
               />
               <StatTile
-                number="104"
+                number={<CountUp to={104} />}
                 label="School systems"
                 accent="#356fe5"
                 delay={0.15}
@@ -342,7 +359,8 @@ export function ChapterChatbotEra() {
               <StatTile
                 number={
                   <>
-                    14,100<span className="text-accent-forest">+</span>
+                    <CountUp to={14100} />
+                    <span className="text-accent-forest">+</span>
                   </>
                 }
                 label="Students built AI apps"
@@ -352,7 +370,9 @@ export function ChapterChatbotEra() {
               <StatTile
                 number={
                   <>
-                    88 <span className="text-brand-ink/40">/</span> 94
+                    <CountUp to={88} />{" "}
+                    <span className="text-brand-ink/40">/</span>{" "}
+                    <CountUp to={94} />
                   </>
                 }
                 label="NPS · educators / partners"
@@ -652,7 +672,7 @@ export function ChapterMandate() {
       accent="#398239"
       minHeight="110vh"
     >
-      <div className="relative flex min-h-screen items-center px-6 py-24 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="relative flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
         <DotGrid
           className="pointer-events-none absolute left-6 top-20 hidden h-24 w-32 opacity-70 sm:block md:left-20"
           color="#398239"
@@ -771,117 +791,13 @@ export function ChapterWhyCohort() {
 }
 
 /* ---------------- 07 — Meet the cohort ---------------- */
-function CohortGrid() {
-  return (
-    <div
-      id="all-cohort"
-      className="relative bg-brand-cream/50 px-6 py-20 sm:px-12 md:pl-20 md:pr-12 lg:pl-24"
-    >
-      <div className="mx-auto w-full max-w-6xl">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
-              All cohort schools / one frame
-            </p>
-            <h3 className="mt-2 font-display text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight text-brand-ink">
-              Every team, side by side.
-            </h3>
-          </div>
-          <div className="flex gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/65">
-            <span className="inline-flex items-center gap-2">
-              <span
-                aria-hidden="true"
-                className="h-2.5 w-2.5 rounded-full border border-brand-ink"
-                style={{ backgroundColor: "#feffa0" }}
-              />
-              Launch
-            </span>
-            <span className="inline-flex items-center gap-2">
-              <span
-                aria-hidden="true"
-                className="h-2.5 w-2.5 rounded-full border border-brand-ink"
-                style={{ backgroundColor: "#a4beeb" }}
-              />
-              Pivot
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {cohortPartners.map((p, i) => (
-            <motion.div
-              key={p.id}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ delay: 0.03 * i, duration: 0.4 }}
-              className="flex h-full flex-col rounded-2xl border border-brand-ink/10 bg-brand-bg p-4"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div
-                  className="h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 bg-brand-bg"
-                  style={{
-                    borderColor: p.pathway === "Launch" ? "#feffa0" : "#a4beeb",
-                  }}
-                >
-                  <img
-                    src={p.logo}
-                    alt=""
-                    className="h-full w-full object-contain"
-                  />
-                </div>
-                <span
-                  className="rounded-full border border-brand-ink px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.15em] text-brand-ink"
-                  style={{
-                    backgroundColor:
-                      p.pathway === "Launch" ? "#feffa0" : "#a4beeb",
-                  }}
-                >
-                  {p.pathway}
-                </span>
-              </div>
-              <h4 className="mt-3 font-display text-base leading-tight text-brand-ink">
-                {p.school}
-              </h4>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-brand-ink/55">
-                {p.city}, {p.state}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export function ChapterMeetCohort() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end end"],
-  });
-  const total = cohortPartners.length;
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  useEffect(() => {
-    const unsub = scrollYProgress.on("change", (v) => {
-      const idx = Math.min(total - 1, Math.max(0, Math.floor(v * total)));
-      setActiveIndex(idx);
-    });
-    return () => unsub();
-  }, [scrollYProgress, total]);
-
-  const litCount = activeIndex + 1;
-  const active = cohortPartners[activeIndex];
-
   return (
     <section
-      ref={ref}
       className="relative w-full"
-      style={{ minHeight: `${Math.max(140, total * 14)}vh` }}
       aria-label="Meet the cohort"
     >
-      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10">
+      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
         <span className="font-mono text-[11px] tracking-[0.2em] text-brand-ink/55">
           [07]
         </span>
@@ -890,291 +806,295 @@ export function ChapterMeetCohort() {
         </span>
       </div>
 
-      <div className="sticky top-0 flex h-screen items-center px-6 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
-        <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-6 lg:grid-cols-12">
-          <div className="order-2 lg:order-1 lg:col-span-7">
-            <JourneyMap litCount={litCount} highlightId={active?.id ?? null} />
+      {/* Hero: full map with every pin lit */}
+      <div className="px-6 pt-24 pb-10 sm:px-12 sm:pt-28 md:pl-20 md:pr-12 lg:pl-24">
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
+                Cohort 1 / 13 schools
+              </p>
+              <h2 className="mt-2 font-display text-[clamp(2.5rem,5vw,4.25rem)] leading-tight text-brand-ink">
+                Meet the cohort.
+              </h2>
+            </div>
+            <div className="flex gap-4 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/65">
+              <span className="inline-flex items-center gap-2">
+                <span
+                  aria-hidden="true"
+                  className="h-2.5 w-2.5 rounded-full border border-brand-ink"
+                  style={{ backgroundColor: "#feffa0" }}
+                />
+                Launch
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span
+                  aria-hidden="true"
+                  className="h-2.5 w-2.5 rounded-full border border-brand-ink"
+                  style={{ backgroundColor: "#a4beeb" }}
+                />
+                Pivot
+              </span>
+            </div>
           </div>
 
-          <div className="order-1 lg:order-2 lg:col-span-5">
-            <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
-              Cohort 1 / {String(total).padStart(2, "0")} schools
-            </p>
-            <div className="mt-4 min-h-[260px]">
-              <AnimatePresence mode="wait">
-                {active && (
-                  <motion.div
-                    key={active.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -6 }}
-                    transition={{ duration: 0.3 }}
+          <div className="mt-8">
+            <JourneyMap litCount={cohortPartners.length} />
+          </div>
+        </div>
+      </div>
+
+      {/* Windy-road school cards: alternate sides */}
+      <div className="px-6 py-12 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+        <div className="mx-auto w-full max-w-5xl">
+          <ul className="space-y-6">
+            {cohortPartners.map((p, i) => {
+              const accent = p.pathway === "Launch" ? "#feffa0" : "#a4beeb";
+              const isLeft = i % 2 === 0;
+              return (
+                <motion.li
+                  key={p.id}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.4 }}
+                  transition={{ duration: 0.45 }}
+                  className={`flex ${isLeft ? "justify-start" : "justify-end"}`}
+                >
+                  <article
+                    className={`flex w-full max-w-2xl items-start gap-5 rounded-2xl border border-brand-ink/10 bg-brand-bg p-6 sm:p-7 ${
+                      isLeft ? "" : "text-right"
+                    }`}
                   >
-                    <div className="flex items-center gap-3">
+                    <div
+                      className={`flex flex-col gap-2 ${isLeft ? "" : "order-2 items-end"}`}
+                    >
                       <div
                         className="h-12 w-12 shrink-0 overflow-hidden rounded-full border-2 bg-brand-bg"
-                        style={{
-                          borderColor:
-                            active.pathway === "Launch"
-                              ? "#feffa0"
-                              : "#a4beeb",
-                        }}
+                        style={{ borderColor: accent }}
                       >
                         <img
-                          src={active.logo}
+                          src={p.logo}
                           alt=""
                           className="h-full w-full object-contain"
                         />
                       </div>
                       <span
                         className="rounded-full border border-brand-ink px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.15em] text-brand-ink"
-                        style={{
-                          backgroundColor:
-                            active.pathway === "Launch"
-                              ? "#feffa0"
-                              : "#a4beeb",
-                        }}
+                        style={{ backgroundColor: accent }}
                       >
-                        {active.pathway}
+                        {p.pathway}
                       </span>
                     </div>
-                    <h3 className="mt-4 font-display text-3xl leading-tight text-brand-ink sm:text-4xl">
-                      {active.school}
-                    </h3>
-                    <p className="mt-2 font-mono text-xs uppercase tracking-[0.18em] text-brand-ink/55">
-                      {active.city}, {active.state}
-                    </p>
-                    <p className="mt-4 text-base leading-relaxed text-brand-ink/80">
-                      {active.descriptor}
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <div className="mt-6 flex gap-1.5">
-              {cohortPartners.map((p, i) => (
-                <span
-                  key={p.id}
-                  className="h-1 flex-1 rounded-full transition-colors"
-                  style={{
-                    backgroundColor:
-                      i <= activeIndex ? "#0c0f14" : "rgba(12,15,20,0.12)",
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+                    <div className={`flex-1 ${isLeft ? "" : "order-1"}`}>
+                      <h3 className="font-display text-2xl leading-tight text-brand-ink sm:text-[1.75rem]">
+                        {p.school}
+                      </h3>
+                      <p className="mt-1 font-mono text-[11px] uppercase tracking-[0.18em] text-brand-ink/55">
+                        {p.city}, {p.state}
+                      </p>
+                      <p className="mt-3 text-base leading-relaxed text-brand-ink/80">
+                        {p.descriptor}
+                      </p>
+                    </div>
+                  </article>
+                </motion.li>
+              );
+            })}
+          </ul>
         </div>
       </div>
-
-      <CohortGrid />
     </section>
   );
 }
 
 /* ---------------- 08 — Two pathways ---------------- */
-function LaunchMotif() {
+function RisingBars() {
   const ref = useRef<SVGSVGElement>(null);
-  const inView = useInView(ref, { amount: 0.6, once: false });
+  const inView = useInView(ref, { amount: 0.4, once: false });
+  // five bars of increasing height (from short to tall)
+  const bars = [
+    { x: 0, h: 60 },
+    { x: 50, h: 110 },
+    { x: 100, h: 80 },
+    { x: 150, h: 160 },
+    { x: 200, h: 200 },
+  ];
   return (
     <svg
       ref={ref}
       aria-hidden="true"
-      viewBox="0 0 80 140"
-      className="h-24 w-12"
+      viewBox="0 0 240 220"
+      className="h-44 w-full sm:h-56"
       fill="none"
     >
-      {/* trail line */}
-      <motion.line
-        x1="40"
-        y1="135"
-        x2="40"
-        y2="55"
+      {/* baseline */}
+      <line
+        x1="0"
+        y1="210"
+        x2="240"
+        y2="210"
         stroke="#0c0f14"
         strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeDasharray="3 4"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 0.9, delay: 0.1 }}
       />
-      {/* three stacked chevrons */}
-      {[
-        { y: 30, scale: 1, delay: 0.95 },
-        { y: 55, scale: 0.85, delay: 0.75 },
-        { y: 80, scale: 0.7, delay: 0.55 },
-      ].map((c, i) => (
-        <motion.path
+      {bars.map((b, i) => (
+        <motion.rect
           key={i}
-          d={`M ${40 - 14 * c.scale} ${c.y + 12 * c.scale} L 40 ${c.y - 4 * c.scale} L ${40 + 14 * c.scale} ${c.y + 12 * c.scale}`}
-          stroke="#0c0f14"
-          strokeWidth="2.25"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          initial={{ opacity: 0, y: 10 }}
+          x={b.x}
+          width={36}
+          fill="#0c0f14"
+          initial={{ y: 210, height: 0 }}
           animate={{
-            opacity: inView ? 1 : 0,
-            y: inView ? 0 : 10,
+            y: inView ? 210 - b.h : 210,
+            height: inView ? b.h : 0,
           }}
-          transition={{ duration: 0.4, delay: c.delay }}
+          transition={{ duration: 0.65, delay: 0.1 * i, ease: "easeOut" }}
         />
       ))}
     </svg>
   );
 }
 
-function PivotMotif() {
+function BendingRoad() {
   const ref = useRef<SVGSVGElement>(null);
-  const inView = useInView(ref, { amount: 0.6, once: false });
+  const inView = useInView(ref, { amount: 0.4, once: false });
   return (
     <svg
       ref={ref}
       aria-hidden="true"
-      viewBox="0 0 140 100"
-      className="h-20 w-28"
+      viewBox="0 0 280 220"
+      className="h-44 w-full sm:h-56"
       fill="none"
     >
-      {/* original direction (faded, dashed) */}
+      {/* faded original course */}
       <motion.line
         x1="10"
-        y1="80"
-        x2="80"
-        y2="80"
+        y1="180"
+        x2="270"
+        y2="180"
         stroke="#0c0f14"
-        strokeWidth="1.25"
-        strokeOpacity="0.35"
-        strokeDasharray="3 4"
-        strokeLinecap="round"
+        strokeOpacity="0.25"
+        strokeWidth="1.5"
+        strokeDasharray="4 6"
         initial={{ pathLength: 0 }}
         animate={{ pathLength: inView ? 1 : 0 }}
         transition={{ duration: 0.5 }}
       />
-      {/* pivot point */}
-      <motion.circle
-        cx="80"
-        cy="80"
-        r="3.5"
-        fill="#0c0f14"
-        initial={{ scale: 0 }}
-        animate={{ scale: inView ? 1 : 0 }}
-        transition={{ duration: 0.3, delay: 0.45 }}
-      />
-      {/* curved redirect arc */}
+      {/* the new heading */}
       <motion.path
-        d="M 80 80 Q 110 80 115 50 T 130 15"
+        d="M 10 180 Q 130 180 150 130 T 230 30"
         stroke="#0c0f14"
-        strokeWidth="2"
+        strokeWidth="3"
         strokeLinecap="round"
         initial={{ pathLength: 0 }}
         animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 0.85, delay: 0.55 }}
+        transition={{ duration: 1.1, delay: 0.4 }}
+      />
+      {/* pivot point */}
+      <motion.circle
+        cx="150"
+        cy="130"
+        r="6"
+        fill="#0c0f14"
+        initial={{ scale: 0 }}
+        animate={{ scale: inView ? 1 : 0 }}
+        transition={{ duration: 0.3, delay: 0.85 }}
       />
       {/* arrowhead */}
       <motion.path
-        d="M 124 21 L 130 13 L 132 23"
+        d="M 220 38 L 232 28 L 234 44"
         stroke="#0c0f14"
-        strokeWidth="2"
+        strokeWidth="3"
         strokeLinecap="round"
         strokeLinejoin="round"
-        initial={{ opacity: 0, scale: 0.7 }}
-        animate={{
-          opacity: inView ? 1 : 0,
-          scale: inView ? 1 : 0.7,
-        }}
-        transition={{ duration: 0.3, delay: 1.3 }}
-        style={{ transformOrigin: "130px 17px" }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: inView ? 1 : 0 }}
+        transition={{ duration: 0.3, delay: 1.4 }}
       />
     </svg>
   );
 }
 
 export function ChapterTwoPathways() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  // launch card lifts up; pivot card swivels into place
-  const launchY = useTransform(scrollYProgress, [0.1, 0.55], ["20%", "0%"]);
-  const launchOpacity = useTransform(scrollYProgress, [0.1, 0.4], [0.4, 1]);
-  const pivotRotate = useTransform(scrollYProgress, [0.1, 0.55], [-6, 0]);
-  const pivotOpacity = useTransform(scrollYProgress, [0.1, 0.4], [0.4, 1]);
-  const titleOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.15, 0.85, 1],
-    [0, 1, 1, 0],
-  );
-
   return (
-    <ChapterFrame
-      number="08"
-      eyebrow="Two pathways"
-      accent="#283f88"
-      minHeight="130vh"
+    <section
+      className="relative w-full"
+      aria-label="Two pathways, one cohort"
     >
-      <div ref={ref} className="absolute inset-0">
-        <div className="sticky top-0 flex h-screen flex-col justify-center px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
-          <motion.div
-            style={{ opacity: titleOpacity }}
-            className="mx-auto w-full max-w-6xl"
-          >
-            <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
-              Two pathways, one cohort
-            </p>
-            <h2 className="mt-3 max-w-3xl font-display text-[clamp(2.25rem,5vw,4rem)] leading-tight text-brand-ink">
-              Launch from scratch. Or pivot what already exists.
-            </h2>
+      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
+        <span className="font-mono text-[11px] tracking-[0.2em] text-brand-ink/55">
+          [08]
+        </span>
+        <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-accent-navy">
+          Two pathways
+        </span>
+      </div>
 
-            <div className="relative mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-              <motion.div
-                style={{ y: launchY, opacity: launchOpacity }}
-                className="relative overflow-hidden rounded-3xl bg-accent-yellow p-7 sm:p-9"
-              >
-                <div className="absolute right-6 top-5 sm:right-8 sm:top-7">
-                  <LaunchMotif />
-                </div>
-                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink">
-                  The new start
-                </span>
-                <h3 className="mt-3 font-display text-3xl text-brand-ink">
-                  Launch
-                </h3>
-                <p className="mt-3 max-w-md text-base leading-relaxed text-brand-ink/85">
-                  Founders building schools from the ground up. Every system
-                  designed for the AI age from day one.
-                </p>
-              </motion.div>
-              <motion.div
-                style={{ rotate: pivotRotate, opacity: pivotOpacity }}
-                className="relative overflow-hidden rounded-3xl bg-accent-blue p-7 sm:p-9"
-              >
-                <div className="absolute right-5 top-5 sm:right-7 sm:top-7">
-                  <PivotMotif />
-                </div>
-                <DotGrid
-                  className="absolute -bottom-3 -left-3 h-10 w-24 opacity-70"
-                  color="#0c0f14"
-                  cols={9}
-                  rows={4}
-                  gap={12}
-                />
-                <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink">
-                  The pivot
-                </span>
-                <h3 className="mt-3 font-display text-3xl text-brand-ink">
-                  Pivot
-                </h3>
-                <p className="mt-3 max-w-md text-base leading-relaxed text-brand-ink/85">
-                  Leaders of existing schools rearchitecting time, space, and
-                  staffing for the students they already serve.
-                </p>
-              </motion.div>
-            </div>
+      {/* Intro */}
+      <div className="px-6 pt-24 pb-6 sm:px-12 sm:pt-28 md:pl-20 md:pr-12 lg:pl-24">
+        <div className="mx-auto w-full max-w-5xl">
+          <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
+            Two pathways, one cohort
+          </p>
+          <h2 className="mt-3 max-w-3xl font-display text-[clamp(2.25rem,5vw,4rem)] leading-tight text-brand-ink">
+            Launch from scratch. Or pivot what already exists.
+          </h2>
+        </div>
+      </div>
+
+      {/* Launch panel */}
+      <div className="bg-accent-yellow/55 px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-12 lg:pl-24">
+        <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-10 lg:grid-cols-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.4 }}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-7"
+          >
+            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink">
+              Pathway 01 / The new start
+            </p>
+            <h3 className="mt-3 font-display text-[clamp(2.5rem,6vw,4.75rem)] leading-[0.95] text-brand-ink">
+              Launch.
+            </h3>
+            <p className="mt-5 max-w-md text-lg leading-relaxed text-brand-ink/85">
+              Founders building schools from the ground up. Every system
+              designed for the AI age from day one.
+            </p>
+          </motion.div>
+          <div className="lg:col-span-5">
+            <RisingBars />
+          </div>
+        </div>
+      </div>
+
+      {/* Pivot panel */}
+      <div className="bg-accent-blue/55 px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-12 lg:pl-24">
+        <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-10 lg:grid-cols-12">
+          <div className="order-2 lg:order-1 lg:col-span-5">
+            <BendingRoad />
+          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false, amount: 0.4 }}
+            transition={{ duration: 0.5 }}
+            className="order-1 lg:order-2 lg:col-span-7 lg:text-right"
+          >
+            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink">
+              Pathway 02 / The pivot
+            </p>
+            <h3 className="mt-3 font-display text-[clamp(2.5rem,6vw,4.75rem)] leading-[0.95] text-brand-ink">
+              Pivot.
+            </h3>
+            <p className="ml-auto mt-5 max-w-md text-lg leading-relaxed text-brand-ink/85">
+              Leaders of existing schools rearchitecting time, space, and
+              staffing for the students they already serve.
+            </p>
           </motion.div>
         </div>
       </div>
-    </ChapterFrame>
+    </section>
   );
 }
 
@@ -1210,10 +1130,10 @@ export function ChapterRhythm() {
     <section
       ref={ref}
       className="relative w-full"
-      style={{ minHeight: `${milestones.length * 38}vh` }}
+      style={{ minHeight: `${milestones.length * 28}vh` }}
       aria-label="The 24-month rhythm"
     >
-      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10">
+      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
         <span className="font-mono text-[11px] tracking-[0.2em] text-brand-ink/55">
           [09]
         </span>
@@ -1290,7 +1210,7 @@ export function ChapterPillars() {
       accent="#0c0f14"
       minHeight="110vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-24 sm:px-12">
+      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12">
         <div className="mx-auto w-full max-w-6xl">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             Three pillars
@@ -1366,7 +1286,7 @@ export function ChapterPlaybook() {
       accent="#398239"
       minHeight="100vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-24 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
         <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
