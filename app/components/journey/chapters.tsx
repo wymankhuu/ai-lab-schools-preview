@@ -1783,12 +1783,6 @@ export function ChapterMeetCohort() {
             </div>
           </div>
 
-          {/* yellow scallop arch row as a transition into the cards section */}
-          <CollageArchRow
-            className="mt-6 block h-7 w-full"
-            color="#feffa0"
-            count={16}
-          />
         </div>
       </div>
 
