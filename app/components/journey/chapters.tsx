@@ -1832,135 +1832,26 @@ function BendingRoad() {
   const ref = useRef<SVGSVGElement>(null);
   const inView = useInView(ref, { amount: 0.4, once: false });
 
-  // Pivot illustration v4 — a building block tilting on its corner.
-  // Reads as "the existing thing didn't disappear, it shifted around
-  // a fixed point." Reference outline shows where it started; the bold
-  // block rotates to its new orientation.
-  const PIVOT_X = 70;
-  const PIVOT_Y = 175;
-  const RECT_W = 170;
-  const RECT_H = 110;
-
+  // Pivot illustration v5 — abstract collage: a sketched "before"
+  // pebble in the lower-left rotates and reshapes into a bolder "after"
+  // pebble in the upper-right, joined by a hand-drawn arc with a small
+  // pivot dot at the inflection. Sits comfortably inside its viewBox
+  // with margin on every side, so nothing clips when scaled.
   return (
     <svg
       ref={ref}
       aria-hidden="true"
-      viewBox="0 0 300 200"
+      viewBox="0 0 280 180"
       className="h-44 w-full sm:h-56"
       fill="none"
     >
-      {/* original position — dashed outline, where the block started */}
-      <motion.rect
-        x={PIVOT_X}
-        y={PIVOT_Y - RECT_H}
-        width={RECT_W}
-        height={RECT_H}
-        rx="6"
+      {/* before pebble — sketched, dashed, faded */}
+      <motion.path
+        d="M 40 130 C 22 110, 38 80, 70 78 C 102 76, 118 100, 108 122 C 98 144, 58 150, 40 130 Z"
         stroke="#0c0f14"
         strokeOpacity="0.3"
         strokeWidth="1.5"
         strokeDasharray="4 5"
-        fill="none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: inView ? 1 : 0 }}
-        transition={{ duration: 0.5, delay: 0.1 }}
-      />
-
-      {/* small dotted arc tracing the rotation path of the top-right corner */}
-      <motion.path
-        d={`M ${PIVOT_X + RECT_W} ${PIVOT_Y - RECT_H}
-            A ${Math.hypot(RECT_W, RECT_H)} ${Math.hypot(RECT_W, RECT_H)} 0 0 0
-            ${PIVOT_X + RECT_W * Math.cos((-32 * Math.PI) / 180) - (-RECT_H) * Math.sin((-32 * Math.PI) / 180)}
-            ${PIVOT_Y + RECT_W * Math.sin((-32 * Math.PI) / 180) + (-RECT_H) * Math.cos((-32 * Math.PI) / 180)}`}
-        stroke="#0c0f14"
-        strokeOpacity="0.35"
-        strokeWidth="1"
-        strokeLinecap="round"
-        strokeDasharray="2 4"
-        fill="none"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 0.7, delay: 0.5 }}
-      />
-
-      {/* the block — rotates around the pivot corner into its new orientation */}
-      <motion.g
-        initial={{ rotate: 0, opacity: 0 }}
-        animate={{
-          rotate: inView ? -32 : 0,
-          opacity: inView ? 1 : 0,
-        }}
-        transition={{
-          rotate: {
-            duration: 1.1,
-            delay: 0.6,
-            type: "spring",
-            stiffness: 50,
-            damping: 13,
-          },
-          opacity: { duration: 0.3, delay: 0.6 },
-        }}
-        style={{ transformOrigin: `${PIVOT_X}px ${PIVOT_Y}px` }}
-      >
-        <rect
-          x={PIVOT_X}
-          y={PIVOT_Y - RECT_H}
-          width={RECT_W}
-          height={RECT_H}
-          rx="6"
-          fill="#a4beeb"
-          fillOpacity="0.55"
-          stroke="#0c0f14"
-          strokeWidth="2.5"
-        />
-        {/* a couple of small interior marks so the block has texture */}
-        <line
-          x1={PIVOT_X + 16}
-          y1={PIVOT_Y - RECT_H + 22}
-          x2={PIVOT_X + RECT_W - 16}
-          y2={PIVOT_Y - RECT_H + 22}
-          stroke="#0c0f14"
-          strokeOpacity="0.45"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-        <line
-          x1={PIVOT_X + 16}
-          y1={PIVOT_Y - RECT_H + 38}
-          x2={PIVOT_X + RECT_W - 60}
-          y2={PIVOT_Y - RECT_H + 38}
-          stroke="#0c0f14"
-          strokeOpacity="0.45"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-        />
-      </motion.g>
-
-      {/* pivot point at the corner — solid dot, sits over everything */}
-      <motion.g
-        initial={{ scale: 0 }}
-        animate={{ scale: inView ? 1 : 0 }}
-        transition={{ duration: 0.3, delay: 0.4 }}
-        style={{ transformOrigin: `${PIVOT_X}px ${PIVOT_Y}px` }}
-      >
-        <circle
-          cx={PIVOT_X}
-          cy={PIVOT_Y}
-          r="10"
-          fill="#fbf9f6"
-          stroke="#0c0f14"
-          strokeOpacity="0.5"
-          strokeWidth="1"
-        />
-        <circle cx={PIVOT_X} cy={PIVOT_Y} r="5" fill="#0c0f14" />
-      </motion.g>
-
-      {/* small rotation arrow above the pivot, hinting "this swung" */}
-      <motion.path
-        d={`M ${PIVOT_X + 24} ${PIVOT_Y - 6}
-            A 22 22 0 0 0 ${PIVOT_X + 6} ${PIVOT_Y - 24}`}
-        stroke="#0c0f14"
-        strokeWidth="1.75"
         strokeLinecap="round"
         fill="none"
         initial={{ pathLength: 0, opacity: 0 }}
@@ -1968,21 +1859,82 @@ function BendingRoad() {
           pathLength: inView ? 1 : 0,
           opacity: inView ? 1 : 0,
         }}
-        transition={{ duration: 0.5, delay: 1.4 }}
+        transition={{ duration: 0.9 }}
       />
+
+      {/* hand-drawn rotation arc connecting the two pebbles */}
+      <motion.path
+        d="M 100 92 C 130 50, 170 40, 198 60"
+        stroke="#0c0f14"
+        strokeWidth="2"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: inView ? 1 : 0 }}
+        transition={{ duration: 0.9, delay: 0.5, ease: "easeInOut" }}
+      />
+
+      {/* small arrowhead at the end of the connector */}
       <motion.polygon
-        points={`${PIVOT_X + 1} ${PIVOT_Y - 22} ${PIVOT_X + 6} ${PIVOT_Y - 30} ${PIVOT_X + 12} ${PIVOT_Y - 22}`}
+        points="190 52 202 60 192 70"
         fill="#0c0f14"
-        initial={{ opacity: 0, scale: 0.6 }}
+        initial={{ opacity: 0, scale: 0.5 }}
         animate={{
           opacity: inView ? 1 : 0,
-          scale: inView ? 1 : 0.6,
+          scale: inView ? 1 : 0.5,
         }}
-        transition={{ duration: 0.2, delay: 1.85 }}
-        style={{
-          transformOrigin: `${PIVOT_X + 6}px ${PIVOT_Y - 26}px`,
-        }}
+        transition={{ duration: 0.25, delay: 1.2 }}
+        style={{ transformOrigin: "196px 60px" }}
       />
+
+      {/* pivot dot at the arc's inflection */}
+      <motion.circle
+        cx="148"
+        cy="48"
+        r="4.5"
+        fill="#0c0f14"
+        initial={{ scale: 0 }}
+        animate={{ scale: inView ? 1 : 0 }}
+        transition={{ duration: 0.3, delay: 0.85 }}
+      />
+
+      {/* after pebble — bold, filled, slightly different shape (it changed) */}
+      <motion.g
+        initial={{ opacity: 0, y: 12, rotate: -10 }}
+        animate={{
+          opacity: inView ? 1 : 0,
+          y: inView ? 0 : 12,
+          rotate: inView ? 0 : -10,
+        }}
+        transition={{
+          duration: 0.7,
+          delay: 1.0,
+          ease: "easeOut",
+        }}
+        style={{ transformOrigin: "232px 92px" }}
+      >
+        <path
+          d="M 188 70 C 174 50, 200 26, 232 28 C 268 30, 282 64, 268 92 C 252 122, 200 122, 188 100 C 180 86, 192 80, 188 70 Z"
+          fill="#a4beeb"
+          fillOpacity="0.7"
+          stroke="#0c0f14"
+          strokeWidth="2.5"
+          strokeLinejoin="round"
+        />
+        {/* small accent inside — the new core */}
+        <circle cx="232" cy="72" r="6" fill="#ed6e2d" />
+      </motion.g>
+
+      {/* a few small floating ticks to feel collage-y */}
+      <motion.g
+        initial={{ opacity: 0 }}
+        animate={{ opacity: inView ? 1 : 0 }}
+        transition={{ duration: 0.4, delay: 1.4 }}
+      >
+        <circle cx="28" cy="50" r="2" fill="#0c0f14" opacity="0.4" />
+        <circle cx="46" cy="38" r="2" fill="#0c0f14" opacity="0.5" />
+        <circle cx="262" cy="148" r="2" fill="#0c0f14" opacity="0.45" />
+      </motion.g>
     </svg>
   );
 }
