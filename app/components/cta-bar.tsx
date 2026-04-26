@@ -1,8 +1,8 @@
 export function CTABar() {
   return (
-    <div className="bg-[#e1e7d9] pb-4 sm:pb-6 lg:pb-8">
+    <div className="bg-[#e1e7d9] pb-8 sm:pb-12 lg:pb-16">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap items-center justify-center gap-3 rounded-3xl bg-[#fdfffc] px-6 py-4 sm:px-8 sm:py-5 lg:justify-between">
+        <div className="flex flex-wrap items-center justify-center gap-4 rounded-3xl bg-[#fdfffc] px-8 py-5 sm:px-10 lg:justify-between">
           {/* Left group - informational links */}
           <div className="flex flex-wrap justify-center gap-4 lg:justify-start">
             {/* Meet the Cohort - Primary Yellow Button (jumps to cohort section) */}

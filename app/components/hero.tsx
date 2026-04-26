@@ -36,7 +36,7 @@ export function Hero() {
           {/* Green Card - Meet the Cohort (2/5 width on desktop) */}
           <div className="relative min-h-[287px] overflow-hidden rounded-3xl bg-[#00cc72] p-8 sm:p-12 lg:col-span-2">
             <GreenShapes />
-            <p className="relative font-heading text-3xl font-bold leading-snug text-[#122134] sm:text-4xl">
+            <p className="relative font-heading text-3xl font-medium leading-snug text-[#122134] sm:text-4xl">
               Meet the Inaugural Cohort
             </p>
           </div>
