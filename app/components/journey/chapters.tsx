@@ -231,6 +231,164 @@ function StripedTile({
   );
 }
 
+// Isometric grid trapezoid — the perspective grid in the brand image
+function GridTrapezoid({
+  className,
+  color = "#0c0f14",
+}: {
+  className?: string;
+  color?: string;
+}) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 120 60"
+      className={className}
+      fill="none"
+    >
+      {/* outer trapezoid */}
+      <path
+        d="M 6 6 L 114 6 L 100 54 L 20 54 Z"
+        stroke={color}
+        strokeOpacity="0.55"
+        strokeWidth="1"
+      />
+      {/* horizontal grid lines */}
+      {[18, 30, 42].map((y, i) => {
+        const t = (y - 6) / 48;
+        const x1 = 6 + 14 * t;
+        const x2 = 114 - 14 * t;
+        return (
+          <line
+            key={`h-${i}`}
+            x1={x1}
+            y1={y}
+            x2={x2}
+            y2={y}
+            stroke={color}
+            strokeOpacity="0.35"
+            strokeWidth="0.75"
+          />
+        );
+      })}
+      {/* vertical perspective lines */}
+      {[0.2, 0.4, 0.6, 0.8].map((t, i) => {
+        const xTop = 6 + 108 * t;
+        const xBot = 20 + 80 * t;
+        return (
+          <line
+            key={`v-${i}`}
+            x1={xTop}
+            y1={6}
+            x2={xBot}
+            y2={54}
+            stroke={color}
+            strokeOpacity="0.35"
+            strokeWidth="0.75"
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+// Wavy horizon band — the grass / terrain edge in the brand image
+function WavyHorizon({
+  className,
+  color = "#398239",
+  amp = 8,
+  segments = 6,
+}: {
+  className?: string;
+  color?: string;
+  amp?: number;
+  segments?: number;
+}) {
+  const w = 600;
+  const h = 60;
+  const segLen = w / segments;
+  let d = `M 0 ${amp + 4}`;
+  for (let i = 0; i < segments; i++) {
+    const cx = i * segLen + segLen / 2;
+    const cy = i % 2 === 0 ? 0 : amp * 2 + 4;
+    d += ` Q ${cx} ${cy} ${(i + 1) * segLen} ${amp + 4}`;
+  }
+  d += ` L ${w} ${h} L 0 ${h} Z`;
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox={`0 0 ${w} ${h}`}
+      className={className}
+      preserveAspectRatio="none"
+      fill={color}
+    >
+      <path d={d} />
+    </svg>
+  );
+}
+
+// Geometric burst — the black starburst with white outline in the brand image
+function Burst({
+  className,
+  color = "#0c0f14",
+  outline = "#fbf9f6",
+  points = 9,
+}: {
+  className?: string;
+  color?: string;
+  outline?: string;
+  points?: number;
+}) {
+  const cx = 50;
+  const cy = 50;
+  const outerR = 44;
+  const innerR = 26;
+  const pts: string[] = [];
+  for (let i = 0; i < points * 2; i++) {
+    const r = i % 2 === 0 ? outerR : innerR;
+    const theta = (i / (points * 2)) * Math.PI * 2 - Math.PI / 2;
+    pts.push(`${cx + Math.cos(theta) * r} ${cy + Math.sin(theta) * r}`);
+  }
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 100 100"
+      className={className}
+      fill="none"
+    >
+      <polygon
+        points={pts.join(" ")}
+        fill={color}
+        stroke={outline}
+        strokeWidth="1.5"
+      />
+    </svg>
+  );
+}
+
+// Halo — olive oval with an orange core (the eye / planet shape)
+function Halo({
+  className,
+  outerColor = "#96be53",
+  innerColor = "#ed6e2d",
+}: {
+  className?: string;
+  outerColor?: string;
+  innerColor?: string;
+}) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 100 60"
+      className={className}
+      fill="none"
+    >
+      <ellipse cx="50" cy="30" rx="46" ry="24" fill={outerColor} />
+      <circle cx="74" cy="34" r="10" fill={innerColor} />
+    </svg>
+  );
+}
+
 // Pixelated mound — the blocky red mountain in the brand image
 function PixelMound({
   className,
@@ -573,7 +731,7 @@ export function MotifGlyph({
       </svg>
     );
   }
-  // bend — pivot dot + arc redirect (mirrors BendingRoad)
+  // bend — pivot dot + clean arc redirect (mirrors the larger BendingRoad)
   return (
     <svg
       aria-hidden="true"
@@ -582,44 +740,26 @@ export function MotifGlyph({
       viewBox="0 0 26 20"
       fill="none"
     >
-      <motion.line
-        x1="2"
-        y1="16"
-        x2="11"
-        y2="16"
+      <motion.path
+        d="M 11 16 C 16 16, 18 10, 22 4"
         stroke={stroke}
-        strokeOpacity="0.4"
-        strokeWidth="1.5"
-        strokeDasharray="2 3"
+        strokeWidth="1.8"
         strokeLinecap="round"
+        fill="none"
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}
         viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.55, delay: 0.2 }}
       />
       <circle cx="11" cy="16" r="2" fill={fill} />
-      <motion.path
-        d="M 11 16 C 16 16, 18 10, 22 5"
-        stroke={stroke}
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0 }}
-        whileInView={{ pathLength: 1 }}
+      <motion.polygon
+        points="20,2 25,4 22,8"
+        fill={fill}
+        initial={{ opacity: 0, scale: 0.6 }}
+        whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      />
-      <motion.polyline
-        points="18,3 23,4 21,9"
-        stroke={stroke}
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 0.25, delay: 1.0 }}
+        transition={{ duration: 0.2, delay: 0.8 }}
+        style={{ transformOrigin: "22px 4px" }}
       />
     </svg>
   );
@@ -1472,7 +1612,12 @@ export function ChapterMeetCohort() {
       </div>
 
       {/* Hero: full map with every pin lit */}
-      <div className="px-6 pt-24 pb-10 sm:px-12 sm:pt-28 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="relative px-6 pt-24 pb-10 sm:px-12 sm:pt-28 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+        <Halo
+          className="pointer-events-none absolute right-12 top-12 hidden h-12 w-20 opacity-70 sm:block"
+          outerColor="#96be53"
+          innerColor="#ed6e2d"
+        />
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -1686,62 +1831,65 @@ function RisingBars() {
 function BendingRoad() {
   const ref = useRef<SVGSVGElement>(null);
   const inView = useInView(ref, { amount: 0.4, once: false });
+  // Single clean curve. Path runs left→pivot→up-right with one bold arrowhead.
+  // Coordinates were tuned so tail / pivot / head sit on the same flow.
   return (
     <svg
       ref={ref}
       aria-hidden="true"
-      viewBox="0 0 280 220"
+      viewBox="0 0 280 200"
       className="h-44 w-full sm:h-56"
       fill="none"
     >
-      {/* faded original course */}
+      {/* short faded "before" — just a hint, kept restrained */}
       <motion.line
-        x1="10"
-        y1="180"
-        x2="270"
-        y2="180"
+        x1="20"
+        y1="160"
+        x2="120"
+        y2="160"
         stroke="#0c0f14"
-        strokeOpacity="0.25"
+        strokeOpacity="0.22"
         strokeWidth="1.5"
-        strokeDasharray="4 6"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 0.5 }}
-      />
-      {/* the new heading — sweeps through the pivot toward the right edge */}
-      <motion.path
-        d="M 10 180 Q 100 180 150 130 Q 210 80 262 56"
-        stroke="#0c0f14"
-        strokeWidth="3"
+        strokeDasharray="3 5"
         strokeLinecap="round"
         initial={{ pathLength: 0 }}
         animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 1.1, delay: 0.4 }}
+        transition={{ duration: 0.45 }}
       />
-      {/* pivot point */}
-      <motion.circle
-        cx="150"
-        cy="130"
-        r="6"
-        fill="#0c0f14"
-        initial={{ scale: 0 }}
-        animate={{ scale: inView ? 1 : 0 }}
-        transition={{ duration: 0.3, delay: 0.85 }}
-      />
-      {/* arrowhead — sits at the right edge, opens rightward */}
+      {/* the redirect — one clean curve from pivot to right edge */}
       <motion.path
-        d="M 246 40 L 268 54 L 252 70"
+        d="M 130 160 C 170 160, 200 110, 248 58"
         stroke="#0c0f14"
         strokeWidth="3.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: inView ? 1 : 0 }}
+        transition={{ duration: 1.0, delay: 0.4, ease: "easeOut" }}
+      />
+      {/* pivot point — single solid dot, slightly larger ring on appearance */}
+      <motion.g
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{
+          scale: inView ? 1 : 0,
+          opacity: inView ? 1 : 0,
+        }}
+        transition={{ duration: 0.3, delay: 0.4 }}
+        style={{ transformOrigin: "130px 160px" }}
+      >
+        <circle cx="130" cy="160" r="9" fill="none" stroke="#0c0f14" strokeWidth="1" strokeOpacity="0.4" />
+        <circle cx="130" cy="160" r="5" fill="#0c0f14" />
+      </motion.g>
+      {/* clean filled arrowhead at the redirect endpoint */}
+      <motion.path
+        d="M 234 38 L 258 50 L 244 72 Z"
+        fill="#0c0f14"
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{
           opacity: inView ? 1 : 0,
           scale: inView ? 1 : 0.7,
         }}
-        transition={{ duration: 0.3, delay: 1.4 }}
-        style={{ transformOrigin: "260px 55px" }}
+        transition={{ duration: 0.3, delay: 1.3 }}
+        style={{ transformOrigin: "248px 55px" }}
       />
     </svg>
   );
@@ -1810,7 +1958,11 @@ export function ChapterTwoPathways() {
       </div>
 
       {/* Pivot panel */}
-      <div className="bg-accent-blue/55 px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="relative overflow-hidden bg-accent-blue/55 px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+        <GridTrapezoid
+          className="pointer-events-none absolute bottom-3 left-12 hidden h-12 w-32 opacity-50 sm:block"
+          color="#0c0f14"
+        />
         <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-10 lg:grid-cols-12">
           <div className="order-2 lg:order-1 lg:col-span-5">
             <BendingRoad />
@@ -2274,7 +2426,13 @@ export function ChapterWhyPlaylab() {
       <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-6xl">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-5">
+            <div className="relative lg:col-span-5">
+              <Burst
+                className="pointer-events-none absolute -right-2 -top-6 hidden h-16 w-16 opacity-90 sm:block"
+                color="#0c0f14"
+                outline="#fbf9f6"
+                points={9}
+              />
               <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
                 The partnership
               </p>
@@ -2340,14 +2498,14 @@ export function ChapterStayConnected() {
       accent="#0c0f14"
       minHeight="80vh"
     >
-      <div className="relative flex min-h-[80vh] items-center justify-center px-6 py-20 sm:px-12">
+      <div className="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-6 py-20 sm:px-12">
         <CutOut
           className="absolute left-10 top-12 h-20 w-28 rounded-md"
           color="#feffa0"
           rotate={-5}
         />
         <CutOut
-          className="absolute bottom-12 right-10 h-24 w-32 rounded-full"
+          className="absolute bottom-20 right-10 h-24 w-32 rounded-full"
           color="#a4beeb"
           rotate={3}
         />
@@ -2356,6 +2514,12 @@ export function ChapterStayConnected() {
           color="#ed6e2d"
           cols={8}
           rows={5}
+        />
+        <WavyHorizon
+          className="pointer-events-none absolute bottom-0 left-0 right-0 h-12 w-full"
+          color="#398239"
+          amp={6}
+          segments={8}
         />
         <div className="relative mx-auto w-full max-w-4xl text-center">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
@@ -2385,9 +2549,6 @@ export function ChapterStayConnected() {
             </a>
           </div>
 
-          <p className="mt-12 font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink/45">
-            End of journey 01 / 13 / 2026
-          </p>
         </div>
       </div>
     </ChapterFrame>
