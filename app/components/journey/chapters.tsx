@@ -1832,57 +1832,139 @@ function BendingRoad() {
   const ref = useRef<SVGSVGElement>(null);
   const inView = useInView(ref, { amount: 0.4, once: false });
 
-  // Single arrow: horizontal segment then angles up-right.
-  // path → (20,140) → bend at (140,140) → (290,50)
-  const HEAD_X = 290;
-  const HEAD_Y = 50;
-  const HEAD_ANGLE =
-    (Math.atan2(HEAD_Y - 140, HEAD_X - 140) * 180) / Math.PI;
+  // Pivot illustration v3 — a hand-drawn protractor with a sweeping
+  // needle. Tells "rotation around a fixed center" without relying on a
+  // road/arrow metaphor.
+  const CX = 150;
+  const CY = 150;
+  const R = 110;
+  const tickAngles = [180, 150, 120, 90, 60, 30, 0];
 
   return (
     <svg
       ref={ref}
       aria-hidden="true"
-      viewBox="0 0 320 200"
+      viewBox="0 0 300 200"
       className="h-44 w-full sm:h-56"
       fill="none"
     >
-      {/* the arrow — one continuous polyline that bends at (140,140) */}
+      {/* protractor arc — slightly imperfect for a hand-drawn feel */}
       <motion.path
-        d="M 20 140 L 140 140 L 290 50"
+        d={`M ${CX - R} ${CY} A ${R} ${R} 0 0 1 ${CX + R} ${CY}`}
         stroke="#0c0f14"
-        strokeWidth="3.5"
+        strokeOpacity="0.35"
+        strokeWidth="1.5"
         strokeLinecap="round"
-        strokeLinejoin="round"
         initial={{ pathLength: 0 }}
         animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 1.4, ease: "easeInOut" }}
+        transition={{ duration: 0.9, ease: "easeOut" }}
       />
 
-      {/* pivot dot at the bend */}
-      <motion.circle
-        cx="140"
-        cy="140"
-        r="5"
-        fill="#0c0f14"
-        initial={{ scale: 0 }}
-        animate={{ scale: inView ? 1 : 0 }}
-        transition={{ duration: 0.3, delay: 0.5 }}
+      {/* baseline */}
+      <motion.line
+        x1={CX - R}
+        y1={CY}
+        x2={CX + R}
+        y2={CY}
+        stroke="#0c0f14"
+        strokeOpacity="0.35"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: inView ? 1 : 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
       />
 
-      {/* arrowhead at the end of the angled segment */}
-      <motion.polygon
-        points="-14 -7 0 0 -14 7"
-        fill="#0c0f14"
-        initial={{ opacity: 0, scale: 0.6 }}
-        animate={{
-          opacity: inView ? 1 : 0,
-          scale: inView ? 1 : 0.6,
+      {/* tick marks around the protractor */}
+      {tickAngles.map((deg, i) => {
+        const rad = ((deg - 180) * Math.PI) / 180;
+        const x1 = CX + Math.cos(rad) * R;
+        const y1 = CY + Math.sin(rad) * R;
+        const x2 = CX + Math.cos(rad) * (R - 10);
+        const y2 = CY + Math.sin(rad) * (R - 10);
+        return (
+          <motion.line
+            key={i}
+            x1={x1}
+            y1={y1}
+            x2={x2}
+            y2={y2}
+            stroke="#0c0f14"
+            strokeOpacity="0.5"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: inView ? 1 : 0 }}
+            transition={{ duration: 0.25, delay: 0.5 + i * 0.05 }}
+          />
+        );
+      })}
+
+      {/* faded reference position (where the school started) */}
+      <motion.line
+        x1={CX}
+        y1={CY}
+        x2={CX + R - 8}
+        y2={CY}
+        stroke="#0c0f14"
+        strokeOpacity="0.25"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeDasharray="4 5"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: inView ? 1 : 0 }}
+        transition={{ duration: 0.5, delay: 0.85 }}
+      />
+
+      {/* the sweeping needle — rotates from 0° (horizontal right) to -55° (up-right) */}
+      <motion.g
+        initial={{ rotate: 0 }}
+        animate={{ rotate: inView ? -55 : 0 }}
+        transition={{
+          duration: 1.1,
+          delay: 1.2,
+          type: "spring",
+          stiffness: 60,
+          damping: 14,
         }}
-        transition={{ duration: 0.25, delay: 1.35 }}
-        transform={`translate(${HEAD_X} ${HEAD_Y}) rotate(${HEAD_ANGLE})`}
-        style={{ transformOrigin: `${HEAD_X}px ${HEAD_Y}px` }}
-      />
+        style={{ transformOrigin: `${CX}px ${CY}px` }}
+      >
+        <line
+          x1={CX}
+          y1={CY}
+          x2={CX + R - 8}
+          y2={CY}
+          stroke="#0c0f14"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+        />
+        <polygon
+          points={`${CX + R - 8} ${CY - 8} ${CX + R + 6} ${CY} ${CX + R - 8} ${CY + 8}`}
+          fill="#0c0f14"
+        />
+      </motion.g>
+
+      {/* pivot point — solid dot with halo ring */}
+      <motion.g
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{
+          scale: inView ? 1 : 0,
+          opacity: inView ? 1 : 0,
+        }}
+        transition={{ duration: 0.3, delay: 1.0 }}
+        style={{ transformOrigin: `${CX}px ${CY}px` }}
+      >
+        <circle
+          cx={CX}
+          cy={CY}
+          r="14"
+          fill="#fbf9f6"
+          stroke="#0c0f14"
+          strokeWidth="1"
+          strokeOpacity="0.4"
+        />
+        <circle cx={CX} cy={CY} r="7" fill="#0c0f14" />
+      </motion.g>
     </svg>
   );
 }
