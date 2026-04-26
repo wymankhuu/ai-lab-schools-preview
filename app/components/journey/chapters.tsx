@@ -1831,66 +1831,148 @@ function RisingBars() {
 function BendingRoad() {
   const ref = useRef<SVGSVGElement>(null);
   const inView = useInView(ref, { amount: 0.4, once: false });
-  // Single clean curve. Path runs left→pivot→up-right with one bold arrowhead.
-  // Coordinates were tuned so tail / pivot / head sit on the same flow.
+
+  // Three "before" arrows (horizontal, faded), three "after" arrows
+  // (angling up-right, bold). A pivot dot + rotation arc sits between
+  // the two flocks, marking the moment a school changes course.
+  const beforeArrows = [
+    { y: 70 },
+    { y: 110 },
+    { y: 150 },
+  ];
+  const afterArrows = [
+    { from: [160, 110], to: [292, 38] },
+    { from: [160, 132], to: [296, 80] },
+    { from: [170, 154], to: [292, 116] },
+  ];
+
   return (
     <svg
       ref={ref}
       aria-hidden="true"
-      viewBox="0 0 280 200"
+      viewBox="0 0 320 200"
       className="h-44 w-full sm:h-56"
       fill="none"
     >
-      {/* short faded "before" — just a hint, kept restrained */}
-      <motion.line
-        x1="20"
-        y1="160"
-        x2="120"
-        y2="160"
-        stroke="#0c0f14"
-        strokeOpacity="0.22"
-        strokeWidth="1.5"
-        strokeDasharray="3 5"
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 0.45 }}
-      />
-      {/* the redirect — one clean curve from pivot to right edge */}
-      <motion.path
-        d="M 130 160 C 170 160, 200 110, 248 58"
-        stroke="#0c0f14"
-        strokeWidth="3.5"
-        strokeLinecap="round"
-        initial={{ pathLength: 0 }}
-        animate={{ pathLength: inView ? 1 : 0 }}
-        transition={{ duration: 1.0, delay: 0.4, ease: "easeOut" }}
-      />
-      {/* pivot point — single solid dot, slightly larger ring on appearance */}
+      {/* before flock — horizontal, faded, dashed */}
+      {beforeArrows.map((a, i) => (
+        <g key={`b-${i}`}>
+          <motion.line
+            x1={10}
+            y1={a.y}
+            x2={92}
+            y2={a.y}
+            stroke="#0c0f14"
+            strokeOpacity="0.32"
+            strokeWidth="1.75"
+            strokeDasharray="4 5"
+            strokeLinecap="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: inView ? 1 : 0 }}
+            transition={{ duration: 0.5, delay: i * 0.08 }}
+          />
+          <motion.polygon
+            points={`${94} ${a.y - 5} ${108} ${a.y} ${94} ${a.y + 5}`}
+            fill="#0c0f14"
+            fillOpacity="0.32"
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{
+              opacity: inView ? 1 : 0,
+              scale: inView ? 1 : 0.6,
+            }}
+            transition={{ duration: 0.25, delay: 0.45 + i * 0.08 }}
+            style={{ transformOrigin: `${101}px ${a.y}px` }}
+          />
+        </g>
+      ))}
+
+      {/* pivot indicator — solid dot + ring + small rotation arc */}
       <motion.g
         initial={{ scale: 0, opacity: 0 }}
         animate={{
           scale: inView ? 1 : 0,
           opacity: inView ? 1 : 0,
         }}
-        transition={{ duration: 0.3, delay: 0.4 }}
-        style={{ transformOrigin: "130px 160px" }}
+        transition={{ duration: 0.35, delay: 0.85 }}
+        style={{ transformOrigin: "130px 110px" }}
       >
-        <circle cx="130" cy="160" r="9" fill="none" stroke="#0c0f14" strokeWidth="1" strokeOpacity="0.4" />
-        <circle cx="130" cy="160" r="5" fill="#0c0f14" />
+        <circle
+          cx="130"
+          cy="110"
+          r="14"
+          fill="none"
+          stroke="#0c0f14"
+          strokeOpacity="0.35"
+          strokeWidth="1"
+        />
+        <circle cx="130" cy="110" r="6" fill="#0c0f14" />
       </motion.g>
-      {/* clean filled arrowhead at the redirect endpoint */}
+
+      {/* rotation arc — quarter-arc with arrowhead, hints at the turn */}
       <motion.path
-        d="M 234 38 L 258 50 L 244 72 Z"
+        d="M 116 96 A 18 18 0 0 1 144 96"
+        stroke="#0c0f14"
+        strokeWidth="1.75"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={{
+          pathLength: inView ? 1 : 0,
+          opacity: inView ? 1 : 0,
+        }}
+        transition={{ duration: 0.5, delay: 1.05 }}
+      />
+      <motion.polygon
+        points="140 90 148 96 140 102"
         fill="#0c0f14"
-        initial={{ opacity: 0, scale: 0.7 }}
+        initial={{ opacity: 0, scale: 0.6 }}
         animate={{
           opacity: inView ? 1 : 0,
-          scale: inView ? 1 : 0.7,
+          scale: inView ? 1 : 0.6,
         }}
-        transition={{ duration: 0.3, delay: 1.3 }}
-        style={{ transformOrigin: "248px 55px" }}
+        transition={{ duration: 0.2, delay: 1.45 }}
+        style={{ transformOrigin: "144px 96px" }}
       />
+
+      {/* after flock — angled up-right, bold */}
+      {afterArrows.map((a, i) => {
+        const [x1, y1] = a.from;
+        const [x2, y2] = a.to;
+        const angle =
+          (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+        return (
+          <g key={`a-${i}`}>
+            <motion.line
+              x1={x1}
+              y1={y1}
+              x2={x2}
+              y2={y2}
+              stroke="#0c0f14"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: inView ? 1 : 0 }}
+              transition={{
+                duration: 0.7,
+                delay: 1.2 + i * 0.1,
+                ease: "easeOut",
+              }}
+            />
+            <motion.polygon
+              points={`-10 -6 0 0 -10 6`}
+              fill="#0c0f14"
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{
+                opacity: inView ? 1 : 0,
+                scale: inView ? 1 : 0.6,
+              }}
+              transition={{ duration: 0.25, delay: 1.85 + i * 0.1 }}
+              transform={`translate(${x2} ${y2}) rotate(${angle})`}
+              style={{ transformOrigin: `${x2}px ${y2}px` }}
+            />
+          </g>
+        );
+      })}
     </svg>
   );
 }
