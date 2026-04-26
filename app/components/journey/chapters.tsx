@@ -1832,19 +1832,12 @@ function BendingRoad() {
   const ref = useRef<SVGSVGElement>(null);
   const inView = useInView(ref, { amount: 0.4, once: false });
 
-  // Three "before" arrows (horizontal, faded), three "after" arrows
-  // (angling up-right, bold). A pivot dot + rotation arc sits between
-  // the two flocks, marking the moment a school changes course.
-  const beforeArrows = [
-    { y: 70 },
-    { y: 110 },
-    { y: 150 },
-  ];
-  const afterArrows = [
-    { from: [160, 110], to: [292, 38] },
-    { from: [160, 132], to: [296, 80] },
-    { from: [170, 154], to: [292, 116] },
-  ];
+  // Single arrow: horizontal segment then angles up-right.
+  // path → (20,140) → bend at (140,140) → (290,50)
+  const HEAD_X = 290;
+  const HEAD_Y = 50;
+  const HEAD_ANGLE =
+    (Math.atan2(HEAD_Y - 140, HEAD_X - 140) * 180) / Math.PI;
 
   return (
     <svg
@@ -1854,125 +1847,42 @@ function BendingRoad() {
       className="h-44 w-full sm:h-56"
       fill="none"
     >
-      {/* before flock — horizontal, faded, dashed */}
-      {beforeArrows.map((a, i) => (
-        <g key={`b-${i}`}>
-          <motion.line
-            x1={10}
-            y1={a.y}
-            x2={92}
-            y2={a.y}
-            stroke="#0c0f14"
-            strokeOpacity="0.32"
-            strokeWidth="1.75"
-            strokeDasharray="4 5"
-            strokeLinecap="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: inView ? 1 : 0 }}
-            transition={{ duration: 0.5, delay: i * 0.08 }}
-          />
-          <motion.polygon
-            points={`${94} ${a.y - 5} ${108} ${a.y} ${94} ${a.y + 5}`}
-            fill="#0c0f14"
-            fillOpacity="0.32"
-            initial={{ opacity: 0, scale: 0.6 }}
-            animate={{
-              opacity: inView ? 1 : 0,
-              scale: inView ? 1 : 0.6,
-            }}
-            transition={{ duration: 0.25, delay: 0.45 + i * 0.08 }}
-            style={{ transformOrigin: `${101}px ${a.y}px` }}
-          />
-        </g>
-      ))}
-
-      {/* pivot indicator — solid dot + ring + small rotation arc */}
-      <motion.g
-        initial={{ scale: 0, opacity: 0 }}
-        animate={{
-          scale: inView ? 1 : 0,
-          opacity: inView ? 1 : 0,
-        }}
-        transition={{ duration: 0.35, delay: 0.85 }}
-        style={{ transformOrigin: "130px 110px" }}
-      >
-        <circle
-          cx="130"
-          cy="110"
-          r="14"
-          fill="none"
-          stroke="#0c0f14"
-          strokeOpacity="0.35"
-          strokeWidth="1"
-        />
-        <circle cx="130" cy="110" r="6" fill="#0c0f14" />
-      </motion.g>
-
-      {/* rotation arc — quarter-arc with arrowhead, hints at the turn */}
+      {/* the arrow — one continuous polyline that bends at (140,140) */}
       <motion.path
-        d="M 116 96 A 18 18 0 0 1 144 96"
+        d="M 20 140 L 140 140 L 290 50"
         stroke="#0c0f14"
-        strokeWidth="1.75"
+        strokeWidth="3.5"
         strokeLinecap="round"
-        fill="none"
-        initial={{ pathLength: 0, opacity: 0 }}
-        animate={{
-          pathLength: inView ? 1 : 0,
-          opacity: inView ? 1 : 0,
-        }}
-        transition={{ duration: 0.5, delay: 1.05 }}
+        strokeLinejoin="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: inView ? 1 : 0 }}
+        transition={{ duration: 1.4, ease: "easeInOut" }}
       />
+
+      {/* pivot dot at the bend */}
+      <motion.circle
+        cx="140"
+        cy="140"
+        r="5"
+        fill="#0c0f14"
+        initial={{ scale: 0 }}
+        animate={{ scale: inView ? 1 : 0 }}
+        transition={{ duration: 0.3, delay: 0.5 }}
+      />
+
+      {/* arrowhead at the end of the angled segment */}
       <motion.polygon
-        points="140 90 148 96 140 102"
+        points="-14 -7 0 0 -14 7"
         fill="#0c0f14"
         initial={{ opacity: 0, scale: 0.6 }}
         animate={{
           opacity: inView ? 1 : 0,
           scale: inView ? 1 : 0.6,
         }}
-        transition={{ duration: 0.2, delay: 1.45 }}
-        style={{ transformOrigin: "144px 96px" }}
+        transition={{ duration: 0.25, delay: 1.35 }}
+        transform={`translate(${HEAD_X} ${HEAD_Y}) rotate(${HEAD_ANGLE})`}
+        style={{ transformOrigin: `${HEAD_X}px ${HEAD_Y}px` }}
       />
-
-      {/* after flock — angled up-right, bold */}
-      {afterArrows.map((a, i) => {
-        const [x1, y1] = a.from;
-        const [x2, y2] = a.to;
-        const angle =
-          (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
-        return (
-          <g key={`a-${i}`}>
-            <motion.line
-              x1={x1}
-              y1={y1}
-              x2={x2}
-              y2={y2}
-              stroke="#0c0f14"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              initial={{ pathLength: 0 }}
-              animate={{ pathLength: inView ? 1 : 0 }}
-              transition={{
-                duration: 0.7,
-                delay: 1.2 + i * 0.1,
-                ease: "easeOut",
-              }}
-            />
-            <motion.polygon
-              points={`-10 -6 0 0 -10 6`}
-              fill="#0c0f14"
-              initial={{ opacity: 0, scale: 0.6 }}
-              animate={{
-                opacity: inView ? 1 : 0,
-                scale: inView ? 1 : 0.6,
-              }}
-              transition={{ duration: 0.25, delay: 1.85 + i * 0.1 }}
-              transform={`translate(${x2} ${y2}) rotate(${angle})`}
-              style={{ transformOrigin: `${x2}px ${y2}px` }}
-            />
-          </g>
-        );
-      })}
     </svg>
   );
 }
