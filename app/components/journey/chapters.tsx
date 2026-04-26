@@ -1895,19 +1895,17 @@ function BendingRoad() {
         <circle cx={PIVOT.x} cy={PIVOT.y} r="5" fill="#0c0f14" />
       </motion.g>
 
-      {/* arrowhead at the end of the angled segment */}
-      <motion.polygon
-        points="-14 -7 0 0 -14 7"
-        fill="#0c0f14"
-        initial={{ opacity: 0, scale: 0.6 }}
-        animate={{
-          opacity: inView ? 1 : 0,
-          scale: inView ? 1 : 0.6,
-        }}
-        transition={{ duration: 0.25, delay: 1.4 }}
-        transform={`translate(${END.x} ${END.y}) rotate(${angle})`}
-        style={{ transformOrigin: `${END.x}px ${END.y}px` }}
-      />
+      {/* arrowhead at the end of the ray — wrap the rotation in a static
+          group so the SVG transform doesn't fight framer-motion's CSS */}
+      <g transform={`translate(${END.x} ${END.y}) rotate(${angle})`}>
+        <motion.polygon
+          points="-16 -8 0 0 -16 8"
+          fill="#0c0f14"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: inView ? 1 : 0 }}
+          transition={{ duration: 0.25, delay: 1.4 }}
+        />
+      </g>
     </svg>
   );
 }
