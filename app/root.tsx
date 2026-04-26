@@ -63,7 +63,7 @@ export default function App() {
 function TopBar() {
   return (
     <header className="sticky top-0 z-[60] border-b border-brand-ink/15 bg-brand-bg/90 backdrop-blur">
-      <div className="container mx-auto flex items-center justify-between px-4 py-4">
+      <div className="flex items-center justify-between px-4 py-4 sm:px-6 lg:px-10">
         <a
           href="https://playlab.ai"
           className="flex items-center gap-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-ink focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"

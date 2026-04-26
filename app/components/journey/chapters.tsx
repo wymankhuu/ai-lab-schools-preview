@@ -968,7 +968,7 @@ export function ChapterTheBet() {
       number="02"
       eyebrow="The bet"
       accent="#356fe5"
-      minHeight="140vh"
+      minHeight="115vh"
     >
       <div className="flex min-h-screen items-center px-6 py-20 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="relative mx-auto w-full max-w-5xl">
@@ -1226,7 +1226,7 @@ export function ChapterChatbotEra() {
             <div className="mt-12">
               <PullQuote
                 quote="AI is moving faster than school is built for. We needed a new way to make."
-                attribution="Playlab core team"
+                attribution="Playlab team"
                 accent="#ed6e2d"
               />
             </div>
@@ -1556,12 +1556,12 @@ function Ecosystem({ reveal }: { reveal: EcosystemReveal }) {
 /* ---------------- 05 — The mandate ---------------- */
 export function ChapterMandate() {
   const steps = [
-    { verb: "Design", body: "the raw material that lets people make.", color: "#feffa0" },
-    { verb: "Surface", body: "what works from what they build.", color: "#a4beeb" },
+    { verb: "Design", body: "the raw material that lets people make.", color: "#ed6e2d" },
+    { verb: "Surface", body: "what works from what they build.", color: "#356fe5" },
     {
       verb: "Translate",
       body: "those discoveries into reusable artifacts.",
-      color: "#efd8ef",
+      color: "#398239",
     },
   ];
 
@@ -1612,13 +1612,16 @@ export function ChapterMandate() {
                 className="relative pt-5"
               >
                 <span
-                  className="absolute left-0 top-0 h-[3px] w-12 rounded-full"
+                  className="absolute left-0 top-0 h-[5px] w-14 rounded-full"
                   style={{ backgroundColor: step.color }}
                 />
                 <span className="font-mono text-[11px] tracking-[0.25em] text-brand-ink/55">
                   {`[${i + 1}]`}
                 </span>
-                <h3 className="mt-2 font-display text-3xl text-brand-ink">
+                <h3
+                  className="mt-2 font-display text-3xl"
+                  style={{ color: step.color }}
+                >
                   {step.verb}
                 </h3>
                 <p className="mt-2 text-base leading-relaxed text-brand-ink/75">
@@ -1630,6 +1633,314 @@ export function ChapterMandate() {
         </div>
       </div>
     </ChapterFrame>
+  );
+}
+
+/* ---------------- Interlude: Risk & Potential (the scale) ---------------- */
+
+function ScaleGlyph({ size = 14 }: { size?: number }) {
+  return (
+    <svg
+      aria-hidden="true"
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      {/* beam */}
+      <line
+        x1="3"
+        y1="6"
+        x2="21"
+        y2="6"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      {/* end caps */}
+      <circle cx="3" cy="6" r="1.4" fill="currentColor" />
+      <circle cx="21" cy="6" r="1.4" fill="currentColor" />
+      {/* fulcrum */}
+      <polygon points="12,6 8,15 16,15" fill="currentColor" />
+      {/* base */}
+      <line
+        x1="6"
+        y1="20"
+        x2="18"
+        y2="20"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+      />
+      {/* post */}
+      <line
+        x1="12"
+        y1="15"
+        x2="12"
+        y2="20"
+        stroke="currentColor"
+        strokeWidth="1.4"
+      />
+    </svg>
+  );
+}
+
+export function StakesInterlude() {
+  const scaleRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(scaleRef, { once: true, amount: 0.3 });
+
+  // Continuous oscillation: cycle through CCW dip, level, CW dip, level.
+  const oscDuration = 6.4;
+  const oscTimes = [0, 0.25, 0.5, 0.75, 1];
+  const beamKeyframes = [0, -3.2, 0, 3.2, 0];
+  const riskKeyframes = [0, 22, 0, -22, 0];
+  const potentialKeyframes = [0, -22, 0, 22, 0];
+
+  return (
+    <section
+      aria-label="Risk and potential"
+      className="relative w-full px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24"
+    >
+      <DotGrid
+        className="pointer-events-none absolute -left-2 top-10 hidden h-24 w-32 opacity-60 md:block"
+        color="#ce463f"
+        cols={10}
+        rows={6}
+      />
+      <DotGrid
+        className="pointer-events-none absolute -right-2 bottom-10 hidden h-24 w-32 opacity-60 md:block"
+        color="#398239"
+        cols={10}
+        rows={6}
+      />
+
+      <div className="mx-auto w-full max-w-5xl text-center">
+        <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-brand-ink/55">
+          <ScaleGlyph size={14} />
+          <span>On the scale</span>
+        </div>
+        <h2 className="mt-3 font-display text-[clamp(2rem,5vw,3.75rem)] leading-[1.05] text-brand-ink">
+          Great risk.{" "}
+          <span className="relative inline-block">
+            <span className="relative z-10">Great potential.</span>
+            <span
+              aria-hidden="true"
+              className="absolute inset-x-[-4%] -bottom-1 -z-0 h-3 w-[108%]"
+              style={{ backgroundColor: "#d4fd63", opacity: 0.6 }}
+            />
+          </span>
+        </h2>
+        <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-brand-ink/70">
+          Every classroom is putting student agency on the scale. Both ends are
+          real. The question is whether students drive the tool, or the tool
+          drives them.
+        </p>
+      </div>
+
+      {/* Balancing scale: beam oscillates, cards hang as pans and rise/fall */}
+      <div
+        ref={scaleRef}
+        className="relative mx-auto mt-14 w-full max-w-5xl"
+      >
+        {/* Beam + chains: rotating SVG group, oscillating endlessly */}
+        <motion.svg
+          aria-hidden="true"
+          viewBox="0 0 800 140"
+          className="relative z-10 block h-24 w-full sm:h-28"
+          preserveAspectRatio="none"
+          initial={{ rotate: 0 }}
+          animate={inView ? { rotate: beamKeyframes } : { rotate: 0 }}
+          transition={{
+            duration: oscDuration,
+            repeat: Infinity,
+            ease: "easeInOut",
+            times: oscTimes,
+          }}
+          style={{ transformOrigin: "50% 26%" }}
+        >
+          {/* beam */}
+          <line
+            x1="80"
+            y1="36"
+            x2="720"
+            y2="36"
+            stroke="#0c0f14"
+            strokeWidth="7"
+            strokeLinecap="round"
+          />
+          {/* end caps */}
+          <circle cx="80" cy="36" r="10" fill="#0c0f14" />
+          <circle cx="720" cy="36" r="10" fill="#0c0f14" />
+          {/* center pivot knob (where beam rests on fulcrum) */}
+          <circle cx="400" cy="36" r="8" fill="#0c0f14" />
+          <circle cx="400" cy="36" r="3" fill="#fbf9f6" />
+          {/* chains: dashed lines down to pan tops */}
+          <line
+            x1="80"
+            y1="46"
+            x2="80"
+            y2="128"
+            stroke="#0c0f14"
+            strokeWidth="2"
+            strokeDasharray="3 4"
+            strokeOpacity="0.7"
+          />
+          <line
+            x1="720"
+            y1="46"
+            x2="720"
+            y2="128"
+            stroke="#0c0f14"
+            strokeWidth="2"
+            strokeDasharray="3 4"
+            strokeOpacity="0.7"
+          />
+        </motion.svg>
+
+        {/* Fulcrum + post + base, drawn behind the cards (desktop only) */}
+        <div className="pointer-events-none absolute inset-x-0 top-7 z-0 hidden h-[calc(100%-1.75rem)] justify-center lg:flex">
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 100 620"
+            className="h-full w-24"
+            preserveAspectRatio="xMidYMin meet"
+          >
+            {/* post — full vertical line from beam down to base */}
+            <line
+              x1="50"
+              y1="4"
+              x2="50"
+              y2="572"
+              stroke="#0c0f14"
+              strokeWidth="5"
+            />
+            {/* base shadow */}
+            <ellipse
+              cx="50"
+              cy="595"
+              rx="48"
+              ry="6"
+              fill="#0c0f14"
+              fillOpacity="0.18"
+            />
+            {/* base bar */}
+            <rect
+              x="6"
+              y="582"
+              width="88"
+              height="8"
+              rx="4"
+              fill="#0c0f14"
+            />
+          </svg>
+        </div>
+
+        {/* Cards as pans, hung from the beam */}
+        <div className="relative z-10 grid grid-cols-1 gap-6 lg:-mt-2 lg:grid-cols-2 lg:gap-x-24">
+          <motion.article
+            initial={{ opacity: 0, y: 0 }}
+            animate={
+              inView
+                ? { opacity: 1, y: riskKeyframes }
+                : { opacity: 0, y: 0 }
+            }
+            transition={{
+              opacity: { duration: 0.6 },
+              y: {
+                duration: oscDuration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                times: oscTimes,
+              },
+            }}
+            className="relative overflow-hidden border border-brand-ink/15 bg-brand-bg p-8 shadow-[3px_4px_0_rgba(12,15,20,0.12)] sm:p-10"
+            style={{ borderRadius: "3rem 0.75rem 3rem 0.75rem" }}
+          >
+            {/* Risk: sharp / jagged shape language */}
+            <Burst
+              className="pointer-events-none absolute -right-4 -top-4 h-16 w-16 opacity-90"
+              color="#ce463f"
+              outline="#fbf9f6"
+              points={11}
+            />
+            <PixelMound
+              className="pointer-events-none absolute -bottom-2 -left-2 h-10 w-20 opacity-80"
+              color="#ce463f"
+            />
+            <div className="relative text-center">
+              <span
+                className="inline-flex items-center rounded-full border border-brand-ink/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-bg shadow-[2px_2px_0_rgba(12,15,20,0.2)]"
+                style={{ backgroundColor: "#ce463f" }}
+              >
+                Risk
+              </span>
+              <h3 className="mt-4 font-display text-2xl leading-snug text-brand-ink sm:text-[1.75rem]">
+                If agency thins out.
+              </h3>
+              <p className="mx-auto mt-3 max-w-md text-base leading-relaxed text-brand-ink/80">
+                Thinking gets outsourced. Teaching loses its craft. Schools
+                drift into surveillance and busywork. Families lose track of
+                what school is for. The agency a school exists to build can
+                quietly erode &mdash; on every side of the room.
+              </p>
+            </div>
+          </motion.article>
+
+          <motion.article
+            initial={{ opacity: 0, y: 0 }}
+            animate={
+              inView
+                ? { opacity: 1, y: potentialKeyframes }
+                : { opacity: 0, y: 0 }
+            }
+            transition={{
+              opacity: { duration: 0.6, delay: 0.1 },
+              y: {
+                duration: oscDuration,
+                repeat: Infinity,
+                ease: "easeInOut",
+                times: oscTimes,
+              },
+            }}
+            className="relative overflow-hidden border border-brand-ink/15 bg-brand-bg p-8 shadow-[3px_4px_0_rgba(12,15,20,0.12)] sm:p-10"
+            style={{ borderRadius: "2.75rem" }}
+          >
+            {/* Potential: organic / blooming shape language */}
+            <Halo
+              className="pointer-events-none absolute -right-2 -top-3 h-12 w-20 opacity-80"
+              outerColor="#d4fd63"
+              innerColor="#398239"
+            />
+            <CollagePebble
+              className="pointer-events-none absolute -left-4 -bottom-4 h-16 w-16 opacity-90"
+              color="#398239"
+              variant={1}
+            />
+            <div className="relative text-center">
+              <span
+                className="inline-flex items-center rounded-full border border-brand-ink/80 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-ink shadow-[2px_2px_0_rgba(12,15,20,0.18)]"
+                style={{ backgroundColor: "#d4fd63" }}
+              >
+                Potential
+              </span>
+              <h3 className="mt-4 font-display text-2xl leading-snug text-brand-ink sm:text-[1.75rem]">
+                If agency takes root.
+              </h3>
+              <p className="mx-auto mt-3 max-w-md text-base leading-relaxed text-brand-ink/80">
+                Thinking gets exercised. Teaching reclaims its craft. Schools
+                become labs their communities can read. Families help carry the
+                work. Agency, on every side of the room, finds a place to
+                grow.
+              </p>
+            </div>
+          </motion.article>
+        </div>
+      </div>
+
+      <p className="mx-auto mt-12 max-w-2xl text-center font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink/55">
+        AI Lab Schools tips the scale toward potential.
+      </p>
+    </section>
   );
 }
 
@@ -1646,9 +1957,9 @@ export function ChapterWhyCohort() {
       number="06"
       eyebrow="The next material"
       accent="#ce463f"
-      minHeight="100vh"
+      minHeight="90vh"
     >
-      <div className="relative flex min-h-screen items-center justify-center px-6 py-24 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="relative flex min-h-[90vh] items-center justify-center px-6 py-20 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <CutOut
           className="absolute left-12 top-16 -z-0 h-20 w-28 rounded-md md:left-24"
           color="#f4baef"
@@ -1697,6 +2008,40 @@ export function ChapterWhyCohort() {
 
 /* ---------------- 07 — Meet the cohort ---------------- */
 export function ChapterMeetCohort() {
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [flashId, setFlashId] = useState<string | null>(null);
+  const flashTimeoutRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (flashTimeoutRef.current !== null) {
+        window.clearTimeout(flashTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const handleSelect = (id: string) => {
+    if (typeof window === "undefined") return;
+    const el = document.getElementById(`cohort-card-${id}`);
+    if (el) {
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      el.scrollIntoView({
+        behavior: reduceMotion ? "auto" : "smooth",
+        block: "center",
+      });
+    }
+    setFlashId(id);
+    if (flashTimeoutRef.current !== null) {
+      window.clearTimeout(flashTimeoutRef.current);
+    }
+    flashTimeoutRef.current = window.setTimeout(() => {
+      setFlashId(null);
+      flashTimeoutRef.current = null;
+    }, 1600);
+  };
+
   return (
     <section
       id={chapterId("07")}
@@ -1713,7 +2058,7 @@ export function ChapterMeetCohort() {
       </div>
 
       {/* Hero: full map with every pin lit, dressed as a workshop card */}
-      <div className="relative px-6 pt-24 pb-10 sm:px-12 sm:pt-28 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="relative px-6 pt-20 pb-8 sm:px-12 sm:pt-24 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-6xl">
           <div className="relative overflow-hidden rounded-3xl border border-brand-ink/10 bg-brand-cream/30 px-6 py-8 sm:px-10 sm:py-12">
             {/* brand-collage backdrop */}
@@ -1745,41 +2090,52 @@ export function ChapterMeetCohort() {
             />
 
             <div className="relative flex flex-wrap items-end justify-between gap-4">
-              <div className="flex items-end gap-3">
-                <span className="rounded-full bg-accent-yellow px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-ink shadow-[2px_2px_0_rgba(12,15,20,0.18)]">
-                  Open cohort
-                </span>
-                <div>
-                  <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
-                    Cohort 1 / 13 schools
-                  </p>
-                  <h2 className="mt-2 font-display text-[clamp(2.5rem,5vw,4.25rem)] leading-tight text-brand-ink">
-                    Meet the cohort.
-                  </h2>
-                </div>
+              <div>
+                <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
+                  Cohort 1 / 13 schools
+                </p>
+                <h2 className="mt-2 font-display text-[clamp(2.5rem,5vw,4.25rem)] leading-tight text-brand-ink">
+                  Meet the cohort.
+                </h2>
               </div>
-              <div className="flex gap-4 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/65">
-                <span className="inline-flex items-center gap-2">
-                  <span
-                    aria-hidden="true"
-                    className="h-2.5 w-2.5 rounded-full border border-brand-ink"
-                    style={{ backgroundColor: "#feffa0" }}
-                  />
-                  Launch
-                </span>
-                <span className="inline-flex items-center gap-2">
-                  <span
-                    aria-hidden="true"
-                    className="h-2.5 w-2.5 rounded-full border border-brand-ink"
-                    style={{ backgroundColor: "#a4beeb" }}
-                  />
-                  Pivot
-                </span>
+              <div className="flex gap-6">
+                <div className="flex flex-col gap-1">
+                  <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/75">
+                    <span
+                      aria-hidden="true"
+                      className="h-2.5 w-2.5 rounded-full border border-brand-ink"
+                      style={{ backgroundColor: "#feffa0" }}
+                    />
+                    Launch
+                  </span>
+                  <span className="font-mono text-[10px] tracking-[0.1em] text-brand-ink/55">
+                    Built from scratch.
+                  </span>
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/75">
+                    <span
+                      aria-hidden="true"
+                      className="h-2.5 w-2.5 rounded-full border border-brand-ink"
+                      style={{ backgroundColor: "#a4beeb" }}
+                    />
+                    Pivot
+                  </span>
+                  <span className="font-mono text-[10px] tracking-[0.1em] text-brand-ink/55">
+                    Rearchitected from existing.
+                  </span>
+                </div>
               </div>
             </div>
 
             <div className="relative mt-8">
-              <JourneyMap litCount={cohortPartners.length} />
+              <JourneyMap
+                litCount={cohortPartners.length}
+                hoveredId={hoveredId}
+                highlightId={hoveredId ?? flashId}
+                onHover={setHoveredId}
+                onSelect={handleSelect}
+              />
             </div>
           </div>
 
@@ -1787,7 +2143,7 @@ export function ChapterMeetCohort() {
       </div>
 
       {/* Windy-road school cards: alternate sides + S-curve connectors */}
-      <div className="px-6 py-12 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="px-6 pt-6 pb-12 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-5xl">
           {cohortPartners.map((p, i) => {
             const accent = p.pathway === "Launch" ? "#feffa0" : "#a4beeb";
@@ -1814,6 +2170,7 @@ export function ChapterMeetCohort() {
             );
             const accentKind = hash % 3; // 0: pebble · 1: starburst · 2: scallops
             const pebbleVariant = (hash % 3) as 0 | 1 | 2;
+            const isFlashing = flashId === p.id;
             return (
               <div key={p.id}>
                 <motion.div
@@ -1824,9 +2181,15 @@ export function ChapterMeetCohort() {
                   className={`flex ${isLeft ? "justify-start" : "justify-end"}`}
                 >
                   <article
-                    className={`relative flex w-full max-w-2xl items-start gap-5 overflow-hidden rounded-2xl border border-brand-ink/10 bg-brand-bg p-6 sm:p-7 ${
+                    id={`cohort-card-${p.id}`}
+                    className={`relative flex w-full max-w-2xl items-start gap-5 overflow-hidden rounded-2xl border border-brand-ink/10 bg-brand-bg p-6 sm:p-7 transition-shadow duration-300 ${
                       isLeft ? "" : "text-right"
                     }`}
+                    style={{
+                      boxShadow: isFlashing
+                        ? `0 0 0 4px ${accent}, 0 12px 24px -16px rgba(12,15,20,0.35)`
+                        : undefined,
+                    }}
                   >
                     {/* tinted grid wash across the whole card */}
                     <CollageGrid
@@ -2139,7 +2502,7 @@ export function ChapterTwoPathways() {
       </div>
 
       {/* Intro */}
-      <div className="px-6 pt-24 pb-6 sm:px-12 sm:pt-28 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="px-6 pt-20 pb-6 sm:px-12 sm:pt-24 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-5xl">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             Two pathways, one cohort
@@ -2253,7 +2616,7 @@ export function ChapterRhythm() {
         </span>
       </div>
 
-      <div className="px-6 pt-24 pb-16 sm:px-12 sm:pt-28 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="px-6 pt-20 pb-16 sm:px-12 sm:pt-24 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-3xl">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             24 months of work
@@ -2470,7 +2833,7 @@ export function ChapterPillars() {
       number="10"
       eyebrow="What gets built"
       accent="#0c0f14"
-      minHeight="110vh"
+      minHeight="100vh"
     >
       <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-6xl">
@@ -2519,17 +2882,41 @@ export function ChapterPillars() {
 /* ---------------- 11 — The playbook ---------------- */
 
 
-const playbookDraftLines: Array<{
-  text: string;
-  glyph: MotifKind;
-  struck?: boolean;
+const playbookSamples: Array<{
+  type: string;
+  title: string;
+  body: string;
+  accent: string;
+  rotate: number;
 }> = [
-  { text: "What 13 teams learned in two years.", glyph: "node" },
-  { text: "13 working models. 13 sets of seams to look at.", glyph: "loop" },
-  { text: "Best practices, finalized.", glyph: "scribble", struck: true },
-  { text: "An invitation to copy, fork, and remix.", glyph: "dot" },
-  { text: "A playbook with edits visible.", glyph: "arc-arrow" },
-  { text: "Rough edges stay rough.", glyph: "scribble" },
+  {
+    type: "Rhythm",
+    title: "Tuesday studio block",
+    body: "A 90-minute pattern for student-led AI projects, with a 10-minute critique close.",
+    accent: "#feffa0",
+    rotate: -1.8,
+  },
+  {
+    type: "Rubric",
+    title: "Where AI helped",
+    body: "A four-line scoring guide students use to credit AI in their own work.",
+    accent: "#a4beeb",
+    rotate: 1.4,
+  },
+  {
+    type: "Tool",
+    title: "Coach prompt library",
+    body: "Eleven prompts teachers re-run when a chatbot stalls a student mid-task.",
+    accent: "#d4fd63",
+    rotate: -1.2,
+  },
+  {
+    type: "Policy",
+    title: "The Lab School pact",
+    body: "A draft acceptable-use agreement co-written by students, adults, and families.",
+    accent: "#96be53",
+    rotate: 1.6,
+  },
 ];
 
 export function ChapterPlaybook() {
@@ -2540,7 +2927,7 @@ export function ChapterPlaybook() {
       accent="#398239"
       minHeight="120vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="min-h-screen px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-5xl">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
             <div className="lg:col-span-6">
@@ -2569,37 +2956,56 @@ export function ChapterPlaybook() {
               </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <ul className="space-y-4">
-                {playbookDraftLines.map((line, i) => (
-                  <motion.li
-                    key={line.text}
-                    initial={{ opacity: 0, y: 8 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, amount: 0.5 }}
-                    transition={{ delay: 0.06 * i, duration: 0.45 }}
-                    className="flex items-start gap-3"
-                  >
-                    <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center">
-                      <MotifGlyph
-                        kind={line.glyph}
-                        size={18}
-                        color={line.struck ? "#ce463f" : "#0c0f14"}
-                      />
-                    </span>
-                    <span
-                      className={`font-display text-lg leading-snug sm:text-xl ${
-                        line.struck
-                          ? "text-brand-ink/35 line-through decoration-brand-ink/40 decoration-1"
-                          : "text-brand-ink/85"
-                      }`}
-                    >
-                      {line.text}
-                    </span>
-                  </motion.li>
-                ))}
-              </ul>
+            <div className="relative lg:col-span-6">
+              <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink/55">
+                Inside the playbook · Sample artifacts
+              </p>
+              <h3 className="mt-2 font-display text-xl leading-snug text-brand-ink sm:text-2xl">
+                A few pages from the draft.
+              </h3>
 
+              <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2">
+                {playbookSamples.map((s, i) => (
+                  <motion.article
+                    key={s.title}
+                    initial={{ opacity: 0, y: 14, rotate: 0 }}
+                    whileInView={{ opacity: 1, y: 0, rotate: s.rotate }}
+                    whileHover={{ rotate: 0, y: -4 }}
+                    viewport={{ once: true, amount: 0.4 }}
+                    transition={{ duration: 0.5, delay: 0.05 * i }}
+                    className="relative overflow-hidden rounded-2xl border border-brand-ink/15 bg-brand-bg p-5 shadow-[3px_4px_0_rgba(12,15,20,0.08)]"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-x-0 top-0 h-1.5"
+                      style={{ backgroundColor: s.accent }}
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="absolute -right-3 -top-3 h-12 w-12 rounded-full opacity-60"
+                      style={{ backgroundColor: s.accent }}
+                    />
+                    <div className="relative">
+                      <span
+                        className="inline-flex items-center rounded-full border border-brand-ink/80 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.18em] text-brand-ink shadow-[2px_2px_0_rgba(12,15,20,0.15)]"
+                        style={{ backgroundColor: s.accent }}
+                      >
+                        {s.type}
+                      </span>
+                      <h4 className="mt-3 font-display text-lg leading-snug text-brand-ink">
+                        {s.title}
+                      </h4>
+                      <p className="mt-2 text-sm leading-relaxed text-brand-ink/75">
+                        {s.body}
+                      </p>
+                    </div>
+                  </motion.article>
+                ))}
+              </div>
+
+              <p className="mt-6 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-ink/45">
+                Working drafts &mdash; titles and edges will move before 2028.
+              </p>
             </div>
           </div>
         </div>

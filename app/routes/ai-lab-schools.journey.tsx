@@ -21,6 +21,7 @@ import {
   ChapterWhyCohort,
   ChapterWhyPlaylab,
   QuestionHook,
+  StakesInterlude,
 } from "~/components/journey/chapters";
 
 export const meta: MetaFunction = () => [
@@ -67,9 +68,11 @@ export default function JourneyPage() {
         <ChapterVocabulary />
         <ChapterMandate />
 
+        <StakesInterlude />
+
         <QuestionHook
-          text="Where do new models of school actually get built?"
-          emphasis="actually"
+          text="How do we get there? Together."
+          emphasis="Together"
           accent="#356fe5"
         />
 
