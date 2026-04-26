@@ -647,6 +647,36 @@ function MarkerTooltip({ partner }: { partner: ProjectedPartner }) {
   );
 }
 
+// Picks a stable accent palette for each partner card based on its id,
+// so each card carries a slightly different brand-collage flavor.
+function paletteFor(id: string) {
+  const palettes = [
+    {
+      tint: "#efd8ef", // soft pink wash
+      accent: "#0f6d37", // green pebble
+      starburst: "#d4fd63", // lime starburst
+    },
+    {
+      tint: "#fff46c", // soft yellow wash
+      accent: "#356fe5", // blue pebble
+      starburst: "#feffa0", // pale yellow starburst
+    },
+    {
+      tint: "#a4beeb", // soft blue wash
+      accent: "#ed6e2d", // orange pebble
+      starburst: "#feffa0", // yellow starburst
+    },
+    {
+      tint: "#d4fd63", // lime wash
+      accent: "#ce463f", // red pebble
+      starburst: "#a4beeb", // blue starburst
+    },
+  ];
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  return palettes[h % palettes.length];
+}
+
 function PartnerCard({
   partner,
   onSelect,
@@ -657,6 +687,7 @@ function PartnerCard({
   const isLaunch = partner.pathway === "Launch";
   const ringColor = isLaunch ? "#ffd956" : "#61dcff";
   const hasLongDescription = Boolean(partner.description);
+  const palette = paletteFor(partner.id);
   const interactiveClasses = hasLongDescription
     ? "cursor-pointer hover:-translate-y-0.5 hover:border-[#1a311d]/20 hover:shadow-[0_8px_24px_rgba(26,49,29,0.08)] focus-visible:ring-2 focus-visible:ring-[#00cc72] focus-visible:ring-offset-2"
     : "cursor-default";
@@ -669,9 +700,28 @@ function PartnerCard({
       aria-label={
         hasLongDescription ? `Read more about ${partner.school}` : undefined
       }
-      className={`group flex h-full scroll-mt-24 flex-col rounded-2xl border border-[#1a311d]/10 bg-white p-6 text-left shadow-[0_1px_3px_rgba(26,49,29,0.04)] transition-all duration-200 focus:outline-none ${interactiveClasses}`}
+      className={`group relative flex h-full scroll-mt-24 flex-col overflow-hidden rounded-2xl border border-[#1a311d]/10 bg-white p-6 text-left shadow-[0_1px_3px_rgba(26,49,29,0.04)] transition-all duration-200 focus:outline-none ${interactiveClasses}`}
     >
-      <div className="flex items-start justify-between gap-4">
+      {/* tinted grid wash sliver in the upper-right of every card */}
+      <CollageGrid
+        className="pointer-events-none absolute inset-y-0 right-0 h-full w-2/5 opacity-50"
+        color={palette.tint}
+        cellSize={14}
+      />
+      {/* small starburst peeking from the top-right */}
+      <CollageStarburst
+        className="pointer-events-none absolute -right-4 -top-4 h-16 w-16 opacity-90"
+        color={palette.starburst}
+        spikes={11}
+      />
+      {/* accent pebble in the bottom-right corner */}
+      <CollagePebble
+        className="pointer-events-none absolute -bottom-3 -right-3 h-14 w-14 opacity-80"
+        color={palette.accent}
+        variant={(partner.id.length % 3) as 0 | 1 | 2}
+      />
+
+      <div className="relative flex items-start justify-between gap-4">
         <div
           className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 bg-[#fdfffc]"
           style={{ borderColor: ringColor }}
@@ -686,20 +736,20 @@ function PartnerCard({
         </span>
       </div>
 
-      <h3 className="mt-5 font-heading text-lg font-bold leading-tight text-[#1a311d]">
+      <h3 className="relative mt-5 font-heading text-lg font-bold leading-tight text-[#1a311d]">
         {partner.school}
       </h3>
 
-      <div className="mt-2 text-sm text-[#122134]/85">
+      <div className="relative mt-2 text-sm text-[#122134]/85">
         {partner.city}, {partner.state}
       </div>
 
-      <p className="mt-4 flex-1 text-base leading-relaxed text-[#122134]/90">
+      <p className="relative mt-4 flex-1 text-base leading-relaxed text-[#122134]/90">
         {partner.descriptor}
       </p>
 
       {hasLongDescription && (
-        <span className="mt-4 text-sm font-medium text-[#122134]/60">
+        <span className="relative mt-4 text-sm font-medium text-[#122134]/60">
           Read more
         </span>
       )}

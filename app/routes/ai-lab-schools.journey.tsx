@@ -1,6 +1,11 @@
-import type { MetaFunction } from "react-router";
+import type { LinksFunction, MetaFunction } from "react-router";
 import { ChapterNav } from "~/components/journey/ChapterNav";
 import { CreativeLoop } from "~/components/journey/CreativeLoop";
+
+export const links: LinksFunction = () => [
+  { rel: "icon", type: "image/svg+xml", href: "/journey-favicon.svg" },
+];
+
 import {
   ChapterChatbotEra,
   ChapterConviction,
