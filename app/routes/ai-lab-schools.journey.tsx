@@ -48,7 +48,7 @@ export default function JourneyPage() {
     <div className="relative bg-brand-bg text-brand-ink antialiased">
       <ChapterNav chapters={NAV_CHAPTERS} />
       <CreativeLoop />
-      <div className="relative z-10 pt-12 sm:pt-14">
+      <div className="relative z-10">
         <ChapterConviction />
 
         <QuestionHook
