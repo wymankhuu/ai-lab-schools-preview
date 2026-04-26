@@ -202,133 +202,246 @@ export function PullQuote({
   );
 }
 
-export function PlayGlyph({
-  type,
+export type MotifKind =
+  | "loop"
+  | "scribble"
+  | "dot"
+  | "node"
+  | "arc-arrow"
+  | "rise"
+  | "bend";
+
+export function MotifGlyph({
+  kind,
   size = 22,
   color = "#0c0f14",
 }: {
-  type: "X" | "O" | "arrow" | "X-with-arrow" | "O-with-curve";
+  kind: MotifKind;
   size?: number;
   color?: string;
 }) {
   const stroke = color;
-  if (type === "X") {
+  const fill = color;
+  if (kind === "loop") {
+    // small continuous loop, mirrors the gutter CreativeLoop
     return (
       <svg
         aria-hidden="true"
         width={size}
         height={size}
-        viewBox="0 0 20 20"
+        viewBox="0 0 24 24"
         fill="none"
       >
-        <line x1="4" y1="4" x2="16" y2="16" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
-        <line x1="16" y1="4" x2="4" y2="16" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
-      </svg>
-    );
-  }
-  if (type === "O") {
-    return (
-      <svg
-        aria-hidden="true"
-        width={size}
-        height={size}
-        viewBox="0 0 20 20"
-        fill="none"
-      >
-        <circle cx="10" cy="10" r="6" stroke={stroke} strokeWidth="2" />
-      </svg>
-    );
-  }
-  if (type === "arrow") {
-    return (
-      <svg
-        aria-hidden="true"
-        width={size}
-        height={size}
-        viewBox="0 0 20 20"
-        fill="none"
-      >
-        <line x1="3" y1="10" x2="15" y2="10" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
-        <polyline
-          points="11,6 15,10 11,14"
-          stroke={stroke}
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          fill="none"
-        />
-      </svg>
-    );
-  }
-  if (type === "X-with-arrow") {
-    return (
-      <svg
-        aria-hidden="true"
-        width={size + 8}
-        height={size + 6}
-        viewBox="0 0 30 26"
-        fill="none"
-      >
-        <line x1="6" y1="20" x2="14" y2="12" stroke={stroke} strokeWidth="1.6" strokeLinecap="round" />
-        <line x1="14" y1="20" x2="6" y2="12" stroke={stroke} strokeWidth="1.6" strokeLinecap="round" />
         <motion.path
-          d="M 18 20 C 20 12, 22 8, 24 4"
+          d="M 12 4 C 4 6, 4 14, 12 16 C 20 18, 20 10, 12 8 C 6 7, 4 11, 8 14"
           stroke={stroke}
-          strokeWidth="1.5"
+          strokeWidth="1.8"
           strokeLinecap="round"
           fill="none"
           initial={{ pathLength: 0 }}
           whileInView={{ pathLength: 1 }}
           viewport={{ once: false, amount: 0.5 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
+          transition={{ duration: 0.9 }}
         />
-        <motion.polyline
-          points="22,5 24,3 26,5"
+      </svg>
+    );
+  }
+  if (kind === "scribble") {
+    // gentle scribble arc, mirrors ScribbleArc
+    return (
+      <svg
+        aria-hidden="true"
+        width={size + 8}
+        height={size}
+        viewBox="0 0 32 20"
+        fill="none"
+      >
+        <motion.path
+          d="M 2 14 Q 9 2 16 10 T 30 6"
+          stroke={stroke}
+          strokeWidth="2"
+          strokeLinecap="round"
+          fill="none"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.7 }}
+        />
+      </svg>
+    );
+  }
+  if (kind === "dot") {
+    // dot with halo, mirrors the ecosystem nodes
+    return (
+      <svg
+        aria-hidden="true"
+        width={size}
+        height={size}
+        viewBox="0 0 20 20"
+        fill="none"
+      >
+        <circle cx="10" cy="10" r="7" fill={fill} fillOpacity="0.15" />
+        <circle cx="10" cy="10" r="3" fill={fill} />
+      </svg>
+    );
+  }
+  if (kind === "node") {
+    // connected node, mirrors Ecosystem spokes
+    return (
+      <svg
+        aria-hidden="true"
+        width={size + 6}
+        height={size}
+        viewBox="0 0 26 20"
+        fill="none"
+      >
+        <motion.line
+          x1="2"
+          y1="10"
+          x2="14"
+          y2="10"
           stroke={stroke}
           strokeWidth="1.5"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.5 }}
+        />
+        <circle cx="2" cy="10" r="2" fill={fill} />
+        <circle cx="20" cy="10" r="4" fill="none" stroke={stroke} strokeWidth="1.6" />
+      </svg>
+    );
+  }
+  if (kind === "arc-arrow") {
+    // gentle hand-drawn arrow that arcs upward (mirrors BendingRoad arrowhead)
+    return (
+      <svg
+        aria-hidden="true"
+        width={size + 6}
+        height={size}
+        viewBox="0 0 26 20"
+        fill="none"
+      >
+        <motion.path
+          d="M 2 16 C 8 16, 12 8, 18 5"
+          stroke={stroke}
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          fill="none"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.7 }}
+        />
+        <motion.polyline
+          points="14,3 19,4 17,9"
+          stroke={stroke}
+          strokeWidth="1.8"
           strokeLinecap="round"
           strokeLinejoin="round"
           fill="none"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: false, amount: 0.5 }}
-          transition={{ duration: 0.2, delay: 0.85 }}
+          transition={{ duration: 0.25, delay: 0.6 }}
         />
       </svg>
     );
   }
-  // O-with-curve
+  if (kind === "rise") {
+    // small stack of bars rising (mirrors RisingBars)
+    return (
+      <svg
+        aria-hidden="true"
+        width={size + 4}
+        height={size}
+        viewBox="0 0 24 20"
+        fill="none"
+      >
+        <motion.rect
+          x="3"
+          y="14"
+          width="4"
+          height="4"
+          fill={fill}
+          initial={{ height: 0, y: 18 }}
+          whileInView={{ height: 4, y: 14 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.4 }}
+        />
+        <motion.rect
+          x="10"
+          y="9"
+          width="4"
+          height="9"
+          fill={fill}
+          initial={{ height: 0, y: 18 }}
+          whileInView={{ height: 9, y: 9 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        />
+        <motion.rect
+          x="17"
+          y="3"
+          width="4"
+          height="15"
+          fill={fill}
+          initial={{ height: 0, y: 18 }}
+          whileInView={{ height: 15, y: 3 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        />
+      </svg>
+    );
+  }
+  // bend — pivot dot + arc redirect (mirrors BendingRoad)
   return (
     <svg
       aria-hidden="true"
-      width={size + 12}
-      height={size + 6}
-      viewBox="0 0 32 26"
+      width={size + 6}
+      height={size}
+      viewBox="0 0 26 20"
       fill="none"
     >
-      <circle cx="22" cy="16" r="5" stroke={stroke} strokeWidth="1.6" />
-      <motion.path
-        d="M 4 16 C 8 16, 12 12, 16 14"
+      <motion.line
+        x1="2"
+        y1="16"
+        x2="11"
+        y2="16"
         stroke={stroke}
+        strokeOpacity="0.4"
         strokeWidth="1.5"
+        strokeDasharray="2 3"
+        strokeLinecap="round"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: false, amount: 0.5 }}
+        transition={{ duration: 0.4 }}
+      />
+      <circle cx="11" cy="16" r="2" fill={fill} />
+      <motion.path
+        d="M 11 16 C 16 16, 18 10, 22 5"
+        stroke={stroke}
+        strokeWidth="1.8"
         strokeLinecap="round"
         fill="none"
         initial={{ pathLength: 0 }}
         whileInView={{ pathLength: 1 }}
         viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 0.7, delay: 0.2 }}
+        transition={{ duration: 0.6, delay: 0.4 }}
       />
       <motion.polyline
-        points="14,12 16.5,14 14,16"
+        points="18,3 23,4 21,9"
         stroke={stroke}
-        strokeWidth="1.5"
+        strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"
         fill="none"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         viewport={{ once: false, amount: 0.5 }}
-        transition={{ duration: 0.2, delay: 0.85 }}
+        transition={{ duration: 0.25, delay: 1.0 }}
       />
     </svg>
   );
@@ -691,10 +804,6 @@ export function ChapterChatbotEra() {
               />
             </div>
 
-            <p className="mt-12 max-w-xl font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/55">
-              In 2025 · TN · ID · IN · Central TX · DC · MD · VA
-            </p>
-
             <div className="mt-12">
               <PullQuote
                 quote="AI is moving faster than school is built for. We needed a new way to make."
@@ -805,9 +914,9 @@ export function ChapterVocabulary() {
       <div ref={ref} className="absolute inset-0">
         <div className="sticky top-0 flex h-screen items-center px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
           <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
-            <motion.div style={{ y: titleY }} className="relative">
+            <motion.div style={{ y: titleY }} className="relative pt-10">
               <ScribbleArc
-                className="absolute -left-2 -top-6 h-10 w-48 sm:w-64"
+                className="absolute -left-2 -top-2 h-6 w-32 sm:w-44"
                 color="#356fe5"
                 d="M 0 60 Q 70 0 150 30 T 280 25"
               />
@@ -1495,7 +1604,7 @@ export function ChapterTwoPathways() {
           >
             <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink">
               <span aria-hidden="true">
-                <PlayGlyph type="X-with-arrow" />
+                <MotifGlyph kind="rise" />
               </span>
               Pathway 01 / The new start
             </p>
@@ -1529,7 +1638,7 @@ export function ChapterTwoPathways() {
             <p className="flex items-center justify-end gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink">
               Pathway 02 / The pivot
               <span aria-hidden="true">
-                <PlayGlyph type="O-with-curve" />
+                <MotifGlyph kind="bend" />
               </span>
             </p>
             <h3 className="mt-3 font-display text-[clamp(2.5rem,6vw,4.75rem)] leading-[0.95] text-brand-ink">
@@ -1606,7 +1715,7 @@ export function ChapterRhythm() {
                       aria-hidden="true"
                       className="absolute -left-[12px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-brand-bg"
                     >
-                      <PlayGlyph type="X" size={18} color="#ed6e2d" />
+                      <MotifGlyph kind="dot" size={18} color="#ed6e2d" />
                     </span>
                   ) : (
                     <>
@@ -1843,323 +1952,19 @@ export function ChapterPillars() {
 
 /* ---------------- 11 — The playbook ---------------- */
 
-type PlayMarker = { type: "X" | "O"; x: number; y: number };
-type PlayArrow = {
-  d: string; // SVG path
-  arrow: { x: number; y: number; rotate: number }; // arrowhead transform
-};
-
-type Play = {
-  caption: string;
-  struck?: boolean;
-  markers: PlayMarker[];
-  arrows: PlayArrow[];
-};
-
-const plays: Play[] = [
-  {
-    caption: "What 13 teams learned in two years.",
-    markers: [
-      { type: "X", x: 30, y: 70 },
-      { type: "X", x: 60, y: 70 },
-      { type: "X", x: 90, y: 70 },
-      { type: "X", x: 120, y: 70 },
-      { type: "O", x: 75, y: 25 },
-    ],
-    arrows: [
-      { d: "M 30 65 C 30 50, 25 35, 35 25", arrow: { x: 35, y: 25, rotate: -10 } },
-      { d: "M 60 65 C 60 45, 60 30, 60 22", arrow: { x: 60, y: 22, rotate: 0 } },
-      { d: "M 90 65 C 90 50, 95 35, 95 25", arrow: { x: 95, y: 25, rotate: 5 } },
-      { d: "M 120 65 C 120 50, 125 35, 125 25", arrow: { x: 125, y: 25, rotate: 10 } },
-    ],
-  },
-  {
-    caption: "13 working models. 13 sets of seams.",
-    markers: [
-      { type: "X", x: 75, y: 70 },
-      { type: "X", x: 50, y: 65 },
-      { type: "X", x: 100, y: 65 },
-      { type: "X", x: 30, y: 55 },
-      { type: "X", x: 120, y: 55 },
-    ],
-    arrows: [
-      { d: "M 75 65 L 75 22", arrow: { x: 75, y: 22, rotate: 0 } },
-      { d: "M 50 60 C 45 45, 35 35, 22 25", arrow: { x: 22, y: 25, rotate: -55 } },
-      { d: "M 100 60 C 105 45, 115 35, 128 25", arrow: { x: 128, y: 25, rotate: 55 } },
-      { d: "M 30 50 C 22 35, 12 30, 8 18", arrow: { x: 8, y: 18, rotate: -75 } },
-      { d: "M 120 50 C 128 35, 138 30, 142 18", arrow: { x: 142, y: 18, rotate: 75 } },
-    ],
-  },
-  {
-    caption: "Best practices, finalized.",
-    struck: true,
-    markers: [
-      { type: "X", x: 30, y: 60 },
-      { type: "X", x: 60, y: 60 },
-      { type: "X", x: 90, y: 60 },
-      { type: "X", x: 120, y: 60 },
-    ],
-    arrows: [],
-  },
-  {
-    caption: "An invitation to copy, fork, and remix.",
-    markers: [
-      { type: "X", x: 75, y: 70 },
-      { type: "O", x: 30, y: 25 },
-      { type: "O", x: 75, y: 18 },
-      { type: "O", x: 120, y: 25 },
-    ],
-    arrows: [
-      { d: "M 70 65 C 50 50, 35 38, 26 30", arrow: { x: 26, y: 30, rotate: -55 } },
-      { d: "M 75 60 L 75 25", arrow: { x: 75, y: 25, rotate: 0 } },
-      { d: "M 80 65 C 100 50, 115 38, 124 30", arrow: { x: 124, y: 30, rotate: 55 } },
-    ],
-  },
-  {
-    caption: "A playbook with edits visible.",
-    markers: [
-      { type: "X", x: 50, y: 65 },
-      { type: "X", x: 100, y: 65 },
-      { type: "O", x: 75, y: 30 },
-    ],
-    arrows: [
-      {
-        d: "M 50 60 C 60 40, 90 40, 100 60",
-        arrow: { x: 100, y: 60, rotate: 90 },
-      },
-      {
-        d: "M 100 65 C 90 80, 60 80, 50 70",
-        arrow: { x: 50, y: 70, rotate: 270 },
-      },
-    ],
-  },
-  {
-    caption: "Rough edges stay rough.",
-    markers: [
-      { type: "X", x: 32, y: 62 },
-      { type: "X", x: 62, y: 70 },
-      { type: "X", x: 95, y: 60 },
-      { type: "X", x: 125, y: 68 },
-    ],
-    arrows: [
-      { d: "M 32 58 C 28 42, 22 28, 16 16", arrow: { x: 16, y: 16, rotate: -55 } },
-      { d: "M 62 65 C 65 50, 70 30, 76 16", arrow: { x: 76, y: 16, rotate: -10 } },
-      { d: "M 95 56 C 100 42, 108 30, 116 18", arrow: { x: 116, y: 18, rotate: 35 } },
-      { d: "M 125 64 C 130 50, 138 36, 144 22", arrow: { x: 144, y: 22, rotate: 50 } },
-    ],
-  },
-];
-
-function PlayDiagram({ play, index }: { play: Play; index: number }) {
-  const struck = play.struck;
-  return (
-    <motion.figure
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.4 }}
-      transition={{ delay: 0.06 * index, duration: 0.45 }}
-      className="relative flex flex-col"
-    >
-      <div className="relative aspect-[3/2] overflow-hidden rounded-2xl border border-brand-ink/15 bg-brand-cream/60 p-3">
-        <span className="absolute right-3 top-2 font-mono text-[10px] tracking-[0.2em] text-brand-ink/45">
-          {`PLAY ${String(index + 1).padStart(2, "0")}`}
-        </span>
-        <svg
-          viewBox="0 0 150 90"
-          className="h-full w-full"
-          aria-hidden="true"
-          fill="none"
-        >
-          {/* hash marks (top + bottom) */}
-          {[8, 142].map((x) =>
-            [10, 22, 34, 56, 68, 80].map((y) => (
-              <line
-                key={`hash-${x}-${y}`}
-                x1={x - 2}
-                y1={y}
-                x2={x + 2}
-                y2={y}
-                stroke="#0c0f14"
-                strokeOpacity="0.18"
-                strokeWidth="0.6"
-              />
-            )),
-          )}
-          {/* sideline */}
-          <line
-            x1="3"
-            y1="3"
-            x2="147"
-            y2="3"
-            stroke="#0c0f14"
-            strokeOpacity="0.25"
-            strokeWidth="0.7"
-            strokeDasharray="2 3"
-          />
-          <line
-            x1="3"
-            y1="87"
-            x2="147"
-            y2="87"
-            stroke="#0c0f14"
-            strokeOpacity="0.25"
-            strokeWidth="0.7"
-            strokeDasharray="2 3"
-          />
-          {/* line of scrimmage */}
-          <line
-            x1="6"
-            y1="50"
-            x2="144"
-            y2="50"
-            stroke="#0c0f14"
-            strokeOpacity="0.45"
-            strokeWidth="0.8"
-            strokeDasharray="3 3"
-          />
-
-          {/* arrows */}
-          {!struck &&
-            play.arrows.map((a, ai) => (
-              <g key={`arrow-${ai}`}>
-                <motion.path
-                  d={a.d}
-                  stroke="#0c0f14"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  fill="none"
-                  initial={{ pathLength: 0 }}
-                  whileInView={{ pathLength: 1 }}
-                  viewport={{ once: false, amount: 0.4 }}
-                  transition={{
-                    duration: 0.7,
-                    delay: 0.4 + ai * 0.08,
-                    ease: "easeOut",
-                  }}
-                />
-                <motion.polyline
-                  points="-3,4 0,-2 3,4"
-                  fill="none"
-                  stroke="#0c0f14"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  initial={{ opacity: 0, scale: 0.6 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: false, amount: 0.4 }}
-                  transition={{
-                    duration: 0.25,
-                    delay: 0.4 + ai * 0.08 + 0.55,
-                  }}
-                  style={{
-                    transformOrigin: `${a.arrow.x}px ${a.arrow.y}px`,
-                  }}
-                  transform={`translate(${a.arrow.x} ${a.arrow.y}) rotate(${a.arrow.rotate})`}
-                />
-              </g>
-            ))}
-
-          {/* markers */}
-          {play.markers.map((m, mi) => {
-            if (m.type === "O") {
-              return (
-                <circle
-                  key={`m-${mi}`}
-                  cx={m.x}
-                  cy={m.y}
-                  r="3.5"
-                  fill="none"
-                  stroke="#0c0f14"
-                  strokeWidth="1.5"
-                />
-              );
-            }
-            return (
-              <g key={`m-${mi}`}>
-                <line
-                  x1={m.x - 3.5}
-                  y1={m.y - 3.5}
-                  x2={m.x + 3.5}
-                  y2={m.y + 3.5}
-                  stroke="#0c0f14"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-                <line
-                  x1={m.x + 3.5}
-                  y1={m.y - 3.5}
-                  x2={m.x - 3.5}
-                  y2={m.y + 3.5}
-                  stroke="#0c0f14"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-              </g>
-            );
-          })}
-
-          {/* scratch-out for struck plays */}
-          {struck && (
-            <>
-              <motion.line
-                x1="10"
-                y1="12"
-                x2="142"
-                y2="80"
-                stroke="#ce463f"
-                strokeWidth="2"
-                strokeLinecap="round"
-                initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
-                viewport={{ once: false, amount: 0.4 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-              />
-              <motion.line
-                x1="142"
-                y1="12"
-                x2="10"
-                y2="80"
-                stroke="#ce463f"
-                strokeWidth="2"
-                strokeLinecap="round"
-                initial={{ pathLength: 0 }}
-                whileInView={{ pathLength: 1 }}
-                viewport={{ once: false, amount: 0.4 }}
-                transition={{ duration: 0.5, delay: 0.55 }}
-              />
-            </>
-          )}
-        </svg>
-      </div>
-      <figcaption
-        className={`mt-3 font-display text-base leading-snug ${
-          struck
-            ? "text-brand-ink/35 line-through decoration-brand-ink/40 decoration-1"
-            : "text-brand-ink/85"
-        }`}
-      >
-        {play.caption}
-      </figcaption>
-    </motion.figure>
-  );
-}
 
 const playbookDraftLines: Array<{
   text: string;
-  glyph: "X" | "O" | "arrow";
+  glyph: MotifKind;
   struck?: boolean;
 }> = [
-  { text: "What 13 teams learned in two years.", glyph: "X" },
-  { text: "13 working models. 13 sets of seams to look at.", glyph: "arrow" },
-  { text: "Best practices, finalized.", glyph: "X", struck: true },
-  { text: "An invitation to copy, fork, and remix.", glyph: "O" },
-  { text: "A playbook with edits visible.", glyph: "arrow" },
-  { text: "Rough edges stay rough.", glyph: "X" },
+  { text: "What 13 teams learned in two years.", glyph: "node" },
+  { text: "13 working models. 13 sets of seams to look at.", glyph: "loop" },
+  { text: "Best practices, finalized.", glyph: "scribble", struck: true },
+  { text: "An invitation to copy, fork, and remix.", glyph: "dot" },
+  { text: "A playbook with edits visible.", glyph: "arc-arrow" },
+  { text: "Rough edges stay rough.", glyph: "scribble" },
 ];
-
-const featuredPlay = plays.find(
-  (p) => p.caption === "13 working models. 13 sets of seams.",
-)!;
 
 export function ChapterPlaybook() {
   return (
@@ -2205,8 +2010,8 @@ export function ChapterPlaybook() {
                     className="flex items-start gap-3"
                   >
                     <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center">
-                      <PlayGlyph
-                        type={line.glyph}
+                      <MotifGlyph
+                        kind={line.glyph}
                         size={18}
                         color={line.struck ? "#ce463f" : "#0c0f14"}
                       />
@@ -2224,9 +2029,6 @@ export function ChapterPlaybook() {
                 ))}
               </ul>
 
-              <figure className="mt-10 max-w-sm">
-                <PlayDiagram play={featuredPlay} index={0} />
-              </figure>
             </div>
           </div>
         </div>
@@ -2237,29 +2039,34 @@ export function ChapterPlaybook() {
 
 /* ---------------- 12 — Why Playlab ---------------- */
 
-const partnershipTenets = [
+const partnershipTenets: {
+  title: string;
+  body: string;
+  glyph: MotifKind;
+  accent: string;
+}[] = [
   {
     title: "Co-build, not deploy.",
     body: "Playlab engineers and designers sit alongside cohort teams for 24 months, shipping tools tailored to each school's model.",
-    glyph: "X-with-arrow" as const,
+    glyph: "rise",
     accent: "#feffa0",
   },
   {
     title: "Open by default.",
     body: "Every prototype, rubric, and rhythm ships back into the network. The work is the playbook.",
-    glyph: "arrow" as const,
+    glyph: "arc-arrow",
     accent: "#a4beeb",
   },
   {
     title: "A network already at work.",
     body: "Five regional ecosystems, 104 school systems, 7.3M students reached. The cohort writes inside that network, not around it.",
-    glyph: "O" as const,
+    glyph: "node",
     accent: "#efd8ef",
   },
   {
     title: "Schools as co-authors.",
     body: "We don't write about schools. The 13 cohort teams write with us, name what worked, and decide what gets handed off.",
-    glyph: "X" as const,
+    glyph: "loop",
     accent: "#d4fd63",
   },
 ];
@@ -2307,7 +2114,7 @@ export function ChapterWhyPlaylab() {
                       className="absolute -left-2 -top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-bg"
                       style={{ boxShadow: "0 0 0 1px rgba(12,15,20,0.12)" }}
                     >
-                      <PlayGlyph type={t.glyph} size={18} />
+                      <MotifGlyph kind={t.glyph} size={18} />
                     </span>
                     <span
                       aria-hidden="true"
