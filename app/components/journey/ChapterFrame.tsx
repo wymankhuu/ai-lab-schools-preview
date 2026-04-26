@@ -24,7 +24,7 @@ export function ChapterFrame({
       style={{ minHeight }}
       aria-label={eyebrow}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10">
+      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pr-20 lg:pr-28">
         <span className="font-mono text-[11px] tracking-[0.2em] text-brand-ink/55">
           {`[${number}]`}
         </span>

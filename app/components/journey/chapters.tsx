@@ -116,7 +116,7 @@ export function QuestionHook({
   return (
     <section
       aria-label="Question"
-      className="relative flex min-h-[32vh] items-center px-6 py-10 sm:px-12 md:pl-20 md:pr-12 lg:pl-24"
+      className="relative flex min-h-[32vh] items-center px-6 py-10 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24"
     >
       <div className="mx-auto w-full max-w-4xl text-center">
         <motion.p
@@ -493,7 +493,7 @@ export function ChapterConviction() {
       <div ref={ref} className="absolute inset-0">
         <motion.div
           style={{ opacity, y }}
-          className="sticky top-0 flex h-screen items-center justify-center px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24"
+          className="sticky top-0 flex h-screen items-center justify-center px-6 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24"
         >
           <div className="relative mx-auto w-full max-w-3xl text-center">
             <CutOut
@@ -551,7 +551,7 @@ export function ChapterTheBet() {
       accent="#356fe5"
       minHeight="140vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-20 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-20 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="relative mx-auto w-full max-w-5xl">
           <CutOut
             className="absolute -right-2 top-0 -z-0 h-24 w-24 rounded-full sm:h-32 sm:w-32"
@@ -756,7 +756,7 @@ export function ChapterChatbotEra() {
       accent="#ed6e2d"
       minHeight="115vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
@@ -912,7 +912,7 @@ export function ChapterVocabulary() {
       minHeight="120vh"
     >
       <div ref={ref} className="absolute inset-0">
-        <div className="sticky top-0 flex h-screen items-center px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+        <div className="sticky top-0 flex h-screen items-center px-6 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
           <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
             <motion.div style={{ y: titleY }} className="relative pt-10">
               <ScribbleArc
@@ -1148,7 +1148,7 @@ export function ChapterMandate() {
       accent="#398239"
       minHeight="110vh"
     >
-      <div className="relative flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="relative flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <DotGrid
           className="pointer-events-none absolute left-6 top-20 hidden h-24 w-32 opacity-70 sm:block md:left-20"
           color="#398239"
@@ -1224,7 +1224,7 @@ export function ChapterWhyCohort() {
       accent="#ce463f"
       minHeight="100vh"
     >
-      <div className="relative flex min-h-screen items-center justify-center px-6 py-24 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="relative flex min-h-screen items-center justify-center px-6 py-24 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <CutOut
           className="absolute left-12 top-16 -z-0 h-20 w-28 rounded-md md:left-24"
           color="#f4baef"
@@ -1279,7 +1279,7 @@ export function ChapterMeetCohort() {
       className="relative w-full scroll-mt-20"
       aria-label="Meet the cohort"
     >
-      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
+      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <span className="font-mono text-[11px] tracking-[0.2em] text-brand-ink/55">
           [07]
         </span>
@@ -1289,7 +1289,7 @@ export function ChapterMeetCohort() {
       </div>
 
       {/* Hero: full map with every pin lit */}
-      <div className="px-6 pt-24 pb-10 sm:px-12 sm:pt-28 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="px-6 pt-24 pb-10 sm:px-12 sm:pt-28 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-6xl">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
@@ -1327,7 +1327,7 @@ export function ChapterMeetCohort() {
       </div>
 
       {/* Windy-road school cards: alternate sides + S-curve connectors */}
-      <div className="px-6 py-12 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="px-6 py-12 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-5xl">
           {cohortPartners.map((p, i) => {
             const accent = p.pathway === "Launch" ? "#feffa0" : "#a4beeb";
@@ -1571,7 +1571,7 @@ export function ChapterTwoPathways() {
       className="relative w-full scroll-mt-20"
       aria-label="Two pathways, one cohort"
     >
-      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
+      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <span className="font-mono text-[11px] tracking-[0.2em] text-brand-ink/55">
           [08]
         </span>
@@ -1581,7 +1581,7 @@ export function ChapterTwoPathways() {
       </div>
 
       {/* Intro */}
-      <div className="px-6 pt-24 pb-6 sm:px-12 sm:pt-28 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="px-6 pt-24 pb-6 sm:px-12 sm:pt-28 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-5xl">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             Two pathways, one cohort
@@ -1593,7 +1593,7 @@ export function ChapterTwoPathways() {
       </div>
 
       {/* Launch panel */}
-      <div className="bg-accent-yellow/55 px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="bg-accent-yellow/55 px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-10 lg:grid-cols-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1623,7 +1623,7 @@ export function ChapterTwoPathways() {
       </div>
 
       {/* Pivot panel */}
-      <div className="bg-accent-blue/55 px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="bg-accent-blue/55 px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-10 lg:grid-cols-12">
           <div className="order-2 lg:order-1 lg:col-span-5">
             <BendingRoad />
@@ -1678,7 +1678,7 @@ export function ChapterRhythm() {
       className="relative w-full scroll-mt-20"
       aria-label="The 24-month rhythm"
     >
-      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
+      <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <span className="font-mono text-[11px] tracking-[0.2em] text-brand-ink/55">
           [09]
         </span>
@@ -1687,7 +1687,7 @@ export function ChapterRhythm() {
         </span>
       </div>
 
-      <div className="px-6 pt-24 pb-16 sm:px-12 sm:pt-28 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="px-6 pt-24 pb-16 sm:px-12 sm:pt-28 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-3xl">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             24 months of work
@@ -1906,7 +1906,7 @@ export function ChapterPillars() {
       accent="#0c0f14"
       minHeight="110vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-6xl">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             Three pillars
@@ -1974,7 +1974,7 @@ export function ChapterPlaybook() {
       accent="#398239"
       minHeight="120vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-5xl">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
             <div className="lg:col-span-6">
@@ -2079,7 +2079,7 @@ export function ChapterWhyPlaylab() {
       accent="#356fe5"
       minHeight="100vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-6xl">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
             <div className="lg:col-span-5">
