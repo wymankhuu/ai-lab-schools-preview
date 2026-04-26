@@ -515,6 +515,12 @@ function PartnerCard({
       <p className="mt-4 flex-1 text-base leading-relaxed text-[#122134]/90">
         {partner.descriptor}
       </p>
+
+      {hasLongDescription && (
+        <span className="mt-4 text-sm font-medium text-[#122134]/60">
+          Read more
+        </span>
+      )}
     </button>
   );
 }
