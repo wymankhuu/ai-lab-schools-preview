@@ -87,11 +87,23 @@ export function JourneyMap({ litCount, highlightId = null }: JourneyMapProps) {
         })}
       </g>
 
+      <defs>
+        {projectedPartners.map((p) => (
+          <clipPath
+            id={`journey-logo-clip-${p.id}`}
+            key={`clip-${p.id}`}
+          >
+            <circle cx={p.x} cy={p.y} r={11} />
+          </clipPath>
+        ))}
+      </defs>
+
       {projectedPartners.map((p, i) => {
         const isLit = i < litCount;
         const isHighlight = p.id === highlightId;
         const ringColor = p.pathway === "Launch" ? "#feffa0" : "#a4beeb";
-        const radius = isHighlight ? 16 : 11;
+        const radius = isHighlight ? 16 : 13;
+        const logoSize = 24 * (p.logoScale ?? 1);
         return (
           <motion.g
             key={p.id}
@@ -113,7 +125,7 @@ export function JourneyMap({ litCount, highlightId = null }: JourneyMapProps) {
               fill="none"
               stroke={ringColor}
               strokeOpacity={isLit ? 1 : 0.4}
-              strokeWidth={isHighlight ? 3 : 2}
+              strokeWidth={isHighlight ? 3 : 2.25}
             />
             <circle
               cx={p.x}
@@ -123,6 +135,16 @@ export function JourneyMap({ litCount, highlightId = null }: JourneyMapProps) {
               stroke="#0c0f14"
               strokeOpacity={isLit ? 0.85 : 0.3}
               strokeWidth={0.6}
+            />
+            <image
+              href={p.logo}
+              x={p.x - logoSize / 2}
+              y={p.y - logoSize / 2}
+              width={logoSize}
+              height={logoSize}
+              preserveAspectRatio="xMidYMid meet"
+              clipPath={`url(#journey-logo-clip-${p.id})`}
+              opacity={isLit ? 1 : 0.5}
             />
           </motion.g>
         );
