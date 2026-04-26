@@ -241,21 +241,21 @@ function CircledWord({ text, delay }: { text: string; delay: number }) {
       </span>
       <svg
         aria-hidden="true"
-        viewBox="0 0 320 140"
+        viewBox="0 0 320 30"
         preserveAspectRatio="none"
-        className="absolute inset-x-[-6%] inset-y-[-22%] z-0 h-auto w-[112%] overflow-visible"
+        className="absolute inset-x-[-2%] -bottom-3 z-0 h-3 w-[104%] overflow-visible sm:h-4"
         fill="none"
       >
         <motion.path
-          d="M 40 75 C 0 30, 80 8, 170 12 C 270 16, 320 50, 305 90 C 290 125, 200 132, 110 128 C 30 124, 5 100, 18 75"
+          d="M 4 18 C 60 10, 140 22, 220 14 C 270 9, 300 16, 316 12"
           stroke="#ed6e2d"
-          strokeWidth="3"
+          strokeWidth="3.5"
           strokeLinecap="round"
           initial={{ pathLength: 0, opacity: 0 }}
           whileInView={{ pathLength: 1, opacity: 1 }}
           viewport={{ once: false, amount: 0.5 }}
           transition={{
-            pathLength: { duration: 1.1, delay, ease: "easeInOut" },
+            pathLength: { duration: 1.0, delay, ease: "easeOut" },
             opacity: { duration: 0.2, delay },
           }}
         />
