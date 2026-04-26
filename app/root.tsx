@@ -28,7 +28,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="bg-[#e1e7d9]">
+      <body className="bg-brand-bg">
         {children}
         <ScrollRestoration />
         <Scripts />
@@ -47,7 +47,7 @@ export default function App() {
     >
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-[#1a311d] focus:px-4 focus:py-2 focus:font-medium focus:text-white focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-[#ffd956]"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-brand-ink focus:px-4 focus:py-2 focus:font-medium focus:text-brand-bg focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-accent-yellow"
       >
         Skip to main content
       </a>
@@ -62,18 +62,18 @@ export default function App() {
 
 function TopBar() {
   return (
-    <header className="bg-[#e1e7d9]">
+    <header className="border-b border-brand-ink/15 bg-brand-bg">
       <div className="container mx-auto flex items-center justify-between px-4 py-4">
         <a
           href="https://playlab.ai"
-          className="flex items-center gap-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1a311d] focus-visible:ring-offset-2 focus-visible:ring-offset-[#e1e7d9]"
+          className="flex items-center gap-2 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-ink focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
           aria-label="Playlab home"
         >
           <img src={playlabLogo} alt="Playlab" className="h-7 w-auto" />
         </a>
         <a
           href="https://playlab.ai"
-          className="rounded text-sm font-medium text-[#122134] hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1a311d] focus-visible:ring-offset-2 focus-visible:ring-offset-[#e1e7d9]"
+          className="rounded font-mono text-xs uppercase tracking-[0.2em] text-brand-ink/70 hover:text-brand-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-ink focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
         >
           playlab.ai
         </a>
@@ -84,7 +84,7 @@ function TopBar() {
 
 function SiteFooter() {
   return (
-    <footer className="bg-[#e1e7d9] py-10 text-center text-sm text-[#122134]/80">
+    <footer className="border-t border-brand-ink/15 bg-brand-bg py-10 text-center text-sm text-brand-ink/65">
       <div className="container mx-auto px-4">
         © Playlab Education
       </div>
