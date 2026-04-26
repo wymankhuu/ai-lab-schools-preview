@@ -771,6 +771,89 @@ export function ChapterWhyCohort() {
 }
 
 /* ---------------- 07 — Meet the cohort ---------------- */
+function CohortGrid() {
+  return (
+    <div
+      id="all-cohort"
+      className="relative bg-brand-cream/50 px-6 py-20 sm:px-12 md:pl-20 md:pr-12 lg:pl-24"
+    >
+      <div className="mx-auto w-full max-w-6xl">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
+              All cohort schools / one frame
+            </p>
+            <h3 className="mt-2 font-display text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight text-brand-ink">
+              Every team, side by side.
+            </h3>
+          </div>
+          <div className="flex gap-3 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/65">
+            <span className="inline-flex items-center gap-2">
+              <span
+                aria-hidden="true"
+                className="h-2.5 w-2.5 rounded-full border border-brand-ink"
+                style={{ backgroundColor: "#feffa0" }}
+              />
+              Launch
+            </span>
+            <span className="inline-flex items-center gap-2">
+              <span
+                aria-hidden="true"
+                className="h-2.5 w-2.5 rounded-full border border-brand-ink"
+                style={{ backgroundColor: "#a4beeb" }}
+              />
+              Pivot
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {cohortPartners.map((p, i) => (
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ delay: 0.03 * i, duration: 0.4 }}
+              className="flex h-full flex-col rounded-2xl border border-brand-ink/10 bg-brand-bg p-4"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div
+                  className="h-10 w-10 shrink-0 overflow-hidden rounded-full border-2 bg-brand-bg"
+                  style={{
+                    borderColor: p.pathway === "Launch" ? "#feffa0" : "#a4beeb",
+                  }}
+                >
+                  <img
+                    src={p.logo}
+                    alt=""
+                    className="h-full w-full object-contain"
+                  />
+                </div>
+                <span
+                  className="rounded-full border border-brand-ink px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.15em] text-brand-ink"
+                  style={{
+                    backgroundColor:
+                      p.pathway === "Launch" ? "#feffa0" : "#a4beeb",
+                  }}
+                >
+                  {p.pathway}
+                </span>
+              </div>
+              <h4 className="mt-3 font-display text-base leading-tight text-brand-ink">
+                {p.school}
+              </h4>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-brand-ink/55">
+                {p.city}, {p.state}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ChapterMeetCohort() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -884,19 +967,139 @@ export function ChapterMeetCohort() {
           </div>
         </div>
       </div>
+
+      <CohortGrid />
     </section>
   );
 }
 
 /* ---------------- 08 — Two pathways ---------------- */
+function LaunchMotif() {
+  const ref = useRef<SVGSVGElement>(null);
+  const inView = useInView(ref, { amount: 0.6, once: false });
+  return (
+    <svg
+      ref={ref}
+      aria-hidden="true"
+      viewBox="0 0 80 140"
+      className="h-24 w-12"
+      fill="none"
+    >
+      {/* trail line */}
+      <motion.line
+        x1="40"
+        y1="135"
+        x2="40"
+        y2="55"
+        stroke="#0c0f14"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeDasharray="3 4"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: inView ? 1 : 0 }}
+        transition={{ duration: 0.9, delay: 0.1 }}
+      />
+      {/* three stacked chevrons */}
+      {[
+        { y: 30, scale: 1, delay: 0.95 },
+        { y: 55, scale: 0.85, delay: 0.75 },
+        { y: 80, scale: 0.7, delay: 0.55 },
+      ].map((c, i) => (
+        <motion.path
+          key={i}
+          d={`M ${40 - 14 * c.scale} ${c.y + 12 * c.scale} L 40 ${c.y - 4 * c.scale} L ${40 + 14 * c.scale} ${c.y + 12 * c.scale}`}
+          stroke="#0c0f14"
+          strokeWidth="2.25"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{
+            opacity: inView ? 1 : 0,
+            y: inView ? 0 : 10,
+          }}
+          transition={{ duration: 0.4, delay: c.delay }}
+        />
+      ))}
+    </svg>
+  );
+}
+
+function PivotMotif() {
+  const ref = useRef<SVGSVGElement>(null);
+  const inView = useInView(ref, { amount: 0.6, once: false });
+  return (
+    <svg
+      ref={ref}
+      aria-hidden="true"
+      viewBox="0 0 140 100"
+      className="h-20 w-28"
+      fill="none"
+    >
+      {/* original direction (faded, dashed) */}
+      <motion.line
+        x1="10"
+        y1="80"
+        x2="80"
+        y2="80"
+        stroke="#0c0f14"
+        strokeWidth="1.25"
+        strokeOpacity="0.35"
+        strokeDasharray="3 4"
+        strokeLinecap="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: inView ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+      />
+      {/* pivot point */}
+      <motion.circle
+        cx="80"
+        cy="80"
+        r="3.5"
+        fill="#0c0f14"
+        initial={{ scale: 0 }}
+        animate={{ scale: inView ? 1 : 0 }}
+        transition={{ duration: 0.3, delay: 0.45 }}
+      />
+      {/* curved redirect arc */}
+      <motion.path
+        d="M 80 80 Q 110 80 115 50 T 130 15"
+        stroke="#0c0f14"
+        strokeWidth="2"
+        strokeLinecap="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: inView ? 1 : 0 }}
+        transition={{ duration: 0.85, delay: 0.55 }}
+      />
+      {/* arrowhead */}
+      <motion.path
+        d="M 124 21 L 130 13 L 132 23"
+        stroke="#0c0f14"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{
+          opacity: inView ? 1 : 0,
+          scale: inView ? 1 : 0.7,
+        }}
+        transition={{ duration: 0.3, delay: 1.3 }}
+        style={{ transformOrigin: "130px 17px" }}
+      />
+    </svg>
+  );
+}
+
 export function ChapterTwoPathways() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const yellowX = useTransform(scrollYProgress, [0.05, 0.5], ["-50%", "0%"]);
-  const blueX = useTransform(scrollYProgress, [0.05, 0.5], ["50%", "0%"]);
+  // launch card lifts up; pivot card swivels into place
+  const launchY = useTransform(scrollYProgress, [0.1, 0.55], ["20%", "0%"]);
+  const launchOpacity = useTransform(scrollYProgress, [0.1, 0.4], [0.4, 1]);
+  const pivotRotate = useTransform(scrollYProgress, [0.1, 0.55], [-6, 0]);
+  const pivotOpacity = useTransform(scrollYProgress, [0.1, 0.4], [0.4, 1]);
   const titleOpacity = useTransform(
     scrollYProgress,
     [0, 0.15, 0.85, 1],
@@ -925,29 +1128,30 @@ export function ChapterTwoPathways() {
 
             <div className="relative mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
               <motion.div
-                style={{ x: yellowX }}
-                className="relative rounded-3xl bg-accent-yellow p-7 sm:p-9"
+                style={{ y: launchY, opacity: launchOpacity }}
+                className="relative overflow-hidden rounded-3xl bg-accent-yellow p-7 sm:p-9"
               >
-                <ScribbleArc
-                  className="absolute -right-2 -top-3 h-6 w-32"
-                  color="#0c0f14"
-                  d="M 0 50 Q 60 5 130 30 T 280 20"
-                />
+                <div className="absolute right-6 top-5 sm:right-8 sm:top-7">
+                  <LaunchMotif />
+                </div>
                 <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink">
                   The new start
                 </span>
                 <h3 className="mt-3 font-display text-3xl text-brand-ink">
                   Launch
                 </h3>
-                <p className="mt-3 text-base leading-relaxed text-brand-ink/85">
+                <p className="mt-3 max-w-md text-base leading-relaxed text-brand-ink/85">
                   Founders building schools from the ground up. Every system
                   designed for the AI age from day one.
                 </p>
               </motion.div>
               <motion.div
-                style={{ x: blueX }}
-                className="relative rounded-3xl bg-accent-blue p-7 sm:p-9"
+                style={{ rotate: pivotRotate, opacity: pivotOpacity }}
+                className="relative overflow-hidden rounded-3xl bg-accent-blue p-7 sm:p-9"
               >
+                <div className="absolute right-5 top-5 sm:right-7 sm:top-7">
+                  <PivotMotif />
+                </div>
                 <DotGrid
                   className="absolute -bottom-3 -left-3 h-10 w-24 opacity-70"
                   color="#0c0f14"
@@ -961,7 +1165,7 @@ export function ChapterTwoPathways() {
                 <h3 className="mt-3 font-display text-3xl text-brand-ink">
                   Pivot
                 </h3>
-                <p className="mt-3 text-base leading-relaxed text-brand-ink/85">
+                <p className="mt-3 max-w-md text-base leading-relaxed text-brand-ink/85">
                   Leaders of existing schools rearchitecting time, space, and
                   staffing for the students they already serve.
                 </p>
@@ -1146,87 +1350,67 @@ export function ChapterPillars() {
 
 /* ---------------- 11 — The playbook ---------------- */
 export function ChapterPlaybook() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const lineY = useTransform(scrollYProgress, [0, 1], ["20%", "-90%"]);
-
   const draftLines = [
-    { strike: true, text: "What we know about reimagining school." },
-    { strike: false, text: "What 13 teams learned in two years." },
-    { strike: true, text: "Five rules for AI in the classroom." },
-    {
-      strike: false,
-      text: "13 working models. 13 sets of seams to look at.",
-    },
-    { strike: false, text: "An invitation to copy, fork, and remix." },
+    "What 13 teams learned in two years.",
+    "13 working models. 13 sets of seams to look at.",
     { strike: true, text: "Best practices, finalized." },
-    { strike: false, text: "A playbook with edits visible." },
-    { strike: false, text: "Rough edges stay rough." },
-  ];
+    "An invitation to copy, fork, and remix.",
+    "A playbook with edits visible.",
+    "Rough edges stay rough.",
+  ] as Array<string | { strike: boolean; text: string }>;
 
   return (
     <ChapterFrame
       number="11"
       eyebrow="The artifact"
       accent="#398239"
-      minHeight="120vh"
+      minHeight="100vh"
     >
-      <div ref={ref} className="absolute inset-0">
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
-          <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-5">
-              <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
-                The artifact
-              </p>
-              <h2 className="mt-3 font-display text-[clamp(2.25rem,5vw,4rem)] leading-tight text-brand-ink">
-                Open-source playbook, 2028.
-              </h2>
-              <p className="mt-5 max-w-md text-base leading-relaxed text-brand-ink/75">
-                We&rsquo;re not in the answers business. We&rsquo;re in the
-                show-your-work business. The playbook ships with edits visible
-                so the next school can start further down the road.
-              </p>
-              <DotGrid
-                className="mt-6 h-16 w-32 opacity-80"
-                color="#398239"
-                cols={10}
-                rows={5}
-                gap={14}
-              />
-            </div>
-            <div className="relative lg:col-span-7">
-              <div className="relative h-[55vh] overflow-hidden rounded-3xl border border-brand-ink/15 bg-brand-cream/60">
-                <motion.div
-                  style={{ y: lineY }}
-                  className="absolute inset-x-0 top-0 flex flex-col gap-5 px-7 py-8 font-display text-xl leading-snug text-brand-ink/85 sm:text-2xl"
-                >
-                  {[...draftLines, ...draftLines].map((line, i) => (
-                    <p
-                      key={i}
-                      className={
-                        line.strike
-                          ? "text-brand-ink/40 line-through decoration-accent-red decoration-2"
-                          : ""
-                      }
-                    >
-                      {line.text}
-                    </p>
-                  ))}
-                </motion.div>
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-brand-bg to-transparent"
-                />
-                <div
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-brand-bg to-transparent"
-                />
-              </div>
-            </div>
+      <div className="flex min-h-screen items-center px-6 py-24 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+        <div className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
+              The artifact
+            </p>
+            <h2 className="mt-3 font-display text-[clamp(2.25rem,5vw,3.75rem)] leading-tight text-brand-ink">
+              Open-source playbook, 2028.
+            </h2>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-brand-ink/70">
+              We&rsquo;re not in the answers business. We&rsquo;re in the
+              show-your-work business. The playbook ships with edits visible
+              so the next school can start further down the road.
+            </p>
           </div>
+
+          <ul className="space-y-3 lg:col-span-7 lg:pt-2">
+            {draftLines.map((line, i) => {
+              const text = typeof line === "string" ? line : line.text;
+              const strike = typeof line === "string" ? false : line.strike;
+              return (
+                <motion.li
+                  key={i}
+                  initial={{ opacity: 0, y: 8 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.5 }}
+                  transition={{ delay: 0.06 * i, duration: 0.5 }}
+                  className="flex items-baseline gap-3 font-display text-lg leading-snug sm:text-xl"
+                >
+                  <span className="font-mono text-[10px] tracking-[0.2em] text-brand-ink/35">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span
+                    className={
+                      strike
+                        ? "text-brand-ink/35 line-through decoration-brand-ink/40 decoration-1"
+                        : "text-brand-ink/85"
+                    }
+                  >
+                    {text}
+                  </span>
+                </motion.li>
+              );
+            })}
+          </ul>
         </div>
       </div>
     </ChapterFrame>
