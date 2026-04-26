@@ -1791,7 +1791,19 @@ export function ChapterMeetCohort() {
         <div className="mx-auto w-full max-w-5xl">
           {cohortPartners.map((p, i) => {
             const accent = p.pathway === "Launch" ? "#feffa0" : "#a4beeb";
-            const tint = p.pathway === "Launch" ? "#fff46c" : "#a4beeb";
+            // Subtler brand-palette tints rotated per partner so the
+            // cohort grid reads as a soft collage rather than two stripes.
+            const subtleTints = [
+              "#efd8ef", // soft pink
+              "#feffa0", // pale yellow
+              "#a4beeb", // soft blue
+              "#eff0e5", // sage cream
+            ];
+            const tintHash = [...p.id].reduce(
+              (acc, c) => (acc * 31 + c.charCodeAt(0)) >>> 0,
+              0,
+            );
+            const tint = subtleTints[tintHash % subtleTints.length];
             const isLeft = i % 2 === 0;
             const nextLeft = (i + 1) % 2 === 0;
             const showConnector = i < cohortPartners.length - 1;
@@ -1821,7 +1833,7 @@ export function ChapterMeetCohort() {
                       className="pointer-events-none absolute inset-0 h-full w-full"
                       color={tint}
                       cellSize={14}
-                      opacity={0.95}
+                      opacity={0.7}
                     />
                     {/* one rotating brand-collage accent in a corner */}
                     {accentKind === 0 && (
