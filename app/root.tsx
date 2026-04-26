@@ -62,7 +62,7 @@ export default function App() {
 
 function TopBar() {
   return (
-    <header className="border-b border-brand-ink/15 bg-brand-bg">
+    <header className="sticky top-0 z-[60] border-b border-brand-ink/15 bg-brand-bg/90 backdrop-blur">
       <div className="container mx-auto flex items-center justify-between px-4 py-4">
         <a
           href="https://playlab.ai"
@@ -72,10 +72,10 @@ function TopBar() {
           <img src={playlabLogo} alt="Playlab" className="h-9 w-auto sm:h-10" />
         </a>
         <a
-          href="https://playlab.ai"
-          className="rounded font-mono text-xs uppercase tracking-[0.2em] text-brand-ink/70 hover:text-brand-ink focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-ink focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg"
+          href="mailto:support@playlab.ai"
+          className="inline-flex items-center justify-center rounded-full border-2 border-brand-ink bg-brand-bg px-4 py-1.5 font-display text-sm text-brand-ink transition-colors hover:bg-brand-ink hover:text-brand-bg focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-ink focus-visible:ring-offset-2 focus-visible:ring-offset-brand-bg sm:px-5 sm:py-2"
         >
-          playlab.ai
+          Get in touch
         </a>
       </div>
     </header>
