@@ -18,10 +18,10 @@ export function CohortLogoMarquee() {
           .cohort-marquee-track { animation: none; }
         }
       `}</style>
-      <div className="bg-[#e1e7d9] pb-4 pt-0 sm:pb-6">
+      <div className="bg-[#e1e7d9] pb-8 pt-2 sm:pb-12">
         <div className="container mx-auto px-4">
           <div
-            className="overflow-hidden rounded-3xl bg-[#fdfffc] py-8"
+            className="overflow-hidden rounded-3xl bg-[#fdfffc] py-10"
             style={{
               WebkitMaskImage:
                 "linear-gradient(to right, transparent 0, black 80px, black calc(100% - 80px), transparent 100%)",
@@ -29,7 +29,7 @@ export function CohortLogoMarquee() {
                 "linear-gradient(to right, transparent 0, black 80px, black calc(100% - 80px), transparent 100%)",
             }}
           >
-            <p className="mb-4 text-center text-xs font-black uppercase tracking-[0.2em] text-[#1a311d]/60 sm:text-sm">
+            <p className="mb-6 text-center text-xs font-black uppercase tracking-[0.2em] text-[#1a311d]/60 sm:text-sm">
               <FormattedMessage
                 defaultMessage="The schools of Cohort 1"
                 description="Label above the horizontal scrolling logo marquee"

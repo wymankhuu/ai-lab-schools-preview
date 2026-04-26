@@ -117,7 +117,7 @@ export function ImportantDates() {
   return (
     <div className="bg-[#e1e7d9] py-8 sm:py-12 lg:py-16">
       <div className="container mx-auto px-4">
-        <div className="mx-auto w-full max-w-[980px] rounded-3xl bg-[#fdfffc] px-8 py-10 sm:px-10 lg:px-14 lg:py-12">
+        <div className="mx-auto w-full max-w-[980px] rounded-3xl bg-[#fdfffc] px-8 py-12 sm:px-10 lg:px-16 lg:py-16">
           <h2 className="font-heading text-4xl font-bold text-[#122134] sm:text-5xl lg:text-[56px]">
             <FormattedMessage
               defaultMessage="The Journey"
@@ -136,14 +136,14 @@ export function ImportantDates() {
               <div className="flex flex-col gap-5 border-l-4 border-[#00cc72] pl-8">
                 {journeyItems.map((item) => (
                   <div key={item.id} className="flex flex-col gap-1.5">
-                    <div className="flex items-center gap-2 font-heading text-base font-bold leading-[25px] text-[#122134]/70">
+                    <div className="flex items-center gap-2 font-heading text-base font-bold leading-[25px] text-[#122134]/80">
                       <Check
                         className="h-4 w-4 text-[#00cc72]"
                         strokeWidth={3}
                       />
                       {item.date}
                     </div>
-                    <div className="font-body text-base leading-[26px] text-[#122134]/70">
+                    <div className="font-body text-base leading-[26px] text-[#122134]/80">
                       {item.description}
                     </div>
                   </div>

@@ -2,7 +2,7 @@ import {
   BookOpen,
   Handshake,
   MessageSquare,
-  Network,
+  Sparkles,
   Users,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -18,7 +18,7 @@ type Offering = {
 const offerings: Offering[] = [
   {
     id: "platform",
-    icon: Network,
+    icon: Sparkles,
     accent: "#ffd956",
     title: "Enterprise-grade AI platform",
     body: "Full access to Playlab's purpose-built platform with robust security, privacy, and human-in-the-loop guardrails.",
@@ -59,7 +59,7 @@ export function WhatPlaylabBrings() {
       <div className="container mx-auto px-4">
         <div className="mx-auto flex max-w-6xl flex-col gap-10">
           <div className="flex flex-col items-center gap-4 text-center">
-            <p className="text-base font-black uppercase tracking-wider text-[#0f6d37]">
+            <p className="text-base font-black uppercase tracking-wider text-[#00cc72]">
               What Playlab Brings
             </p>
             <h2 className="font-heading text-4xl font-bold text-[#122134] sm:text-5xl">
@@ -72,14 +72,13 @@ export function WhatPlaylabBrings() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-6 xl:gap-8">
-            {offerings.map((offering, index) => {
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:gap-8">
+            {offerings.map((offering) => {
               const Icon = offering.icon;
-              const startClass = index === 3 ? "lg:col-start-2" : "";
               return (
                 <div
                   key={offering.id}
-                  className={`flex h-full flex-col gap-4 rounded-3xl border border-[#1a311d]/10 bg-[#fdfffc] p-8 shadow-[0_1px_3px_rgba(26,49,29,0.04)] lg:col-span-2 ${startClass}`}
+                  className="flex h-full flex-col gap-4 rounded-3xl border border-[#1a311d]/10 bg-[#fdfffc] p-8 shadow-[0_1px_3px_rgba(26,49,29,0.04)]"
                 >
                   <div
                     className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-[#1a311d]"

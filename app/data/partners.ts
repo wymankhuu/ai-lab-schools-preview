@@ -3,14 +3,14 @@ import colossalLogo from "../logos/colossal.png";
 import crosstownLogo from "../logos/crosstown.webp";
 import daVinciLogo from "../logos/da-vinci.png";
 import edenParkLogo from "../logos/eden-park.png";
-import kindleLogo from "../logos/kindle.png";
+import kindleLogo from "../logos/kindle.webp";
 import madisonLogo from "../logos/madison.png";
 import moxieLogo from "../logos/moxie.png";
 import newVillageLogo from "../logos/new-village.png";
 import powerLogo from "../logos/power.png";
 import tempeLogo from "../logos/tempe.png";
 import valorLogo from "../logos/valor.png";
-import wlaLogo from "../logos/wla.jpg";
+import wlaLogo from "../logos/wla.svg";
 
 export type Pathway = "Launch" | "Pivot";
 

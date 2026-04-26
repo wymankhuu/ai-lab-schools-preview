@@ -27,6 +27,154 @@ const pathwayColors = {
   Pivot: "#61dcff",
 } as const;
 
+/* ------------ Brand-collage decoration primitives ------------ */
+
+function CollageGrid({
+  className,
+  color = "#a4beeb",
+  cellSize = 14,
+}: {
+  className?: string;
+  color?: string;
+  cellSize?: number;
+}) {
+  const id = `cohort-grid-${cellSize}-${color.replace(/[^a-z0-9]/gi, "")}`;
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      preserveAspectRatio="xMidYMid slice"
+      viewBox="0 0 200 200"
+    >
+      <defs>
+        <pattern
+          id={id}
+          width={cellSize}
+          height={cellSize}
+          patternUnits="userSpaceOnUse"
+        >
+          <path
+            d={`M ${cellSize} 0 L 0 0 0 ${cellSize}`}
+            fill="none"
+            stroke={color}
+            strokeWidth="0.6"
+            strokeOpacity="0.5"
+          />
+        </pattern>
+      </defs>
+      <rect width="200" height="200" fill={`url(#${id})`} />
+    </svg>
+  );
+}
+
+function CollageStarburst({
+  className,
+  color = "#d4fd63",
+  spikes = 12,
+}: {
+  className?: string;
+  color?: string;
+  spikes?: number;
+}) {
+  const cx = 50;
+  const cy = 50;
+  const outerR = 48;
+  const innerR = 18;
+  const pts: string[] = [];
+  for (let i = 0; i < spikes * 2; i++) {
+    const r = i % 2 === 0 ? outerR : innerR;
+    const theta = (i / (spikes * 2)) * Math.PI * 2 - Math.PI / 2;
+    pts.push(`${cx + Math.cos(theta) * r} ${cy + Math.sin(theta) * r}`);
+  }
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 100 100"
+      className={className}
+      fill={color}
+    >
+      <polygon points={pts.join(" ")} />
+    </svg>
+  );
+}
+
+function CollagePebble({
+  className,
+  color = "#0f6d37",
+  variant = 0,
+}: {
+  className?: string;
+  color?: string;
+  variant?: 0 | 1 | 2;
+}) {
+  const paths = [
+    "M 32 14 C 64 6, 96 22, 92 50 C 88 78, 56 88, 26 78 C 4 70, 6 36, 32 14 Z",
+    "M 18 28 C 36 8, 78 12, 92 36 C 102 56, 80 80, 50 86 C 22 92, 8 56, 18 28 Z",
+    "M 10 44 C 14 18, 50 8, 80 18 C 100 26, 100 60, 86 76 C 70 94, 30 92, 14 76 C 4 64, 6 56, 10 44 Z",
+  ];
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 100 100"
+      className={className}
+      fill={color}
+    >
+      <path d={paths[variant]} />
+    </svg>
+  );
+}
+
+function CollageCloudBlob({
+  className,
+  color = "#356fe5",
+}: {
+  className?: string;
+  color?: string;
+}) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 80 120"
+      className={className}
+      fill={color}
+    >
+      <path d="M 40 8 C 60 6, 70 22, 60 32 C 76 38, 76 56, 60 60 C 76 70, 70 86, 56 86 C 70 96, 58 112, 40 110 C 22 112, 12 96, 24 88 C 8 84, 12 68, 28 64 C 8 60, 8 40, 24 36 C 14 26, 22 8, 40 8 Z" />
+    </svg>
+  );
+}
+
+function CollageArchRow({
+  className,
+  color = "#feffa0",
+  count = 8,
+}: {
+  className?: string;
+  color?: string;
+  count?: number;
+}) {
+  const archW = 40;
+  const totalW = count * archW;
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox={`0 0 ${totalW} 30`}
+      preserveAspectRatio="none"
+      className={className}
+      fill={color}
+    >
+      {Array.from({ length: count }, (_, i) => (
+        <ellipse
+          key={i}
+          cx={i * archW + archW / 2}
+          cy={26}
+          rx={archW / 2 - 2}
+          ry={20}
+        />
+      ))}
+    </svg>
+  );
+}
+
 const PARTNER_STATE_NAMES = new Set(
   partners.map(
     (p) =>
@@ -109,12 +257,38 @@ export function CohortAnnouncement() {
   }, [selected]);
 
   return (
-    <div className="bg-[#e1e7d9] py-6 sm:py-10 lg:py-12">
+    <div className="bg-[#e1e7d9] py-8 sm:py-12 lg:py-16">
       <div className="container mx-auto px-4">
-        <div className="rounded-3xl bg-[#fdfffc] px-6 py-8 sm:px-10 sm:py-10 lg:px-14 lg:py-12">
-          <div className="flex flex-col gap-4 text-center">
+        <div className="relative overflow-hidden rounded-3xl bg-[#fdfffc] px-6 py-12 sm:px-10 lg:px-16 lg:py-16">
+          {/* Brand-collage decoration layers */}
+          <CollageGrid
+            className="pointer-events-none absolute inset-0 h-full w-full opacity-40"
+            color="#efd8ef"
+            cellSize={18}
+          />
+          <CollageStarburst
+            className="pointer-events-none absolute -left-16 top-8 hidden h-52 w-52 sm:block"
+            color="#d4fd63"
+            spikes={14}
+          />
+          <CollageCloudBlob
+            className="pointer-events-none absolute -right-6 -top-4 hidden h-44 w-32 sm:block"
+            color="#356fe5"
+          />
+          <CollagePebble
+            className="pointer-events-none absolute left-12 top-40 hidden h-24 w-24 opacity-90 lg:block"
+            color="#0f6d37"
+            variant={1}
+          />
+          <CollagePebble
+            className="pointer-events-none absolute right-20 top-52 hidden h-20 w-20 opacity-90 lg:block"
+            color="#0f6d37"
+            variant={2}
+          />
+
+          <div className="relative flex flex-col gap-4 text-center">
             <HeaderGraphic />
-            <p className="text-base font-black uppercase tracking-wider text-[#0f6d37]">
+            <p className="text-base font-black uppercase tracking-wider text-[#00cc72]">
               <FormattedMessage
                 defaultMessage="The Inaugural Cohort"
                 description="Eyebrow label above the cohort announcement heading"
@@ -134,7 +308,7 @@ export function CohortAnnouncement() {
             </p>
           </div>
 
-          <div className="relative mt-8 overflow-hidden rounded-2xl bg-[#f5f8f0] p-4 sm:p-6">
+          <div className="relative mt-10 overflow-hidden rounded-2xl bg-[#f5f8f0] p-4 sm:p-6">
             <svg
               viewBox={`0 0 ${MAP_WIDTH} ${MAP_HEIGHT}`}
               width={MAP_WIDTH}
@@ -229,7 +403,7 @@ export function CohortAnnouncement() {
             </div>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8">
+          <div className="relative mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8">
             {partners.map((partner) => (
               <PartnerCard
                 key={partner.id}
@@ -237,6 +411,14 @@ export function CohortAnnouncement() {
                 onSelect={() => setSelectedId(partner.id)}
               />
             ))}
+          </div>
+
+          <div className="relative mt-12">
+            <CollageArchRow
+              className="block h-8 w-full"
+              color="#feffa0"
+              count={14}
+            />
           </div>
         </div>
       </div>
