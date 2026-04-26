@@ -298,6 +298,16 @@ function StatTile({
   );
 }
 
+function useStableRandoms(count: number, seed = 1) {
+  return useRef(
+    Array.from({ length: count }, (_, i) => {
+      // simple deterministic pseudo-random so it doesn't flicker on hot reload
+      const x = Math.sin((i + seed) * 9301 + 49297) * 233280;
+      return x - Math.floor(x);
+    }),
+  ).current;
+}
+
 export function ChapterChatbotEra() {
   const materials = [
     { label: "Evaluations", color: "#feffa0" },
@@ -342,8 +352,7 @@ export function ChapterChatbotEra() {
               <StatTile
                 number={
                   <>
-                    <CountUp to={7.3} />
-                    <span className="text-accent-orange">M</span>
+                    <CountUp to={7.3} />M
                   </>
                 }
                 label="Students reached"
@@ -359,8 +368,7 @@ export function ChapterChatbotEra() {
               <StatTile
                 number={
                   <>
-                    <CountUp to={14100} />
-                    <span className="text-accent-forest">+</span>
+                    <CountUp to={14100} />+
                   </>
                 }
                 label="Students built AI apps"
@@ -370,9 +378,7 @@ export function ChapterChatbotEra() {
               <StatTile
                 number={
                   <>
-                    <CountUp to={88} />{" "}
-                    <span className="text-brand-ink/40">/</span>{" "}
-                    <CountUp to={94} />
+                    <CountUp to={88} /> / <CountUp to={94} />
                   </>
                 }
                 label="NPS · educators / partners"
@@ -386,24 +392,73 @@ export function ChapterChatbotEra() {
             </p>
           </div>
 
-          <div className="flex flex-wrap content-center gap-2 lg:col-span-5">
-            {materials.map((m, i) => (
-              <motion.span
-                key={m.label}
-                initial={{ opacity: 0, y: 8 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.6 }}
-                transition={{ delay: 0.04 * i, duration: 0.4 }}
-                className="rounded-full border border-brand-ink/20 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.15em] text-brand-ink"
-                style={{ backgroundColor: m.color }}
-              >
-                {m.label}
-              </motion.span>
-            ))}
-          </div>
+          <ChipStack materials={materials} />
         </div>
       </div>
     </ChapterFrame>
+  );
+}
+
+function ChipStack({
+  materials,
+}: {
+  materials: { label: string; color: string }[];
+}) {
+  const randoms = useStableRandoms(materials.length, 7);
+  // build a scattered (not in-order) draw sequence
+  const order = [...materials.keys()].sort(
+    (a, b) => randoms[a] - randoms[b],
+  );
+  const drawIndex = new Map<number, number>();
+  order.forEach((origIdx, drawn) => drawIndex.set(origIdx, drawn));
+
+  return (
+    <div className="lg:col-span-5">
+      <div className="flex flex-wrap items-start gap-y-2">
+        {materials.map((m, i) => {
+          const r = randoms[i];
+          const rotate = (r - 0.5) * 8; // -4° to +4°
+          const yOffset = (randoms[(i + 3) % randoms.length] - 0.5) * 6;
+          const overlap = -8 - r * 6; // -8 to -14 px overlap
+          const drawn = drawIndex.get(i) ?? i;
+          return (
+            <motion.span
+              key={m.label}
+              initial={{
+                opacity: 0,
+                y: -18 - r * 8,
+                rotate: rotate - 4,
+                scale: 0.94,
+              }}
+              whileInView={{
+                opacity: 1,
+                y: yOffset,
+                rotate,
+                scale: 1,
+              }}
+              viewport={{ once: false, amount: 0.4 }}
+              transition={{
+                delay: 0.06 * drawn,
+                duration: 0.55,
+                type: "spring",
+                stiffness: 220,
+                damping: 18,
+              }}
+              className="rounded-full border border-brand-ink/25 px-3 py-1 font-mono text-[11px] uppercase tracking-[0.15em] text-brand-ink"
+              style={{
+                backgroundColor: m.color,
+                marginLeft: i === 0 ? 0 : `${overlap}px`,
+                zIndex: drawn + 1,
+                boxShadow:
+                  "1.5px 2px 0 rgba(12,15,20,0.18), 0 0 0 1px rgba(12,15,20,0.04)",
+              }}
+            >
+              {m.label}
+            </motion.span>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
