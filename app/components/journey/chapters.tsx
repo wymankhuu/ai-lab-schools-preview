@@ -1859,29 +1859,15 @@ function BendingRoad() {
         transition={{ duration: 1.4, ease: "easeInOut" }}
       />
 
-      {/* arrowhead at the right end of the horizontal segment */}
-      <motion.polygon
-        points="-14 -7 0 0 -14 7"
-        fill="#0c0f14"
-        initial={{ opacity: 0, scale: 0.6 }}
-        animate={{
-          opacity: inView ? 1 : 0,
-          scale: inView ? 1 : 0.6,
-        }}
-        transition={{ duration: 0.25, delay: 0.55 }}
-        transform="translate(140 140)"
-        style={{ transformOrigin: "140px 140px" }}
-      />
-
-      {/* pivot dot just past the horizontal arrowhead */}
+      {/* pivot dot at the bend */}
       <motion.circle
-        cx="152"
+        cx="140"
         cy="140"
         r="5"
         fill="#0c0f14"
         initial={{ scale: 0 }}
         animate={{ scale: inView ? 1 : 0 }}
-        transition={{ duration: 0.3, delay: 0.85 }}
+        transition={{ duration: 0.3, delay: 0.5 }}
       />
 
       {/* arrowhead at the end of the angled segment */}
