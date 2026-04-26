@@ -98,6 +98,272 @@ function CutOut({
   );
 }
 
+/* ============== Storytelling primitives ============== */
+
+export function QuestionHook({
+  text,
+  emphasis,
+  accent = "#ed6e2d",
+}: {
+  text: string;
+  emphasis?: string;
+  accent?: string;
+}) {
+  // Split text around the emphasized word so we can underline only that part.
+  const parts = emphasis
+    ? text.split(emphasis)
+    : [text];
+  return (
+    <section
+      aria-label="Question"
+      className="relative flex min-h-[55vh] items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24"
+    >
+      <div className="mx-auto w-full max-w-4xl text-center">
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.4 }}
+          transition={{ duration: 0.7 }}
+          className="font-display italic text-[clamp(1.75rem,4.5vw,3.25rem)] leading-[1.15] text-brand-ink/85"
+        >
+          {emphasis ? (
+            <>
+              {parts[0]}
+              <span className="relative inline-block not-italic">
+                <span className="relative z-10 italic">{emphasis}</span>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 200 18"
+                  preserveAspectRatio="none"
+                  className="absolute inset-x-[-4%] -bottom-2 z-0 h-3 w-[108%]"
+                  fill="none"
+                >
+                  <motion.path
+                    d="M 4 12 C 60 4, 140 16, 196 8"
+                    stroke={accent}
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: false, amount: 0.4 }}
+                    transition={{ duration: 0.9, delay: 0.5 }}
+                  />
+                </svg>
+              </span>
+              {parts[1]}
+            </>
+          ) : (
+            text
+          )}
+        </motion.p>
+      </div>
+    </section>
+  );
+}
+
+export function PullQuote({
+  quote,
+  attribution,
+  role,
+  accent = "#356fe5",
+  align = "left",
+}: {
+  quote: string;
+  attribution: string;
+  role?: string;
+  accent?: string;
+  align?: "left" | "center";
+}) {
+  return (
+    <motion.figure
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.4 }}
+      transition={{ duration: 0.55 }}
+      className={`relative my-10 max-w-2xl ${
+        align === "center" ? "mx-auto text-center" : ""
+      }`}
+    >
+      <span
+        aria-hidden="true"
+        className="absolute -left-1 -top-6 font-display text-[5rem] leading-none"
+        style={{ color: accent }}
+      >
+        &ldquo;
+      </span>
+      <blockquote className="relative pl-8 font-display text-xl leading-snug text-brand-ink/90 sm:text-2xl">
+        {quote}
+      </blockquote>
+      <figcaption className="mt-4 pl-8 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-ink/60">
+        — {attribution}
+        {role ? <span className="text-brand-ink/40"> · {role}</span> : null}
+      </figcaption>
+    </motion.figure>
+  );
+}
+
+export function PlayGlyph({
+  type,
+  size = 22,
+  color = "#0c0f14",
+}: {
+  type: "X" | "O" | "arrow" | "X-with-arrow" | "O-with-curve";
+  size?: number;
+  color?: string;
+}) {
+  const stroke = color;
+  if (type === "X") {
+    return (
+      <svg
+        aria-hidden="true"
+        width={size}
+        height={size}
+        viewBox="0 0 20 20"
+        fill="none"
+      >
+        <line x1="4" y1="4" x2="16" y2="16" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+        <line x1="16" y1="4" x2="4" y2="16" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    );
+  }
+  if (type === "O") {
+    return (
+      <svg
+        aria-hidden="true"
+        width={size}
+        height={size}
+        viewBox="0 0 20 20"
+        fill="none"
+      >
+        <circle cx="10" cy="10" r="6" stroke={stroke} strokeWidth="2" />
+      </svg>
+    );
+  }
+  if (type === "arrow") {
+    return (
+      <svg
+        aria-hidden="true"
+        width={size}
+        height={size}
+        viewBox="0 0 20 20"
+        fill="none"
+      >
+        <line x1="3" y1="10" x2="15" y2="10" stroke={stroke} strokeWidth="2" strokeLinecap="round" />
+        <polyline
+          points="11,6 15,10 11,14"
+          stroke={stroke}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+      </svg>
+    );
+  }
+  if (type === "X-with-arrow") {
+    return (
+      <svg
+        aria-hidden="true"
+        width={size + 8}
+        height={size + 6}
+        viewBox="0 0 30 26"
+        fill="none"
+      >
+        <line x1="6" y1="20" x2="14" y2="12" stroke={stroke} strokeWidth="1.6" strokeLinecap="round" />
+        <line x1="14" y1="20" x2="6" y2="12" stroke={stroke} strokeWidth="1.6" strokeLinecap="round" />
+        <motion.path
+          d="M 18 20 C 20 12, 22 8, 24 4"
+          stroke={stroke}
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          fill="none"
+          initial={{ pathLength: 0 }}
+          whileInView={{ pathLength: 1 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        />
+        <motion.polyline
+          points="22,5 24,3 26,5"
+          stroke={stroke}
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.2, delay: 0.85 }}
+        />
+      </svg>
+    );
+  }
+  // O-with-curve
+  return (
+    <svg
+      aria-hidden="true"
+      width={size + 12}
+      height={size + 6}
+      viewBox="0 0 32 26"
+      fill="none"
+    >
+      <circle cx="22" cy="16" r="5" stroke={stroke} strokeWidth="1.6" />
+      <motion.path
+        d="M 4 16 C 8 16, 12 12, 16 14"
+        stroke={stroke}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        fill="none"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: false, amount: 0.5 }}
+        transition={{ duration: 0.7, delay: 0.2 }}
+      />
+      <motion.polyline
+        points="14,12 16.5,14 14,16"
+        stroke={stroke}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: false, amount: 0.5 }}
+        transition={{ duration: 0.2, delay: 0.85 }}
+      />
+    </svg>
+  );
+}
+
+export function FieldNote({
+  date,
+  children,
+}: {
+  date: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.aside
+      initial={{ opacity: 0, y: 12, rotate: -1.5 }}
+      whileInView={{ opacity: 1, y: 0, rotate: -1.5 }}
+      viewport={{ once: false, amount: 0.4 }}
+      transition={{ duration: 0.55 }}
+      className="relative max-w-md rounded-md border border-brand-ink/20 bg-[#fdfcf6] p-5 pt-7 shadow-[3px_4px_0_rgba(12,15,20,0.08)]"
+    >
+      {/* binder-clip motif */}
+      <span
+        aria-hidden="true"
+        className="absolute left-1/2 -top-2 inline-block h-3 w-12 -translate-x-1/2 rounded-sm border border-brand-ink/40 bg-brand-cream"
+      />
+      <span className="block font-mono text-[10px] uppercase tracking-[0.2em] text-brand-ink/55">
+        Field note · {date}
+      </span>
+      <div className="mt-2 font-display text-base italic leading-snug text-brand-ink/85 sm:text-[17px]">
+        {children}
+      </div>
+    </motion.aside>
+  );
+}
+
 /* ---------------- 01 — Conviction ---------------- */
 export function ChapterConviction() {
   const ref = useRef<HTMLDivElement>(null);
@@ -386,7 +652,7 @@ export function ChapterChatbotEra() {
               </span>
             </div>
 
-            <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4">
+            <div className="mt-14 grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-4 sm:gap-x-12 lg:gap-x-14">
               <StatTile
                 number={
                   <>
@@ -425,9 +691,17 @@ export function ChapterChatbotEra() {
               />
             </div>
 
-            <p className="mt-6 max-w-xl font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/55">
+            <p className="mt-12 max-w-xl font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/55">
               In 2025 · TN · ID · IN · Central TX · DC · MD · VA
             </p>
+
+            <div className="mt-12">
+              <PullQuote
+                quote="AI is moving faster than school is built for. We needed a new way to make."
+                attribution="Playlab core team"
+                accent="#ed6e2d"
+              />
+            </div>
           </div>
 
           <ChipStack materials={materials} />
@@ -541,7 +815,7 @@ export function ChapterVocabulary() {
                 The ecosystem
               </p>
               <h2 className="mt-3 font-display text-[clamp(2.25rem,5vw,4rem)] leading-tight text-brand-ink">
-                More material. More makers. More bridges between them.
+                More schools. More makers. More material to share between them.
               </h2>
               <p className="mt-5 max-w-md text-base leading-relaxed text-brand-ink/75">
                 Chatbots were the start. The next chapter is a network of
@@ -790,7 +1064,8 @@ export function ChapterMandate() {
           <p className="ml-auto mt-5 max-w-xl text-lg leading-relaxed text-brand-ink/75">
             Breakthroughs in education won&rsquo;t come from us. They&rsquo;ll
             come from the educators who, given the right tools, figure out what
-            AI is for.
+            AI is for. AI Lab Schools is how we test that thesis with 13
+            schools, in public.
           </p>
 
           <div className="mt-10 grid grid-cols-1 gap-5 text-left sm:grid-cols-3">
@@ -860,6 +1135,10 @@ export function ChapterWhyCohort() {
             <br />
             <span className="italic">is school itself.</span>
           </h2>
+          <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-brand-ink/75">
+            13 teams. 24 months. One open playbook so the next 130 don&rsquo;t
+            have to start from zero.
+          </p>
 
           <div className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-5">
             {stats.map((s) => (
@@ -937,16 +1216,28 @@ export function ChapterMeetCohort() {
         </div>
       </div>
 
-      {/* Windy-road school cards: alternate sides */}
+      {/* Pull quote intro to the windy-road list */}
+      <div className="px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+        <div className="mx-auto w-full max-w-5xl">
+          <PullQuote
+            quote="These aren't pilots. These are working schools rebuilding themselves with us."
+            attribution="Playlab core team"
+            accent="#398239"
+          />
+        </div>
+      </div>
+
+      {/* Windy-road school cards: alternate sides + S-curve connectors */}
       <div className="px-6 py-12 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
         <div className="mx-auto w-full max-w-5xl">
-          <ul className="space-y-6">
-            {cohortPartners.map((p, i) => {
-              const accent = p.pathway === "Launch" ? "#feffa0" : "#a4beeb";
-              const isLeft = i % 2 === 0;
-              return (
-                <motion.li
-                  key={p.id}
+          {cohortPartners.map((p, i) => {
+            const accent = p.pathway === "Launch" ? "#feffa0" : "#a4beeb";
+            const isLeft = i % 2 === 0;
+            const nextLeft = (i + 1) % 2 === 0;
+            const showConnector = i < cohortPartners.length - 1;
+            return (
+              <div key={p.id}>
+                <motion.div
                   initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.4 }}
@@ -990,13 +1281,76 @@ export function ChapterMeetCohort() {
                       </p>
                     </div>
                   </article>
-                </motion.li>
-              );
-            })}
-          </ul>
+                </motion.div>
+
+                {showConnector && (
+                  <CohortConnector
+                    fromLeft={isLeft}
+                    toLeft={nextLeft}
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
+  );
+}
+
+function CohortConnector({
+  fromLeft,
+  toLeft,
+}: {
+  fromLeft: boolean;
+  toLeft: boolean;
+}) {
+  // path goes from one side to the other across an 80px tall band
+  const startX = fromLeft ? "20%" : "80%";
+  const endX = toLeft ? "20%" : "80%";
+  // mid control points sweep horizontally across
+  const d = `M ${startX === "20%" ? 80 : 320} 4 C ${startX === "20%" ? 200 : 200} 35, ${endX === "20%" ? 200 : 200} 50, ${endX === "20%" ? 80 : 320} 76`;
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 400 80"
+      preserveAspectRatio="none"
+      className="my-1 block h-20 w-full"
+      fill="none"
+    >
+      <motion.path
+        d={d}
+        stroke="#0c0f14"
+        strokeOpacity="0.35"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeDasharray="4 6"
+        initial={{ pathLength: 0 }}
+        whileInView={{ pathLength: 1 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      />
+      <motion.circle
+        cx={fromLeft ? 80 : 320}
+        cy={4}
+        r={2.5}
+        fill="#0c0f14"
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.25 }}
+      />
+      <motion.circle
+        cx={toLeft ? 80 : 320}
+        cy={76}
+        r={2.5}
+        fill="#0c0f14"
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.25, delay: 0.6 }}
+      />
+    </svg>
   );
 }
 
@@ -1144,7 +1498,10 @@ export function ChapterTwoPathways() {
             transition={{ duration: 0.5 }}
             className="lg:col-span-7"
           >
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink">
+            <p className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink">
+              <span aria-hidden="true">
+                <PlayGlyph type="X-with-arrow" />
+              </span>
               Pathway 01 / The new start
             </p>
             <h3 className="mt-3 font-display text-[clamp(2.5rem,6vw,4.75rem)] leading-[0.95] text-brand-ink">
@@ -1174,8 +1531,11 @@ export function ChapterTwoPathways() {
             transition={{ duration: 0.5 }}
             className="order-1 lg:order-2 lg:col-span-7 lg:text-right"
           >
-            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink">
+            <p className="flex items-center justify-end gap-3 font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink">
               Pathway 02 / The pivot
+              <span aria-hidden="true">
+                <PlayGlyph type="O-with-curve" />
+              </span>
             </p>
             <h3 className="mt-3 font-display text-[clamp(2.5rem,6vw,4.75rem)] leading-[0.95] text-brand-ink">
               Pivot.
@@ -1232,39 +1592,52 @@ export function ChapterRhythm() {
           </h2>
 
           <ol className="relative mt-12 ml-3 border-l-2 border-brand-ink/15">
-            {milestones.map((m, i) => (
-              <motion.li
-                key={m.date}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.4 }}
-                transition={{ delay: 0.05 * i, duration: 0.45 }}
-                className="relative pb-10 pl-8 last:pb-0"
-              >
-                <span
-                  aria-hidden="true"
-                  className="absolute -left-[11px] top-1 h-5 w-5 rounded-full border-[3px] border-brand-bg"
-                  style={{ backgroundColor: m.accent }}
-                />
-                <span
-                  aria-hidden="true"
-                  className="absolute -left-[14px] top-[-2px] h-7 w-7 rounded-full border border-brand-ink/15"
-                />
-                <div className="flex items-baseline gap-3">
-                  <span
-                    className="font-mono text-[10px] uppercase tracking-[0.2em] text-brand-ink/60"
-                    style={{ color: "#0c0f14" }}
-                  >
-                    {String(i + 1).padStart(2, "0")} · {m.date}
-                  </span>
-                </div>
-                <div
-                  className="mt-2 font-display text-2xl leading-snug text-brand-ink sm:text-3xl"
+            {milestones.map((m, i) => {
+              const isOpening = m.body
+                .toLowerCase()
+                .includes("open");
+              return (
+                <motion.li
+                  key={m.date}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.4 }}
+                  transition={{ delay: 0.05 * i, duration: 0.45 }}
+                  className="relative pb-10 pl-8 last:pb-0"
                 >
-                  {m.body}
-                </div>
-              </motion.li>
-            ))}
+                  {isOpening ? (
+                    <span
+                      aria-hidden="true"
+                      className="absolute -left-[12px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-brand-bg"
+                    >
+                      <PlayGlyph type="X" size={18} color="#ed6e2d" />
+                    </span>
+                  ) : (
+                    <>
+                      <span
+                        aria-hidden="true"
+                        className="absolute -left-[11px] top-1 h-5 w-5 rounded-full border-[3px] border-brand-bg"
+                        style={{ backgroundColor: m.accent }}
+                      />
+                      <span
+                        aria-hidden="true"
+                        className="absolute -left-[14px] top-[-2px] h-7 w-7 rounded-full border border-brand-ink/15"
+                      />
+                    </>
+                  )}
+                  <div className="flex items-baseline gap-3">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-brand-ink">
+                      {String(i + 1).padStart(2, "0")} · {m.date}
+                    </span>
+                  </div>
+                  <div
+                    className="mt-2 font-display text-2xl leading-snug text-brand-ink sm:text-3xl"
+                  >
+                    {m.body}
+                  </div>
+                </motion.li>
+              );
+            })}
           </ol>
         </div>
       </div>
@@ -1455,6 +1828,16 @@ export function ChapterPillars() {
                 </p>
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-16 flex justify-center">
+            <PullQuote
+              quote="We're preparing students for an AI-driven world while keeping the model deeply human."
+              attribution="Shiren Rattigan"
+              role="Colossal Academy"
+              accent="#ed6e2d"
+              align="center"
+            />
           </div>
         </div>
       </div>
@@ -1765,6 +2148,23 @@ function PlayDiagram({ play, index }: { play: Play; index: number }) {
   );
 }
 
+const playbookDraftLines: Array<{
+  text: string;
+  glyph: "X" | "O" | "arrow";
+  struck?: boolean;
+}> = [
+  { text: "What 13 teams learned in two years.", glyph: "X" },
+  { text: "13 working models. 13 sets of seams to look at.", glyph: "arrow" },
+  { text: "Best practices, finalized.", glyph: "X", struck: true },
+  { text: "An invitation to copy, fork, and remix.", glyph: "O" },
+  { text: "A playbook with edits visible.", glyph: "arrow" },
+  { text: "Rough edges stay rough.", glyph: "X" },
+];
+
+const featuredPlay = plays.find(
+  (p) => p.caption === "13 working models. 13 sets of seams.",
+)!;
+
 export function ChapterPlaybook() {
   return (
     <ChapterFrame
@@ -1774,9 +2174,9 @@ export function ChapterPlaybook() {
       minHeight="120vh"
     >
       <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
-        <div className="mx-auto w-full max-w-6xl">
-          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
-            <div className="lg:col-span-5">
+        <div className="mx-auto w-full max-w-5xl">
+          <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
+            <div className="lg:col-span-6">
               <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
                 The artifact
               </p>
@@ -1785,18 +2185,53 @@ export function ChapterPlaybook() {
               </h2>
               <p className="mt-5 max-w-md text-base leading-relaxed text-brand-ink/70">
                 We&rsquo;re not in the answers business. We&rsquo;re in the
-                show-your-work business. The playbook ships as a series of
-                plays, edits visible, so the next school can run them, change
-                them, or run something better.
+                show-your-work business. The playbook ships with edits visible
+                so the next school can run, change, or beat what worked here.
               </p>
+
+              <div className="mt-10">
+                <FieldNote date="June 2027">
+                  Madison HS shipped a teacher-built rubric tool we now want
+                  to package. Show the version they wrote first &mdash;
+                  including the parts they crossed out.
+                </FieldNote>
+              </div>
             </div>
 
-            <div className="lg:col-span-7">
-              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
-                {plays.map((p, i) => (
-                  <PlayDiagram key={p.caption} play={p} index={i} />
+            <div className="lg:col-span-6">
+              <ul className="space-y-4">
+                {playbookDraftLines.map((line, i) => (
+                  <motion.li
+                    key={line.text}
+                    initial={{ opacity: 0, y: 8 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, amount: 0.5 }}
+                    transition={{ delay: 0.06 * i, duration: 0.45 }}
+                    className="flex items-start gap-3"
+                  >
+                    <span className="mt-1 inline-flex h-5 w-5 shrink-0 items-center justify-center">
+                      <PlayGlyph
+                        type={line.glyph}
+                        size={18}
+                        color={line.struck ? "#ce463f" : "#0c0f14"}
+                      />
+                    </span>
+                    <span
+                      className={`font-display text-lg leading-snug sm:text-xl ${
+                        line.struck
+                          ? "text-brand-ink/35 line-through decoration-brand-ink/40 decoration-1"
+                          : "text-brand-ink/85"
+                      }`}
+                    >
+                      {line.text}
+                    </span>
+                  </motion.li>
                 ))}
-              </div>
+              </ul>
+
+              <figure className="mt-10 max-w-sm">
+                <PlayDiagram play={featuredPlay} index={0} />
+              </figure>
             </div>
           </div>
         </div>
@@ -1841,7 +2276,9 @@ export function ChapterStayConnected() {
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-brand-ink/75">
             Applications for the inaugural cohort are closed. We&rsquo;ll share
             the cohort&rsquo;s work, open-source playbooks, and information
-            about future cohorts as the partnership unfolds.
+            about future cohorts as the partnership unfolds. If you lead a
+            school, district, or fund, this is where to follow the work and
+            tell us what you&rsquo;d run with.
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-5">

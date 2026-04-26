@@ -1,7 +1,21 @@
 import type { MetaFunction } from "react-router";
 import { CreativeLoop } from "~/components/journey/CreativeLoop";
 import { ScrollProgress } from "~/components/journey/ScrollProgress";
-import { ALL_CHAPTERS } from "~/components/journey/chapters";
+import {
+  ChapterChatbotEra,
+  ChapterConviction,
+  ChapterMandate,
+  ChapterMeetCohort,
+  ChapterPillars,
+  ChapterPlaybook,
+  ChapterRhythm,
+  ChapterStayConnected,
+  ChapterTheBet,
+  ChapterTwoPathways,
+  ChapterVocabulary,
+  ChapterWhyCohort,
+  QuestionHook,
+} from "~/components/journey/chapters";
 
 export const meta: MetaFunction = () => [
   { title: "AI Lab Schools — The Journey" },
@@ -12,15 +26,54 @@ export const meta: MetaFunction = () => [
   },
 ];
 
+const TOTAL_CHAPTERS = 12;
+
 export default function JourneyPage() {
   return (
     <div className="relative bg-brand-bg text-brand-ink antialiased">
-      <ScrollProgress totalChapters={ALL_CHAPTERS.length} />
+      <ScrollProgress totalChapters={TOTAL_CHAPTERS} />
       <CreativeLoop />
       <div className="relative z-10">
-        {ALL_CHAPTERS.map((Chapter, i) => (
-          <Chapter key={i} />
-        ))}
+        <ChapterConviction />
+
+        <QuestionHook
+          text="What if school were designed for the AI age, not adapted to it?"
+          emphasis="designed"
+          accent="#ed6e2d"
+        />
+
+        <ChapterTheBet />
+        <ChapterChatbotEra />
+        <ChapterVocabulary />
+        <ChapterMandate />
+
+        <QuestionHook
+          text="Where do new models of school actually get built?"
+          emphasis="actually"
+          accent="#356fe5"
+        />
+
+        <ChapterWhyCohort />
+        <ChapterMeetCohort />
+
+        <QuestionHook
+          text="Start from scratch, or change the school you already love?"
+          emphasis="already love"
+          accent="#398239"
+        />
+
+        <ChapterTwoPathways />
+        <ChapterRhythm />
+        <ChapterPillars />
+        <ChapterPlaybook />
+
+        <QuestionHook
+          text="What can your school start with what they leave behind?"
+          emphasis="leave behind"
+          accent="#ce463f"
+        />
+
+        <ChapterStayConnected />
       </div>
     </div>
   );
