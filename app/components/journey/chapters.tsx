@@ -98,6 +98,107 @@ function CutOut({
   );
 }
 
+// Square grid wash, like the pink/lavender background in the workshop card
+function CollageGrid({
+  className,
+  color = "#efd8ef",
+  cellSize = 14,
+  opacity = 0.5,
+}: {
+  className?: string;
+  color?: string;
+  cellSize?: number;
+  opacity?: number;
+}) {
+  const id = `journey-grid-${cellSize}-${color.replace(/[^a-z0-9]/gi, "")}`;
+  return (
+    <svg
+      aria-hidden="true"
+      className={className}
+      preserveAspectRatio="xMidYMid slice"
+      viewBox="0 0 200 200"
+    >
+      <defs>
+        <pattern
+          id={id}
+          width={cellSize}
+          height={cellSize}
+          patternUnits="userSpaceOnUse"
+        >
+          <path
+            d={`M ${cellSize} 0 L 0 0 0 ${cellSize}`}
+            fill="none"
+            stroke={color}
+            strokeWidth="0.6"
+            strokeOpacity={opacity}
+          />
+        </pattern>
+      </defs>
+      <rect width="200" height="200" fill={`url(#${id})`} />
+    </svg>
+  );
+}
+
+// Organic green pebble blob, three variants
+function CollagePebble({
+  className,
+  color = "#0f6d37",
+  variant = 0,
+}: {
+  className?: string;
+  color?: string;
+  variant?: 0 | 1 | 2;
+}) {
+  const paths = [
+    "M 32 14 C 64 6, 96 22, 92 50 C 88 78, 56 88, 26 78 C 4 70, 6 36, 32 14 Z",
+    "M 18 28 C 36 8, 78 12, 92 36 C 102 56, 80 80, 50 86 C 22 92, 8 56, 18 28 Z",
+    "M 10 44 C 14 18, 50 8, 80 18 C 100 26, 100 60, 86 76 C 70 94, 30 92, 14 76 C 4 64, 6 56, 10 44 Z",
+  ];
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 100 100"
+      className={className}
+      fill={color}
+    >
+      <path d={paths[variant]} />
+    </svg>
+  );
+}
+
+// Horizontal row of scalloped arches
+function CollageArchRow({
+  className,
+  color = "#feffa0",
+  count = 14,
+}: {
+  className?: string;
+  color?: string;
+  count?: number;
+}) {
+  const archW = 40;
+  const totalW = count * archW;
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox={`0 0 ${totalW} 30`}
+      preserveAspectRatio="none"
+      className={className}
+      fill={color}
+    >
+      {Array.from({ length: count }, (_, i) => (
+        <ellipse
+          key={i}
+          cx={i * archW + archW / 2}
+          cy={26}
+          rx={archW / 2 - 2}
+          ry={20}
+        />
+      ))}
+    </svg>
+  );
+}
+
 // Tight sawtooth/zigzag perimeter — drawn around the brand hero card
 function buildZigzagPerimeter(
   w: number,
@@ -1611,46 +1712,83 @@ export function ChapterMeetCohort() {
         </span>
       </div>
 
-      {/* Hero: full map with every pin lit */}
+      {/* Hero: full map with every pin lit, dressed as a workshop card */}
       <div className="relative px-6 pt-24 pb-10 sm:px-12 sm:pt-28 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
-        <Halo
-          className="pointer-events-none absolute right-12 top-12 hidden h-12 w-20 opacity-70 sm:block"
-          outerColor="#96be53"
-          innerColor="#ed6e2d"
-        />
         <div className="mx-auto w-full max-w-6xl">
-          <div className="flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
-                Cohort 1 / 13 schools
-              </p>
-              <h2 className="mt-2 font-display text-[clamp(2.5rem,5vw,4.25rem)] leading-tight text-brand-ink">
-                Meet the cohort.
-              </h2>
+          <div className="relative overflow-hidden rounded-3xl border border-brand-ink/10 bg-brand-cream/30 px-6 py-8 sm:px-10 sm:py-12">
+            {/* brand-collage backdrop */}
+            <CollageGrid
+              className="pointer-events-none absolute inset-0 h-full w-full opacity-60"
+              color="#efd8ef"
+              cellSize={18}
+            />
+            <Burst
+              className="pointer-events-none absolute -left-6 -top-6 hidden h-24 w-24 sm:block"
+              color="#0c0f14"
+              outline="#fbf9f6"
+              points={9}
+            />
+            <CollagePebble
+              className="pointer-events-none absolute -right-4 top-10 hidden h-24 w-24 opacity-90 sm:block"
+              color="#0f6d37"
+              variant={1}
+            />
+            <CollagePebble
+              className="pointer-events-none absolute right-1/4 -bottom-4 hidden h-16 w-16 opacity-80 lg:block"
+              color="#0f6d37"
+              variant={2}
+            />
+            <Halo
+              className="pointer-events-none absolute -bottom-2 -left-4 hidden h-12 w-20 opacity-80 sm:block"
+              outerColor="#96be53"
+              innerColor="#ed6e2d"
+            />
+
+            <div className="relative flex flex-wrap items-end justify-between gap-4">
+              <div className="flex items-end gap-3">
+                <span className="rounded-full bg-accent-yellow px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-ink shadow-[2px_2px_0_rgba(12,15,20,0.18)]">
+                  Open cohort
+                </span>
+                <div>
+                  <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
+                    Cohort 1 / 13 schools
+                  </p>
+                  <h2 className="mt-2 font-display text-[clamp(2.5rem,5vw,4.25rem)] leading-tight text-brand-ink">
+                    Meet the cohort.
+                  </h2>
+                </div>
+              </div>
+              <div className="flex gap-4 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/65">
+                <span className="inline-flex items-center gap-2">
+                  <span
+                    aria-hidden="true"
+                    className="h-2.5 w-2.5 rounded-full border border-brand-ink"
+                    style={{ backgroundColor: "#feffa0" }}
+                  />
+                  Launch
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <span
+                    aria-hidden="true"
+                    className="h-2.5 w-2.5 rounded-full border border-brand-ink"
+                    style={{ backgroundColor: "#a4beeb" }}
+                  />
+                  Pivot
+                </span>
+              </div>
             </div>
-            <div className="flex gap-4 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/65">
-              <span className="inline-flex items-center gap-2">
-                <span
-                  aria-hidden="true"
-                  className="h-2.5 w-2.5 rounded-full border border-brand-ink"
-                  style={{ backgroundColor: "#feffa0" }}
-                />
-                Launch
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <span
-                  aria-hidden="true"
-                  className="h-2.5 w-2.5 rounded-full border border-brand-ink"
-                  style={{ backgroundColor: "#a4beeb" }}
-                />
-                Pivot
-              </span>
+
+            <div className="relative mt-8">
+              <JourneyMap litCount={cohortPartners.length} />
             </div>
           </div>
 
-          <div className="mt-8">
-            <JourneyMap litCount={cohortPartners.length} />
-          </div>
+          {/* yellow scallop arch row as a transition into the cards section */}
+          <CollageArchRow
+            className="mt-6 block h-7 w-full"
+            color="#feffa0"
+            count={16}
+          />
         </div>
       </div>
 
@@ -1659,9 +1797,17 @@ export function ChapterMeetCohort() {
         <div className="mx-auto w-full max-w-5xl">
           {cohortPartners.map((p, i) => {
             const accent = p.pathway === "Launch" ? "#feffa0" : "#a4beeb";
+            const tint = p.pathway === "Launch" ? "#fff46c" : "#a4beeb";
             const isLeft = i % 2 === 0;
             const nextLeft = (i + 1) % 2 === 0;
             const showConnector = i < cohortPartners.length - 1;
+            // hash partner.id so each card picks a different corner accent
+            const hash = [...p.id].reduce(
+              (acc, c) => (acc * 31 + c.charCodeAt(0)) >>> 0,
+              0,
+            );
+            const accentKind = hash % 3; // 0: pebble · 1: starburst · 2: scallops
+            const pebbleVariant = (hash % 3) as 0 | 1 | 2;
             return (
               <div key={p.id}>
                 <motion.div
@@ -1672,12 +1818,42 @@ export function ChapterMeetCohort() {
                   className={`flex ${isLeft ? "justify-start" : "justify-end"}`}
                 >
                   <article
-                    className={`flex w-full max-w-2xl items-start gap-5 rounded-2xl border border-brand-ink/10 bg-brand-bg p-6 sm:p-7 ${
+                    className={`relative flex w-full max-w-2xl items-start gap-5 overflow-hidden rounded-2xl border border-brand-ink/10 bg-brand-bg p-6 sm:p-7 ${
                       isLeft ? "" : "text-right"
                     }`}
                   >
+                    {/* tinted grid sliver behind the school name */}
+                    <CollageGrid
+                      className={`pointer-events-none absolute inset-y-0 ${isLeft ? "right-0" : "left-0"} h-full w-2/5 opacity-50`}
+                      color={tint}
+                      cellSize={14}
+                    />
+                    {/* one rotating brand-collage accent in a corner */}
+                    {accentKind === 0 && (
+                      <CollagePebble
+                        className={`pointer-events-none absolute ${isLeft ? "-bottom-4 -right-4" : "-bottom-4 -left-4"} h-14 w-14 opacity-80`}
+                        color="#0f6d37"
+                        variant={pebbleVariant}
+                      />
+                    )}
+                    {accentKind === 1 && (
+                      <Burst
+                        className={`pointer-events-none absolute ${isLeft ? "-right-3 -top-3" : "-left-3 -top-3"} h-12 w-12 opacity-90`}
+                        color="#0c0f14"
+                        outline="#fbf9f6"
+                        points={9}
+                      />
+                    )}
+                    {accentKind === 2 && (
+                      <ScallopStack
+                        className={`pointer-events-none absolute ${isLeft ? "-right-2 top-2" : "-left-2 top-2"} h-16 w-6 opacity-70`}
+                        color="#356fe5"
+                        count={3}
+                      />
+                    )}
+
                     <div
-                      className={`flex flex-col gap-2 ${isLeft ? "" : "order-2 items-end"}`}
+                      className={`relative flex flex-col gap-2 ${isLeft ? "" : "order-2 items-end"}`}
                     >
                       <div
                         className="h-12 w-12 shrink-0 overflow-hidden rounded-full border-2 bg-brand-bg"
@@ -1690,13 +1866,15 @@ export function ChapterMeetCohort() {
                         />
                       </div>
                       <span
-                        className="rounded-full border border-brand-ink px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.15em] text-brand-ink"
+                        className="rounded-full border border-brand-ink px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-[0.15em] text-brand-ink shadow-[2px_2px_0_rgba(12,15,20,0.15)]"
                         style={{ backgroundColor: accent }}
                       >
                         {p.pathway}
                       </span>
                     </div>
-                    <div className={`flex-1 ${isLeft ? "" : "order-1"}`}>
+                    <div
+                      className={`relative flex-1 ${isLeft ? "" : "order-1"}`}
+                    >
                       <h3 className="font-display text-2xl leading-tight text-brand-ink sm:text-[1.75rem]">
                         {p.school}
                       </h3>
@@ -1714,6 +1892,7 @@ export function ChapterMeetCohort() {
                   <CohortConnector
                     fromLeft={isLeft}
                     toLeft={nextLeft}
+                    accentKind={(hash + i) % 3}
                   />
                 )}
               </div>
@@ -1728,15 +1907,19 @@ export function ChapterMeetCohort() {
 function CohortConnector({
   fromLeft,
   toLeft,
+  accentKind = 0,
 }: {
   fromLeft: boolean;
   toLeft: boolean;
+  accentKind?: number;
 }) {
   // path goes from one side to the other across an 80px tall band
-  const startX = fromLeft ? "20%" : "80%";
-  const endX = toLeft ? "20%" : "80%";
-  // mid control points sweep horizontally across
-  const d = `M ${startX === "20%" ? 80 : 320} 4 C ${startX === "20%" ? 200 : 200} 35, ${endX === "20%" ? 200 : 200} 50, ${endX === "20%" ? 80 : 320} 76`;
+  const startX = fromLeft ? 80 : 320;
+  const endX = toLeft ? 80 : 320;
+  const d = `M ${startX} 4 C ${(startX + endX) / 2} 35, ${(startX + endX) / 2} 50, ${endX} 76`;
+  // midpoint of the curve, where the floating brand shape sits
+  const midX = (startX + endX) / 2;
+  const midY = 40;
   return (
     <svg
       aria-hidden="true"
@@ -1758,7 +1941,7 @@ function CohortConnector({
         transition={{ duration: 0.7, ease: "easeOut" }}
       />
       <motion.circle
-        cx={fromLeft ? 80 : 320}
+        cx={startX}
         cy={4}
         r={2.5}
         fill="#0c0f14"
@@ -1768,7 +1951,7 @@ function CohortConnector({
         transition={{ duration: 0.25 }}
       />
       <motion.circle
-        cx={toLeft ? 80 : 320}
+        cx={endX}
         cy={76}
         r={2.5}
         fill="#0c0f14"
@@ -1777,6 +1960,28 @@ function CohortConnector({
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.25, delay: 0.6 }}
       />
+      {/* a small floating brand-collage shape drifts at the curve's midpoint */}
+      <motion.g
+        initial={{ scale: 0, opacity: 0 }}
+        whileInView={{ scale: 1, opacity: 1 }}
+        viewport={{ once: true, amount: 0.4 }}
+        transition={{ duration: 0.35, delay: 0.4 }}
+      >
+        {accentKind === 0 && (
+          <circle cx={midX} cy={midY} r={6} fill="#0f6d37" opacity={0.85} />
+        )}
+        {accentKind === 1 && (
+          <polygon
+            points={`${midX - 7},${midY + 5} ${midX},${midY - 7} ${midX + 7},${midY + 5}`}
+            fill="#feffa0"
+            stroke="#0c0f14"
+            strokeWidth={1}
+          />
+        )}
+        {accentKind === 2 && (
+          <ellipse cx={midX} cy={midY} rx={9} ry={4} fill="#a4beeb" />
+        )}
+      </motion.g>
     </svg>
   );
 }
