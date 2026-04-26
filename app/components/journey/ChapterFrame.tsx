@@ -6,6 +6,10 @@ type ChapterFrameProps = {
   minHeight?: string;
 };
 
+export function chapterId(number: string) {
+  return `chapter-${number}`;
+}
+
 export function ChapterFrame({
   number,
   eyebrow,
@@ -15,7 +19,8 @@ export function ChapterFrame({
 }: ChapterFrameProps) {
   return (
     <section
-      className="relative w-full overflow-hidden"
+      id={chapterId(number)}
+      className="relative w-full scroll-mt-20 overflow-hidden"
       style={{ minHeight }}
       aria-label={eyebrow}
     >

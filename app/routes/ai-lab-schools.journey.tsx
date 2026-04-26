@@ -1,6 +1,6 @@
 import type { MetaFunction } from "react-router";
+import { ChapterNav } from "~/components/journey/ChapterNav";
 import { CreativeLoop } from "~/components/journey/CreativeLoop";
-import { ScrollProgress } from "~/components/journey/ScrollProgress";
 import {
   ChapterChatbotEra,
   ChapterConviction,
@@ -14,6 +14,7 @@ import {
   ChapterTwoPathways,
   ChapterVocabulary,
   ChapterWhyCohort,
+  ChapterWhyPlaylab,
   QuestionHook,
 } from "~/components/journey/chapters";
 
@@ -22,18 +23,32 @@ export const meta: MetaFunction = () => [
   {
     name: "description",
     content:
-      "A scrolling story of why AI Lab Schools exists, who's in the inaugural cohort, and what they're building over 24 months.",
+      "A scrolling story of why AI Lab Schools exists, who's in the inaugural cohort, and what they're building over 24 months with Playlab.",
   },
 ];
 
-const TOTAL_CHAPTERS = 12;
+const NAV_CHAPTERS = [
+  { number: "01", label: "Origin" },
+  { number: "02", label: "The bet" },
+  { number: "03", label: "First material" },
+  { number: "04", label: "Ecosystem" },
+  { number: "05", label: "The mandate" },
+  { number: "06", label: "Why a cohort" },
+  { number: "07", label: "Meet the cohort" },
+  { number: "08", label: "Two pathways" },
+  { number: "09", label: "Rhythm" },
+  { number: "10", label: "Pillars" },
+  { number: "11", label: "Playbook" },
+  { number: "12", label: "Why Playlab" },
+  { number: "13", label: "Stay connected" },
+];
 
 export default function JourneyPage() {
   return (
     <div className="relative bg-brand-bg text-brand-ink antialiased">
-      <ScrollProgress totalChapters={TOTAL_CHAPTERS} />
+      <ChapterNav chapters={NAV_CHAPTERS} />
       <CreativeLoop />
-      <div className="relative z-10">
+      <div className="relative z-10 pt-12 sm:pt-14">
         <ChapterConviction />
 
         <QuestionHook
@@ -57,8 +72,8 @@ export default function JourneyPage() {
         <ChapterMeetCohort />
 
         <QuestionHook
-          text="Start from scratch, or change the school you already love?"
-          emphasis="already love"
+          text="Where does AI sit in a classroom that's working?"
+          emphasis="working"
           accent="#398239"
         />
 
@@ -73,6 +88,7 @@ export default function JourneyPage() {
           accent="#ce463f"
         />
 
+        <ChapterWhyPlaylab />
         <ChapterStayConnected />
       </div>
     </div>

@@ -6,7 +6,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { ChapterFrame } from "./ChapterFrame";
+import { ChapterFrame, chapterId } from "./ChapterFrame";
 import { JourneyMap, cohortPartners } from "./JourneyMap";
 
 /* ============== Shared abstract shapes ============== */
@@ -116,7 +116,7 @@ export function QuestionHook({
   return (
     <section
       aria-label="Question"
-      className="relative flex min-h-[55vh] items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24"
+      className="relative flex min-h-[32vh] items-center px-6 py-10 sm:px-12 md:pl-20 md:pr-12 lg:pl-24"
     >
       <div className="mx-auto w-full max-w-4xl text-center">
         <motion.p
@@ -1146,8 +1146,8 @@ export function ChapterWhyCohort() {
             <span className="italic">is school itself.</span>
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-brand-ink/75">
-            13 teams. 24 months. One open playbook so the next 130 don&rsquo;t
-            have to start from zero.
+            One open playbook, written so the next school doesn&rsquo;t start
+            from zero.
           </p>
 
           <div className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-5">
@@ -1176,7 +1176,8 @@ export function ChapterWhyCohort() {
 export function ChapterMeetCohort() {
   return (
     <section
-      className="relative w-full"
+      id={chapterId("07")}
+      className="relative w-full scroll-mt-20"
       aria-label="Meet the cohort"
     >
       <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
@@ -1223,17 +1224,6 @@ export function ChapterMeetCohort() {
           <div className="mt-8">
             <JourneyMap litCount={cohortPartners.length} />
           </div>
-        </div>
-      </div>
-
-      {/* Pull quote intro to the windy-road list */}
-      <div className="px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
-        <div className="mx-auto w-full max-w-5xl">
-          <PullQuote
-            quote="These aren't pilots. These are working schools rebuilding themselves with us."
-            attribution="Playlab core team"
-            accent="#398239"
-          />
         </div>
       </div>
 
@@ -1474,7 +1464,8 @@ function BendingRoad() {
 export function ChapterTwoPathways() {
   return (
     <section
-      className="relative w-full"
+      id={chapterId("08")}
+      className="relative w-full scroll-mt-20"
       aria-label="Two pathways, one cohort"
     >
       <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
@@ -1580,7 +1571,8 @@ const milestones = [
 export function ChapterRhythm() {
   return (
     <section
-      className="relative w-full"
+      id={chapterId("09")}
+      className="relative w-full scroll-mt-20"
       aria-label="The 24-month rhythm"
     >
       <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
@@ -2194,9 +2186,8 @@ export function ChapterPlaybook() {
                 Open-source playbook, 2028.
               </h2>
               <p className="mt-5 max-w-md text-base leading-relaxed text-brand-ink/70">
-                We&rsquo;re not in the answers business. We&rsquo;re in the
-                show-your-work business. The playbook ships with edits visible
-                so the next school can run, change, or beat what worked here.
+                Not a how-to. A book of plays the cohort actually ran &mdash;
+                what they kept, what they cut, and what they handed off.
               </p>
 
               <div className="mt-10">
@@ -2250,11 +2241,111 @@ export function ChapterPlaybook() {
   );
 }
 
-/* ---------------- 12 — Stay connected ---------------- */
-export function ChapterStayConnected() {
+/* ---------------- 12 — Why Playlab ---------------- */
+
+const partnershipTenets = [
+  {
+    title: "Co-build, not deploy.",
+    body: "Playlab engineers and designers sit alongside cohort teams for 24 months, shipping tools tailored to each school's model.",
+    glyph: "X-with-arrow" as const,
+    accent: "#feffa0",
+  },
+  {
+    title: "Open by default.",
+    body: "Every prototype, rubric, and rhythm ships back into the network. The work is the playbook.",
+    glyph: "arrow" as const,
+    accent: "#a4beeb",
+  },
+  {
+    title: "A network already at work.",
+    body: "Five regional ecosystems, 104 school systems, 7.3M students reached. The cohort writes inside that network, not around it.",
+    glyph: "O" as const,
+    accent: "#efd8ef",
+  },
+  {
+    title: "Schools as co-authors.",
+    body: "We don't write about schools. The 13 cohort teams write with us, name what worked, and decide what gets handed off.",
+    glyph: "X" as const,
+    accent: "#d4fd63",
+  },
+];
+
+export function ChapterWhyPlaylab() {
   return (
     <ChapterFrame
       number="12"
+      eyebrow="Why Playlab"
+      accent="#356fe5"
+      minHeight="100vh"
+    >
+      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
+            <div className="lg:col-span-5">
+              <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
+                The partnership
+              </p>
+              <h2 className="mt-3 font-display text-[clamp(2.25rem,5vw,3.75rem)] leading-tight text-brand-ink">
+                We build <span className="italic">with</span> you,
+                <br />
+                not for you.
+              </h2>
+              <p className="mt-5 max-w-md text-base leading-relaxed text-brand-ink/75">
+                AI Lab Schools is a 24-month partnership, not a license. Each
+                cohort team gets the platform, the engineers, the network, and
+                a co-author of their playbook.
+              </p>
+            </div>
+
+            <div className="lg:col-span-7">
+              <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                {partnershipTenets.map((t, i) => (
+                  <motion.li
+                    key={t.title}
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, amount: 0.4 }}
+                    transition={{ delay: 0.06 * i, duration: 0.5 }}
+                    className="relative rounded-2xl border border-brand-ink/10 bg-brand-cream/60 p-5"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="absolute -left-2 -top-2 inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-bg"
+                      style={{ boxShadow: "0 0 0 1px rgba(12,15,20,0.12)" }}
+                    >
+                      <PlayGlyph type={t.glyph} size={18} />
+                    </span>
+                    <span
+                      aria-hidden="true"
+                      className="absolute right-3 top-3 inline-block h-2 w-8 rounded-full"
+                      style={{ backgroundColor: t.accent }}
+                    />
+                    <h3 className="mt-2 font-display text-xl leading-snug text-brand-ink">
+                      {t.title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-relaxed text-brand-ink/75">
+                      {t.body}
+                    </p>
+                  </motion.li>
+                ))}
+              </ul>
+
+              <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/55">
+                Live regional ecosystems · TN · ID · IN · Central TX · DC · MD · VA
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ChapterFrame>
+  );
+}
+
+/* ---------------- 13 — Stay connected ---------------- */
+export function ChapterStayConnected() {
+  return (
+    <ChapterFrame
+      number="13"
       eyebrow="Stay connected"
       accent="#0c0f14"
       minHeight="80vh"
@@ -2284,11 +2375,9 @@ export function ChapterStayConnected() {
             We&rsquo;re building this in the open.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-brand-ink/75">
-            Applications for the inaugural cohort are closed. We&rsquo;ll share
-            the cohort&rsquo;s work, open-source playbooks, and information
-            about future cohorts as the partnership unfolds. If you lead a
-            school, district, or fund, this is where to follow the work and
-            tell us what you&rsquo;d run with.
+            Applications for the inaugural cohort are closed. If you lead a
+            school, a district, or a fund, this is where to follow what gets
+            built and tell us what you&rsquo;d run with.
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-5">
@@ -2307,7 +2396,7 @@ export function ChapterStayConnected() {
           </div>
 
           <p className="mt-12 font-mono text-[11px] uppercase tracking-[0.25em] text-brand-ink/45">
-            End of journey 01 / 12 / 2026
+            End of journey 01 / 13 / 2026
           </p>
         </div>
       </div>
