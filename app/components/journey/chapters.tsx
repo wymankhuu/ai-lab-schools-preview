@@ -456,33 +456,43 @@ export function ChapterTheBet() {
           </motion.p>
 
           <ul className="mt-16 space-y-10 sm:mt-20 sm:space-y-14 font-display leading-[0.95] text-brand-ink/80">
-            {lines.map((line, i) => (
-              <motion.li
-                key={line.text}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false, amount: 0.5 }}
-                transition={{ delay: 0.15 + i * 0.35, duration: 0.55 }}
-                className="relative"
-              >
-                <span className="relative inline-block text-[clamp(2.75rem,7.5vw,6rem)]">
-                  {line.text}
-                  <motion.span
-                    aria-hidden="true"
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: false, amount: 0.5 }}
-                    transition={{
-                      delay: 0.55 + i * 0.35,
-                      duration: 0.6,
-                      ease: "easeOut",
-                    }}
-                    className="absolute left-[-2%] top-[55%] h-[5px] w-[104%] origin-left rounded-full sm:h-[6px]"
-                    style={{ backgroundColor: line.color }}
-                  />
-                </span>
-              </motion.li>
-            ))}
+            {lines.map((line, i) => {
+              // Each rejected line grows larger than the last so the page
+              // climbs toward the "Educators." finale.
+              const sizes = [
+                "text-[clamp(2.25rem,5.5vw,4.25rem)]",
+                "text-[clamp(2.75rem,6.75vw,5.25rem)]",
+                "text-[clamp(3.25rem,8vw,6.25rem)]",
+              ];
+              const strikeHeights = ["h-[3px]", "h-[4px]", "h-[5px] sm:h-[6px]"];
+              return (
+                <motion.li
+                  key={line.text}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.5 }}
+                  transition={{ delay: 0.15 + i * 0.35, duration: 0.55 }}
+                  className="relative"
+                >
+                  <span className={`relative inline-block ${sizes[i]}`}>
+                    {line.text}
+                    <motion.span
+                      aria-hidden="true"
+                      initial={{ scaleX: 0 }}
+                      whileInView={{ scaleX: 1 }}
+                      viewport={{ once: false, amount: 0.5 }}
+                      transition={{
+                        delay: 0.55 + i * 0.35,
+                        duration: 0.6,
+                        ease: "easeOut",
+                      }}
+                      className={`absolute left-[-2%] top-[55%] ${strikeHeights[i]} w-[104%] origin-left rounded-full`}
+                      style={{ backgroundColor: line.color }}
+                    />
+                  </span>
+                </motion.li>
+              );
+            })}
             <motion.li
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
