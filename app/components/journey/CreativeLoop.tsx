@@ -12,19 +12,19 @@ export function CreativeLoop() {
   return (
     <svg
       aria-hidden="true"
-      className="pointer-events-none fixed inset-y-0 left-3 z-0 hidden h-screen w-12 sm:left-5 md:block"
-      viewBox="0 0 40 800"
+      className="pointer-events-none fixed inset-y-0 left-1.5 z-0 hidden h-screen w-5 sm:left-2 sm:w-6 md:block"
+      viewBox="0 0 24 800"
       preserveAspectRatio="none"
       fill="none"
     >
       <motion.path
-        d="M 20 0
-           C 5 100, 35 200, 20 300
-           C 5 400, 35 500, 20 600
-           C 5 700, 35 760, 20 800"
+        d="M 12 0
+           C 4 100, 20 200, 12 300
+           C 4 400, 20 500, 12 600
+           C 4 700, 20 760, 12 800"
         stroke="#0c0f14"
-        strokeOpacity="0.35"
-        strokeWidth="1.5"
+        strokeOpacity="0.3"
+        strokeWidth="1.25"
         strokeLinecap="round"
         style={{ pathLength }}
       />

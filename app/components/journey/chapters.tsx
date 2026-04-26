@@ -114,19 +114,19 @@ export function ChapterConviction() {
       <div ref={ref} className="absolute inset-0">
         <motion.div
           style={{ opacity, y }}
-          className="sticky top-0 flex h-screen items-center px-6 sm:px-12"
+          className="sticky top-0 flex h-screen items-center justify-center px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24"
         >
-          <div className="relative mx-auto w-full max-w-5xl">
+          <div className="relative mx-auto w-full max-w-3xl text-center">
             <CutOut
-              className="absolute -left-6 -top-10 h-32 w-40 rounded-[40%] sm:h-44 sm:w-56"
+              className="absolute -left-12 -top-12 h-28 w-36 rounded-[40%] sm:h-36 sm:w-48"
               color="#feffa0"
-              rotate={-6}
+              rotate={-8}
             />
             <DotGrid
-              className="absolute -right-2 top-2 h-32 w-32 opacity-70 sm:h-40 sm:w-40"
+              className="absolute -right-8 -bottom-6 h-24 w-24 opacity-70 sm:h-32 sm:w-32"
               color="#0c0f14"
-              cols={9}
-              rows={9}
+              cols={8}
+              rows={8}
             />
             <div className="relative">
               <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
@@ -138,7 +138,7 @@ export function ChapterConviction() {
               <svg
                 aria-hidden="true"
                 viewBox="0 0 480 80"
-                className="mt-2 block h-6 w-72 sm:h-8 sm:w-96"
+                className="mx-auto mt-2 block h-6 w-72 sm:h-8 sm:w-96"
                 fill="none"
               >
                 <motion.path
@@ -249,6 +249,39 @@ function CountUp({ to, duration = 1.4 }: { to: number; duration?: number }) {
   return <span ref={ref}>{value.toLocaleString()}</span>;
 }
 
+function StatTile({
+  number,
+  label,
+  accent,
+  delay = 0,
+}: {
+  number: React.ReactNode;
+  label: string;
+  accent: string;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, amount: 0.5 }}
+      transition={{ delay, duration: 0.5 }}
+      className="relative pt-4"
+    >
+      <span
+        className="absolute left-0 top-0 h-[3px] w-10 rounded-full"
+        style={{ backgroundColor: accent }}
+      />
+      <div className="font-display text-[clamp(2rem,3.6vw,3rem)] leading-none text-brand-ink">
+        {number}
+      </div>
+      <div className="mt-2 font-mono text-[10px] uppercase tracking-[0.2em] text-brand-ink/60">
+        {label}
+      </div>
+    </motion.div>
+  );
+}
+
 export function ChapterChatbotEra() {
   const materials = [
     { label: "Evaluations", color: "#feffa0" },
@@ -268,9 +301,9 @@ export function ChapterChatbotEra() {
       number="03"
       eyebrow="The first material"
       accent="#ed6e2d"
-      minHeight="100vh"
+      minHeight="115vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-24 sm:px-12">
+      <div className="flex min-h-screen items-center px-6 py-24 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
         <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
@@ -281,20 +314,56 @@ export function ChapterChatbotEra() {
               us what AI can be in education.
             </p>
             <div className="mt-8 flex items-baseline gap-4">
-              <span className="font-display text-[clamp(4rem,11vw,8rem)] font-medium leading-none text-brand-ink">
+              <span className="font-display text-[clamp(3.5rem,10vw,7rem)] font-medium leading-none text-brand-ink">
                 <CountUp to={35000} />
               </span>
               <span className="font-mono text-xs uppercase tracking-[0.2em] text-brand-ink/60">
                 builders / 15 months
               </span>
             </div>
-            <DotGrid
-              className="mt-6 h-16 w-40 opacity-80"
-              color="#ed6e2d"
-              cols={12}
-              rows={5}
-              gap={14}
-            />
+
+            <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-6 sm:grid-cols-4">
+              <StatTile
+                number={
+                  <>
+                    7.3<span className="text-accent-orange">M</span>
+                  </>
+                }
+                label="Students reached"
+                accent="#ed6e2d"
+                delay={0.05}
+              />
+              <StatTile
+                number="104"
+                label="School systems"
+                accent="#356fe5"
+                delay={0.15}
+              />
+              <StatTile
+                number={
+                  <>
+                    14,100<span className="text-accent-forest">+</span>
+                  </>
+                }
+                label="Students built AI apps"
+                accent="#398239"
+                delay={0.25}
+              />
+              <StatTile
+                number={
+                  <>
+                    88 <span className="text-brand-ink/40">/</span> 94
+                  </>
+                }
+                label="NPS · educators / partners"
+                accent="#f4baef"
+                delay={0.35}
+              />
+            </div>
+
+            <p className="mt-6 max-w-xl font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/55">
+              In 2025 · TN · ID · IN · Central TX · DC · MD · VA
+            </p>
           </div>
 
           <div className="flex flex-wrap content-center gap-2 lg:col-span-5">
@@ -347,7 +416,7 @@ export function ChapterVocabulary() {
       minHeight="120vh"
     >
       <div ref={ref} className="absolute inset-0">
-        <div className="sticky top-0 flex h-screen items-center px-6 sm:px-12">
+        <div className="sticky top-0 flex h-screen items-center px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
           <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-10 lg:grid-cols-2">
             <motion.div style={{ y: titleY }} className="relative">
               <ScribbleArc
@@ -583,14 +652,14 @@ export function ChapterMandate() {
       accent="#398239"
       minHeight="110vh"
     >
-      <div className="relative flex min-h-screen items-center px-6 py-24 sm:px-12">
+      <div className="relative flex min-h-screen items-center px-6 py-24 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
         <DotGrid
-          className="pointer-events-none absolute right-6 top-20 hidden h-24 w-32 opacity-70 sm:block"
+          className="pointer-events-none absolute left-6 top-20 hidden h-24 w-32 opacity-70 sm:block md:left-20"
           color="#398239"
           cols={10}
           rows={6}
         />
-        <div className="mx-auto w-full max-w-6xl">
+        <div className="ml-auto w-full max-w-3xl text-right">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             Our mandate
           </p>
@@ -605,13 +674,13 @@ export function ChapterMandate() {
             </span>
             <span className="text-accent-forest"> million</span> educators.
           </h2>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-brand-ink/75">
+          <p className="ml-auto mt-5 max-w-xl text-lg leading-relaxed text-brand-ink/75">
             Breakthroughs in education won&rsquo;t come from us. They&rsquo;ll
             come from the educators who, given the right tools, figure out what
             AI is for.
           </p>
 
-          <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-5 text-left sm:grid-cols-3">
             {steps.map((step, i) => (
               <motion.div
                 key={step.verb}
@@ -645,13 +714,6 @@ export function ChapterMandate() {
 
 /* ---------------- 06 — Why a cohort ---------------- */
 export function ChapterWhyCohort() {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const leftX = useTransform(scrollYProgress, [0.2, 0.8], ["0%", "-18%"]);
-  const rightX = useTransform(scrollYProgress, [0.2, 0.8], ["0%", "18%"]);
   const stats = [
     { n: "13", label: "teams", color: "#feffa0" },
     { n: "24", label: "months", color: "#a4beeb" },
@@ -663,51 +725,44 @@ export function ChapterWhyCohort() {
       number="06"
       eyebrow="The next material"
       accent="#ce463f"
-      minHeight="120vh"
+      minHeight="100vh"
     >
-      <div ref={ref} className="absolute inset-0">
-        <div className="sticky top-0 flex h-screen items-center px-6 sm:px-12">
-          <div className="relative mx-auto w-full max-w-6xl">
-            <CutOut
-              className="absolute -left-4 top-2 -z-0 h-20 w-28 rounded-md"
-              color="#f4baef"
-              rotate={-4}
-            />
-            <CutOut
-              className="absolute right-0 -top-4 -z-0 h-16 w-24 rounded-md"
-              color="#d4fd63"
-              rotate={6}
-            />
-            <p className="relative font-mono text-xs tracking-[0.25em] text-brand-ink/55">
-              Why a cohort
-            </p>
-            <h2 className="relative mt-3 font-display text-[clamp(2.5rem,6.5vw,5.25rem)] leading-tight text-brand-ink">
-              <motion.span style={{ x: leftX }} className="inline-block pr-2">
-                Our next
-              </motion.span>
-              <motion.span style={{ x: rightX }} className="inline-block">
-                material
-              </motion.span>
-              <br />
-              is school itself.
-            </h2>
+      <div className="relative flex min-h-screen items-center justify-center px-6 py-24 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
+        <CutOut
+          className="absolute left-12 top-16 -z-0 h-20 w-28 rounded-md md:left-24"
+          color="#f4baef"
+          rotate={-4}
+        />
+        <CutOut
+          className="absolute right-12 bottom-20 -z-0 h-16 w-24 rounded-md"
+          color="#d4fd63"
+          rotate={6}
+        />
+        <div className="relative mx-auto w-full max-w-4xl text-center">
+          <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
+            Why a cohort
+          </p>
+          <h2 className="mt-3 font-display text-[clamp(2.5rem,6.5vw,5.25rem)] leading-[1.05] text-brand-ink">
+            Our next material
+            <br />
+            <span className="italic">is school itself.</span>
+          </h2>
 
-            <div className="mt-8 grid grid-cols-3 gap-5 max-w-3xl">
-              {stats.map((s) => (
-                <div key={s.label} className="relative pt-4">
-                  <span
-                    className="absolute left-0 top-0 h-[3px] w-10 rounded-full"
-                    style={{ backgroundColor: s.color }}
-                  />
-                  <div className="font-display text-5xl text-brand-ink">
-                    {s.n}
-                  </div>
-                  <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/60">
-                    {s.label}
-                  </div>
+          <div className="mx-auto mt-10 grid max-w-2xl grid-cols-3 gap-5">
+            {stats.map((s) => (
+              <div key={s.label} className="relative pt-4 text-center">
+                <span
+                  className="absolute left-1/2 top-0 h-[3px] w-10 -translate-x-1/2 rounded-full"
+                  style={{ backgroundColor: s.color }}
+                />
+                <div className="font-display text-5xl text-brand-ink">
+                  {s.n}
                 </div>
-              ))}
-            </div>
+                <div className="mt-1 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/60">
+                  {s.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -752,7 +807,7 @@ export function ChapterMeetCohort() {
         </span>
       </div>
 
-      <div className="sticky top-0 flex h-screen items-center px-6 sm:px-10">
+      <div className="sticky top-0 flex h-screen items-center px-6 sm:px-10 md:pl-20 md:pr-10 lg:pl-24">
         <div className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-6 lg:grid-cols-12">
           <div className="order-2 lg:order-1 lg:col-span-7">
             <JourneyMap litCount={litCount} highlightId={active?.id ?? null} />
@@ -856,7 +911,7 @@ export function ChapterTwoPathways() {
       minHeight="130vh"
     >
       <div ref={ref} className="absolute inset-0">
-        <div className="sticky top-0 flex h-screen flex-col justify-center px-6 sm:px-12">
+        <div className="sticky top-0 flex h-screen flex-col justify-center px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
           <motion.div
             style={{ opacity: titleOpacity }}
             className="mx-auto w-full max-w-6xl"
@@ -963,7 +1018,7 @@ export function ChapterRhythm() {
         </span>
       </div>
       <div className="sticky top-0 flex h-screen flex-col justify-center overflow-hidden">
-        <div className="mx-auto w-full max-w-6xl px-6 sm:px-12">
+        <div className="mx-auto w-full max-w-6xl px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             24 months of work
           </p>
@@ -975,7 +1030,7 @@ export function ChapterRhythm() {
           {milestones.map((m, i) => (
             <div
               key={m.date}
-              className="flex w-screen shrink-0 items-center px-6 sm:px-12"
+              className="flex w-screen shrink-0 items-center px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24"
             >
               <div className="mx-auto flex w-full max-w-6xl items-end gap-8">
                 <span
@@ -1120,7 +1175,7 @@ export function ChapterPlaybook() {
       minHeight="120vh"
     >
       <div ref={ref} className="absolute inset-0">
-        <div className="sticky top-0 flex h-screen items-center overflow-hidden px-6 sm:px-12">
+        <div className="sticky top-0 flex h-screen items-center overflow-hidden px-6 sm:px-12 md:pl-20 md:pr-12 lg:pl-24">
           <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 lg:grid-cols-12">
             <div className="lg:col-span-5">
               <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
