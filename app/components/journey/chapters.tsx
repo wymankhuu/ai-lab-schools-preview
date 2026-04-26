@@ -1822,9 +1822,9 @@ export function ChapterMeetCohort() {
                       isLeft ? "" : "text-right"
                     }`}
                   >
-                    {/* tinted grid sliver behind the school name */}
+                    {/* tinted grid wash across the whole card */}
                     <CollageGrid
-                      className={`pointer-events-none absolute inset-y-0 ${isLeft ? "right-0" : "left-0"} h-full w-2/5 opacity-50`}
+                      className="pointer-events-none absolute inset-0 h-full w-full opacity-50"
                       color={tint}
                       cellSize={14}
                     />
