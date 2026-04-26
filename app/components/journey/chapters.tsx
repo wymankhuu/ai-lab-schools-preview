@@ -2131,9 +2131,6 @@ export function ChapterWhyPlaylab() {
                 ))}
               </ul>
 
-              <p className="mt-8 font-mono text-[11px] uppercase tracking-[0.2em] text-brand-ink/55">
-                Live regional ecosystems · TN · ID · IN · Central TX · DC · MD · VA
-              </p>
             </div>
           </div>
         </div>
@@ -2181,18 +2178,18 @@ export function ChapterStayConnected() {
             built and tell us what you&rsquo;d run with.
           </p>
 
-          <div className="mt-8 flex flex-col items-center gap-5">
+          <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
             <a
               href="https://playlab.ai"
-              className="font-display text-2xl text-brand-ink underline-offset-4 transition-all hover:underline"
+              className="inline-flex items-center justify-center rounded-full border-2 border-brand-ink bg-brand-bg px-7 py-3 font-display text-lg text-brand-ink transition-all hover:bg-brand-ink hover:text-brand-bg"
             >
-              Ask the FAQ bot &rarr;
+              Ask the FAQ bot
             </a>
             <a
               href="mailto:support@playlab.ai"
-              className="font-display text-2xl text-brand-ink underline-offset-4 transition-all hover:underline"
+              className="inline-flex items-center justify-center rounded-full border-2 border-brand-ink bg-brand-bg px-7 py-3 font-display text-lg text-brand-ink transition-all hover:bg-brand-ink hover:text-brand-bg"
             >
-              Get in touch &rarr;
+              Get in touch
             </a>
           </div>
 

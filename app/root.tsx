@@ -86,7 +86,7 @@ function SiteFooter() {
   return (
     <footer className="bg-[#e1e7d9] py-10 text-center text-sm text-[#122134]/80">
       <div className="container mx-auto px-4">
-        © Playlab Education · AI Lab Schools preview
+        © Playlab Education
       </div>
     </footer>
   );
