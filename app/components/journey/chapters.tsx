@@ -98,6 +98,184 @@ function CutOut({
   );
 }
 
+// Tight sawtooth/zigzag perimeter — drawn around the brand hero card
+function buildZigzagPerimeter(
+  w: number,
+  h: number,
+  pad: number,
+  seg: number,
+  amp: number,
+) {
+  const pts: [number, number][] = [];
+  let toggle = 0;
+  // top edge (left → right)
+  for (let x = pad; x <= w - pad; x += seg) {
+    pts.push([x, pad + (toggle++ % 2 === 0 ? -amp : amp)]);
+  }
+  // right edge (top → bottom)
+  for (let y = pad + seg; y <= h - pad; y += seg) {
+    pts.push([w - pad - (toggle++ % 2 === 0 ? -amp : amp), y]);
+  }
+  // bottom edge (right → left)
+  for (let x = w - pad - seg; x >= pad; x -= seg) {
+    pts.push([x, h - pad - (toggle++ % 2 === 0 ? -amp : amp)]);
+  }
+  // left edge (bottom → top)
+  for (let y = h - pad - seg; y >= pad + seg; y -= seg) {
+    pts.push([pad + (toggle++ % 2 === 0 ? -amp : amp), y]);
+  }
+  return `M ${pts.map((p) => p.join(" ")).join(" L ")} Z`;
+}
+
+const ZIGZAG_PATH_D = buildZigzagPerimeter(400, 240, 14, 6, 4);
+
+function WavyFrame({
+  className,
+  color = "#ce463f",
+  children,
+}: {
+  className?: string;
+  color?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={`relative ${className ?? ""}`}>
+      <svg
+        aria-hidden="true"
+        viewBox="0 0 400 240"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-0 h-full w-full"
+        fill="none"
+      >
+        <motion.path
+          d={ZIGZAG_PATH_D}
+          stroke={color}
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ pathLength: 0, opacity: 0 }}
+          whileInView={{ pathLength: 1, opacity: 1 }}
+          viewport={{ once: false, amount: 0.4 }}
+          transition={{
+            pathLength: { duration: 2.4, ease: "easeOut" },
+            opacity: { duration: 0.3 },
+          }}
+        />
+      </svg>
+      <div className="relative">{children}</div>
+    </div>
+  );
+}
+
+// Stack of scalloped half-domes — like the blue petal cascade in the brand image
+function ScallopStack({
+  className,
+  color = "#a4beeb",
+  count = 4,
+}: {
+  className?: string;
+  color?: string;
+  count?: number;
+}) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox={`0 0 80 ${count * 28}`}
+      className={className}
+      fill="none"
+    >
+      {Array.from({ length: count }, (_, i) => (
+        <ellipse
+          key={i}
+          cx="40"
+          cy={i * 28 + 14}
+          rx="34"
+          ry="11"
+          fill={color}
+          opacity={1 - i * 0.05}
+        />
+      ))}
+    </svg>
+  );
+}
+
+// Diagonal stripe pattern — the striped-paper texture from the brand image
+function StripedTile({
+  className,
+  color = "#a4beeb",
+}: {
+  className?: string;
+  color?: string;
+}) {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 100 100"
+      className={className}
+      preserveAspectRatio="none"
+      fill="none"
+    >
+      {Array.from({ length: 10 }, (_, i) => (
+        <line
+          key={i}
+          x1="-5"
+          y1={i * 12 - 5}
+          x2="105"
+          y2={i * 12 - 5}
+          stroke={color}
+          strokeWidth="3"
+          strokeOpacity="0.4"
+        />
+      ))}
+    </svg>
+  );
+}
+
+// Pixelated mound — the blocky red mountain in the brand image
+function PixelMound({
+  className,
+  color = "#ce463f",
+}: {
+  className?: string;
+  color?: string;
+}) {
+  // 8x4 grid of squares forming a low-poly mountain
+  const cells: [number, number][] = [
+    [0, 3],
+    [1, 2],
+    [1, 3],
+    [2, 2],
+    [2, 3],
+    [3, 1],
+    [3, 2],
+    [3, 3],
+    [4, 1],
+    [4, 2],
+    [4, 3],
+    [5, 0],
+    [5, 1],
+    [5, 2],
+    [5, 3],
+    [6, 1],
+    [6, 2],
+    [6, 3],
+    [7, 2],
+    [7, 3],
+  ];
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 80 40"
+      className={className}
+      fill={color}
+    >
+      {cells.map(([cx, cy], i) => (
+        <rect key={i} x={cx * 10} y={cy * 10} width={10} height={10} />
+      ))}
+    </svg>
+  );
+}
+
 /* ============== Storytelling primitives ============== */
 
 export function QuestionHook({
@@ -507,7 +685,7 @@ export function ChapterConviction() {
               cols={8}
               rows={8}
             />
-            <div className="relative">
+            <WavyFrame className="px-10 py-12 sm:px-14 sm:py-16">
               <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
                 We started this journey with
               </p>
@@ -528,7 +706,7 @@ export function ChapterConviction() {
                   style={{ pathLength: scribbleLength }}
                 />
               </svg>
-            </div>
+            </WavyFrame>
           </div>
         </motion.div>
       </div>
@@ -933,6 +1111,11 @@ export function ChapterVocabulary() {
               </p>
             </motion.div>
             <div className="relative flex justify-center">
+              <ScallopStack
+                className="absolute -left-2 top-2 hidden h-32 w-12 opacity-70 sm:block"
+                color="#a4beeb"
+                count={3}
+              />
               <Ecosystem reveal={reveal} />
             </div>
           </div>
@@ -1593,7 +1776,11 @@ export function ChapterTwoPathways() {
       </div>
 
       {/* Launch panel */}
-      <div className="bg-accent-yellow/55 px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="relative overflow-hidden bg-accent-yellow/55 px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+        <StripedTile
+          className="pointer-events-none absolute right-0 top-0 hidden h-32 w-40 sm:block"
+          color="#0c0f14"
+        />
         <div className="mx-auto grid w-full max-w-5xl grid-cols-1 items-center gap-10 lg:grid-cols-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1989,11 +2176,16 @@ export function ChapterPlaybook() {
                 what they kept, what they cut, and what they handed off.
               </p>
 
-              <div className="mt-10">
+              <div className="relative mt-10">
+                <PixelMound
+                  className="absolute -left-3 -top-6 h-10 w-20 opacity-80"
+                  color="#ce463f"
+                />
                 <FieldNote date="June 2027">
-                  Madison HS shipped a teacher-built rubric tool we now want
-                  to package. Show the version they wrote first &mdash;
-                  including the parts they crossed out.
+                  Foundations for the next 130 schools come from what these 13
+                  learn together. Every rubric, rhythm, and rejected attempt
+                  gets passed forward, drafts visible, so each team starts
+                  further down the road than the last.
                 </FieldNote>
               </div>
             </div>
