@@ -662,7 +662,7 @@ export function ChapterChatbotEra() {
               </span>
             </div>
 
-            <div className="mt-14 grid grid-cols-2 gap-x-10 gap-y-10 sm:grid-cols-4 sm:gap-x-12 lg:gap-x-14">
+            <div className="mt-14 grid grid-cols-1 gap-x-10 gap-y-10 sm:grid-cols-3 sm:gap-x-12 lg:gap-x-14">
               <StatTile
                 number={
                   <>
@@ -688,16 +688,6 @@ export function ChapterChatbotEra() {
                 label="Students built AI apps"
                 accent="#398239"
                 delay={0.25}
-              />
-              <StatTile
-                number={
-                  <>
-                    <CountUp to={88} /> / <CountUp to={94} />
-                  </>
-                }
-                label="NPS · educators / partners"
-                accent="#f4baef"
-                delay={0.35}
               />
             </div>
 
