@@ -72,13 +72,14 @@ export function WhatPlaylabBrings() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:gap-8">
-            {offerings.map((offering) => {
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-6 xl:gap-8">
+            {offerings.map((offering, index) => {
               const Icon = offering.icon;
+              const startClass = index === 3 ? "lg:col-start-2" : "";
               return (
                 <div
                   key={offering.id}
-                  className="flex h-full flex-col gap-4 rounded-3xl border border-[#1a311d]/10 bg-[#fdfffc] p-8 shadow-[0_1px_3px_rgba(26,49,29,0.04)]"
+                  className={`flex h-full flex-col gap-4 rounded-3xl border border-[#1a311d]/10 bg-[#fdfffc] p-8 shadow-[0_1px_3px_rgba(26,49,29,0.04)] lg:col-span-2 ${startClass}`}
                 >
                   <div
                     className="flex h-12 w-12 items-center justify-center rounded-2xl border-2 border-[#1a311d]"
