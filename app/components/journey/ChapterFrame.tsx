@@ -20,7 +20,7 @@ export function ChapterFrame({
   return (
     <section
       id={chapterId(number)}
-      className="relative w-full scroll-mt-20 overflow-hidden"
+      className="relative w-full scroll-mt-20 overflow-hidden pb-10 sm:pb-16"
       style={{ minHeight }}
       aria-label={eyebrow}
     >

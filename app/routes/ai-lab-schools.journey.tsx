@@ -35,7 +35,7 @@ export const meta: MetaFunction = () => [
 
 const NAV_CHAPTERS = [
   { number: "01", label: "Origin" },
-  { number: "02", label: "The bet" },
+  { number: "02", label: "Theory of change" },
   { number: "03", label: "First material" },
   { number: "04", label: "Ecosystem" },
   { number: "05", label: "The mandate" },
@@ -57,11 +57,13 @@ export default function JourneyPage() {
       <div className="relative z-10">
         <ChapterConviction />
 
-        <QuestionHook
-          text="What if school were designed for the AI age, not adapted to it?"
-          emphasis="designed"
-          accent="#ed6e2d"
-        />
+        <div className="pt-16 pb-20 sm:pt-24 sm:pb-32">
+          <QuestionHook
+            text="How does AI open up new opportunities for transforming education that weren't possible until now?"
+            emphasis="transforming"
+            accent="#ed6e2d"
+          />
+        </div>
 
         <ChapterTheBet />
         <ChapterChatbotEra />
@@ -91,8 +93,8 @@ export default function JourneyPage() {
         <ChapterPlaybook />
 
         <QuestionHook
-          text="What can your school start with what they leave behind?"
-          emphasis="leave behind"
+          text="What will we learn, and how do we share it?"
+          emphasis="share"
           accent="#ce463f"
         />
 

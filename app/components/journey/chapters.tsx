@@ -553,7 +553,7 @@ export function QuestionHook({
   return (
     <section
       aria-label="Question"
-      className="relative flex min-h-[32vh] items-center px-6 py-10 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24"
+      className="relative flex min-h-[22vh] items-center px-6 py-6 sm:px-12 sm:py-8 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24"
     >
       <div className="mx-auto w-full max-w-4xl text-center">
         <motion.p
@@ -617,7 +617,7 @@ export function PullQuote({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.4 }}
       transition={{ duration: 0.55 }}
-      className={`relative my-10 max-w-2xl ${
+      className={`relative my-16 max-w-2xl sm:my-20 ${
         align === "center" ? "mx-auto text-center" : ""
       }`}
     >
@@ -955,7 +955,7 @@ export function ChapterConviction() {
   );
 }
 
-/* ---------------- 02 — The bet ---------------- */
+/* ---------------- 02 — Theory of change ---------------- */
 export function ChapterTheBet() {
   const lines = [
     { text: "Not big tech.", color: "#356fe5" },
@@ -966,11 +966,11 @@ export function ChapterTheBet() {
   return (
     <ChapterFrame
       number="02"
-      eyebrow="The bet"
+      eyebrow="Theory of change"
       accent="#356fe5"
-      minHeight="115vh"
+      minHeight="100vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-20 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-12 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="relative mx-auto w-full max-w-5xl">
           <CutOut
             className="absolute -right-2 top-0 -z-0 h-24 w-24 rounded-full sm:h-32 sm:w-32"
@@ -1173,9 +1173,9 @@ export function ChapterChatbotEra() {
       number="03"
       eyebrow="The first material"
       accent="#ed6e2d"
-      minHeight="115vh"
+      minHeight="100vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-12 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto grid w-full max-w-6xl grid-cols-1 gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
@@ -1191,6 +1191,17 @@ export function ChapterChatbotEra() {
               </span>
               <span className="font-mono text-xs uppercase tracking-[0.2em] text-brand-ink/60">
                 builders / 15 months
+              </span>
+            </div>
+            <div className="mt-5 flex items-baseline gap-4">
+              <span className="font-display text-[clamp(2.75rem,7.5vw,5rem)] font-medium leading-none text-brand-ink">
+                <CountUp
+                  to={100000}
+                  format={(v) => `${Math.round(v).toLocaleString()}+`}
+                />
+              </span>
+              <span className="font-mono text-xs uppercase tracking-[0.2em] text-brand-ink/60">
+                chatbots created · and counting
               </span>
             </div>
 
@@ -1328,7 +1339,7 @@ export function ChapterVocabulary() {
       number="04"
       eyebrow="Ecosystem"
       accent="#356fe5"
-      minHeight="120vh"
+      minHeight="110vh"
     >
       <div ref={ref} className="absolute inset-0">
         <div className="sticky top-0 flex h-screen items-center px-6 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
@@ -1484,13 +1495,13 @@ function Ecosystem({ reveal }: { reveal: EcosystemReveal }) {
   return (
     <svg
       aria-hidden="true"
-      viewBox="0 0 400 400"
-      className="h-72 w-72 sm:h-[26rem] sm:w-[26rem]"
+      viewBox="-70 -70 540 540"
+      className="h-[22rem] w-[22rem] sm:h-[32rem] sm:w-[32rem]"
       fill="none"
     >
-      {/* Hand-drawn outer halo */}
+      {/* Hand-drawn outer halo (sits outside labels) */}
       <motion.path
-        d="M 200 30 C 320 30, 380 110, 380 200 C 380 300, 300 380, 200 380 C 90 380, 20 290, 30 200 C 35 110, 110 35, 200 30 Z"
+        d="M 200 -25 C 335 -25, 425 75, 425 200 C 430 320, 325 425, 200 425 C 70 425, -25 325, -25 200 C -25 75, 70 -25, 200 -25 Z"
         stroke="#0c0f14"
         strokeOpacity="0.2"
         strokeWidth="1"
@@ -1498,6 +1509,29 @@ function Ecosystem({ reveal }: { reveal: EcosystemReveal }) {
         fill="none"
         style={{ pathLength: reveal }}
       />
+
+      {/* Hand-drawn animated outer ring (continuously rotates) */}
+      <motion.g
+        animate={{ rotate: 360 }}
+        transition={{ duration: 70, ease: "linear", repeat: Infinity }}
+        style={{ transformOrigin: "200px 200px", transformBox: "fill-box" }}
+      >
+        <motion.path
+          d="M 205 -65 C 355 -58, 460 55, 462 200 C 470 340, 345 462, 200 465 C 55 470, -62 345, -65 200 C -58 60, 60 -70, 205 -65 Z"
+          stroke="#0c0f14"
+          strokeOpacity="0.45"
+          strokeWidth="1.4"
+          strokeLinecap="round"
+          fill="none"
+          initial={{ pathLength: 0, opacity: 0 }}
+          whileInView={{ pathLength: 1, opacity: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{
+            pathLength: { duration: 1.8, ease: "easeInOut", delay: 0.2 },
+            opacity: { duration: 0.3, delay: 0.2 },
+          }}
+        />
+      </motion.g>
 
       {/* Spokes from center to each satellite */}
       {ecosystemNodes.map((node, i) => (
@@ -1570,9 +1604,9 @@ export function ChapterMandate() {
       number="05"
       eyebrow="The mandate"
       accent="#398239"
-      minHeight="110vh"
+      minHeight="100vh"
     >
-      <div className="relative flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="relative flex min-h-screen items-center px-6 py-12 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <DotGrid
           className="pointer-events-none absolute left-6 top-20 hidden h-24 w-32 opacity-70 sm:block md:left-20"
           color="#398239"
@@ -1699,7 +1733,7 @@ export function StakesInterlude() {
   return (
     <section
       aria-label="Risk and potential"
-      className="relative w-full px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24"
+      className="relative w-full px-6 py-10 sm:px-12 sm:py-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24"
     >
       <DotGrid
         className="pointer-events-none absolute -left-2 top-10 hidden h-24 w-32 opacity-60 md:block"
@@ -1717,7 +1751,7 @@ export function StakesInterlude() {
       <div className="mx-auto w-full max-w-5xl text-center">
         <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-brand-ink/55">
           <ScaleGlyph size={14} />
-          <span>On the scale</span>
+          <span>A delicate balance</span>
         </div>
         <h2 className="mt-3 font-display text-[clamp(2rem,5vw,3.75rem)] leading-[1.05] text-brand-ink">
           Great risk.{" "}
@@ -1957,9 +1991,9 @@ export function ChapterWhyCohort() {
       number="06"
       eyebrow="The next material"
       accent="#ce463f"
-      minHeight="90vh"
+      minHeight="80vh"
     >
-      <div className="relative flex min-h-[90vh] items-center justify-center px-6 py-20 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="relative flex min-h-[80vh] items-center justify-center px-6 py-12 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <CutOut
           className="absolute left-12 top-16 -z-0 h-20 w-28 rounded-md md:left-24"
           color="#f4baef"
@@ -2045,7 +2079,7 @@ export function ChapterMeetCohort() {
   return (
     <section
       id={chapterId("07")}
-      className="relative w-full scroll-mt-20"
+      className="relative w-full scroll-mt-20 pb-10 sm:pb-16"
       aria-label="Meet the cohort"
     >
       <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
@@ -2489,7 +2523,7 @@ export function ChapterTwoPathways() {
   return (
     <section
       id={chapterId("08")}
-      className="relative w-full scroll-mt-20"
+      className="relative w-full scroll-mt-20 pb-10 sm:pb-16"
       aria-label="Two pathways, one cohort"
     >
       <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
@@ -2604,7 +2638,7 @@ export function ChapterRhythm() {
   return (
     <section
       id={chapterId("09")}
-      className="relative w-full scroll-mt-20"
+      className="relative w-full scroll-mt-20 pb-10 sm:pb-16"
       aria-label="The 24-month rhythm"
     >
       <div className="pointer-events-none absolute inset-x-0 top-6 z-10 mx-auto flex max-w-7xl items-center justify-between px-6 sm:top-8 sm:px-10 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
@@ -2835,7 +2869,7 @@ export function ChapterPillars() {
       accent="#0c0f14"
       minHeight="100vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-12 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-6xl">
           <p className="font-mono text-xs tracking-[0.25em] text-brand-ink/55">
             Three pillars
@@ -2891,29 +2925,29 @@ const playbookSamples: Array<{
 }> = [
   {
     type: "Rhythm",
-    title: "Tuesday studio block",
-    body: "A 90-minute pattern for student-led AI projects, with a 10-minute critique close.",
+    title: "Studio block cadence",
+    body: "A repeatable weekly pattern for student-led AI work, anchored by a critique close.",
     accent: "#feffa0",
     rotate: -1.8,
   },
   {
     type: "Rubric",
-    title: "Where AI helped",
-    body: "A four-line scoring guide students use to credit AI in their own work.",
+    title: "Credit & contribution",
+    body: "A scoring guide students use to name how AI shaped their work, and where it didn't.",
     accent: "#a4beeb",
     rotate: 1.4,
   },
   {
-    type: "Tool",
-    title: "Coach prompt library",
-    body: "Eleven prompts teachers re-run when a chatbot stalls a student mid-task.",
+    type: "Practice",
+    title: "Agentic learning loop",
+    body: "A pattern for students designing their own AI agents to pursue questions over weeks, not minutes.",
     accent: "#d4fd63",
     rotate: -1.2,
   },
   {
     type: "Policy",
-    title: "The Lab School pact",
-    body: "A draft acceptable-use agreement co-written by students, adults, and families.",
+    title: "Co-authored use agreement",
+    body: "A living framework drafted by students, adults, and families about how AI shows up in school.",
     accent: "#96be53",
     rotate: 1.6,
   },
@@ -2925,9 +2959,9 @@ export function ChapterPlaybook() {
       number="11"
       eyebrow="The artifact"
       accent="#398239"
-      minHeight="120vh"
+      minHeight="auto"
     >
-      <div className="min-h-screen px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="px-6 py-16 sm:px-12 sm:py-20 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-5xl">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
             <div className="lg:col-span-6">
@@ -3056,7 +3090,7 @@ export function ChapterWhyPlaylab() {
       accent="#356fe5"
       minHeight="100vh"
     >
-      <div className="flex min-h-screen items-center px-6 py-16 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
+      <div className="flex min-h-screen items-center px-6 py-12 sm:px-12 md:pl-20 md:pr-20 lg:pr-28 lg:pl-24">
         <div className="mx-auto w-full max-w-6xl">
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-12">
             <div className="relative lg:col-span-5">
@@ -3129,9 +3163,9 @@ export function ChapterStayConnected() {
       number="13"
       eyebrow="Stay connected"
       accent="#0c0f14"
-      minHeight="80vh"
+      minHeight="70vh"
     >
-      <div className="relative flex min-h-[80vh] items-center justify-center overflow-hidden px-6 py-20 sm:px-12">
+      <div className="relative flex min-h-[70vh] items-center justify-center overflow-hidden px-6 py-12 sm:px-12">
         <CutOut
           className="absolute left-10 top-12 h-20 w-28 rounded-md"
           color="#feffa0"
