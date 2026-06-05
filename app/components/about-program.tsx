@@ -30,7 +30,7 @@ export function AboutProgram() {
               </p>
               <p>
                 For this <span className="font-bold">Inaugural Cohort</span>, we
-                selected 13 teams to design new school models that use AI as a
+                selected 14 teams to design new school models that use AI as a
                 foundational building block. We intentionally recruited a mix of{" "}
                 <span className="font-bold">
                   district, charter, independent, private, and microschools, and

@@ -330,7 +330,7 @@ function Footer() {
           </h2>
           <p className="text-lg leading-relaxed text-[#122134]">
             <FormattedMessage
-              defaultMessage="See the 13 schools already running this experience."
+              defaultMessage="See the 14 schools already running this experience."
               description="Footer subcopy linking back to cohort page"
             />
           </p>

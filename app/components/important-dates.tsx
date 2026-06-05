@@ -66,7 +66,7 @@ const aheadItems: TimelineItem[] = [
     date: "July 2026",
     description: (
       <FormattedMessage
-        defaultMessage="Program kickoff with all 13 teams"
+        defaultMessage="Program kickoff with all 14 teams"
         description="Future milestone: program begins"
       />
     ),

@@ -316,7 +316,7 @@ export function CohortAnnouncement() {
               preserveAspectRatio="xMidYMid meet"
               className="block h-auto w-full"
               role="img"
-              aria-label="Map of the United States showing the 13 AI Lab Schools partner locations"
+              aria-label={`Map of the United States showing the ${partners.length} AI Lab Schools partner locations`}
             >
               <g>
                 {statesCollection.features.map((feat, idx) => {

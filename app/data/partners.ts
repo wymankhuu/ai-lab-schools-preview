@@ -8,6 +8,7 @@ import madisonLogo from "../logos/madison.png";
 import moxieLogo from "../logos/moxie.png";
 import newVillageLogo from "../logos/new-village.png";
 import powerLogo from "../logos/power.png";
+import runwayGreenLogo from "../logos/runway-green.png";
 import tempeLogo from "../logos/tempe.png";
 import valorLogo from "../logos/valor.png";
 import wlaLogo from "../logos/wla.svg";
@@ -201,6 +202,23 @@ const partnersUnsorted: Partner[] = [
     lat: 35.1495,
     lng: -90.049,
     logo: crosstownLogo,
+  },
+  {
+    id: "runway-green",
+    school: "Runway Green",
+    city: "Brooklyn",
+    state: "NY",
+    pathway: "Launch",
+    descriptor:
+      "Runway Green is building a citywide experiential learning ecosystem anchored by a 7-acre campus at Floyd Bennett Field, where New York City students explore meaningful green economy careers, build future-ready competencies, and access real pathways to college, credentials, and work.",
+    description:
+      "Runway Green is building a citywide experiential learning ecosystem that connects New York City students to hands-on learning, green economy careers, and future-ready skills. Anchored by a 7-acre campus at Floyd Bennett Field, Runway Green brings together schools, employers, colleges, and nonprofit partners to create real-world learning experiences that help students see what is possible for their futures. The model is designed to support students across multiple touchpoints, from one-day experiences and intensive career exploration to deeper pathways connected to college credit, credentials, internships, and long-term postsecondary success. Through Playlab, Runway Green is exploring how AI can strengthen this ecosystem by supporting personalized student reflection, career exploration, partner coordination, and evidence of competency development.",
+    lat: 40.5917,
+    lng: -73.897,
+    logo: runwayGreenLogo,
+    offsetX: 60,
+    offsetY: 45,
+    logoScale: 0.9,
   },
   {
     id: "da-vinci",
